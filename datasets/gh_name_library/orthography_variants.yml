@@ -1,0 +1,18 @@
+# PLACEHOLDER -- not reviewed, not validated, not real data.
+#
+# This repository has not been given a reviewed Akan/Ga/Hausa orthographic
+# and transliteration equivalence corpus. Guessing which spelling variants
+# are equivalent (e.g. for the kw/tw/gy/hw/ny digraphs called out in the
+# system documentation, section 9.2) would be exactly the kind of
+# unvalidated matching heuristic this repository's README lists as
+# deliberately out of scope, so this table is intentionally empty.
+#
+# To populate it: obtain a reviewed, source-cited equivalence-class mapping,
+# record its provenance in `source` below, and list each canonical spelling
+# with its equivalent variants under `variants` (e.g. "Kwesi: [Kwasi]").
+# See docs/versioning.md for the versioning requirements this data must
+# satisfy. Increment `version` whenever the data changes -- it is stamped
+# onto every projection statement produced through this rule.
+version: gh-orthography-v0-placeholder
+source: null
+variants: {}

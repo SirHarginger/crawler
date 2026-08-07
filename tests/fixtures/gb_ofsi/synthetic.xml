@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Entirely synthetic fixture. No real sanctioned individual, entity, or
+     identifier appears here; every value below is fabricated for testing. -->
+<ConsolidatedList>
+  <FinancialSanctionsTarget>
+    <UniqueID>SYN-9001</UniqueID>
+    <Name1>Synthetic</Name1>
+    <Name6>Testperson</Name6>
+    <Gender>Male</Gender>
+    <DateOfBirth>1975-04-12</DateOfBirth>
+    <TownOfBirth>Synthetic City</TownOfBirth>
+    <CountryOfBirth>Synthetica</CountryOfBirth>
+    <Position>Synthetic Official</Position>
+    <RegimeName>Synthetic Regime</RegimeName>
+    <ListingDate>2024-01-01</ListingDate>
+    <GroupTypeDescription>Individual</GroupTypeDescription>
+    <Alias>
+      <Name1>Synth</Name1>
+      <Name6>Alias</Name6>
+    </Alias>
+    <Address>
+      <AddressLine1>1 Synthetic Way</AddressLine1>
+      <AddressLine2>Synthetic District</AddressLine2>
+      <PostCode>00000</PostCode>
+      <Country>Synthetica</Country>
+    </Address>
+    <Nationality>Synthetica</Nationality>
+  </FinancialSanctionsTarget>
+  <FinancialSanctionsTarget>
+    <UniqueID>SYN-9002</UniqueID>
+    <Name1>Synthetic Holdings Ltd</Name1>
+    <RegimeName>Synthetic Regime</RegimeName>
+    <ListingDate>2024-01-01</ListingDate>
+    <GroupTypeDescription>Entity</GroupTypeDescription>
+    <Address>
+      <AddressLine1>2 Synthetic Way</AddressLine1>
+      <Country>Synthetica</Country>
+    </Address>
+  </FinancialSanctionsTarget>
+</ConsolidatedList>

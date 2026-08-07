@@ -1,0 +1,5 @@
+version: gb-ofsi-ftm-v1
+schemas:
+  Individual: Person
+  Entity: Organization
+notes: Mapping is implemented as deterministic code so source paths and derivation labels remain explicit.

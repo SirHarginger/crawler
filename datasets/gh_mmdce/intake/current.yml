@@ -1,0 +1,49 @@
+# PLACEHOLDER -- EMPTY. No real, reviewed MMDCE appointment data has been
+# provided to this repository.
+#
+# Fabricating entries about real MMDCEs -- their names, districts, or
+# appointment dates -- without a genuine, dual-reviewed citation would be
+# exactly the defamation risk the system documentation warns against:
+# "an assertion we cannot evidence is a defamation claim we cannot defend"
+# (system documentation, section 4.7). This file is intentionally empty.
+#
+# To populate it: for each MMDCE, add one entry under `assertions` with the
+# fields documented in fields.yml, citing a specific public-record source
+# document (e.g. an official Presidential appointment notice or Ministry of
+# Local Government announcement) and naming both the person who transcribed
+# it (asserted_by) and the different person who independently verified it
+# (reviewed_by) -- the parser refuses to publish an entry where these are
+# the same person. Record valid_to promptly once a term ends: an MMDCE
+# whose term has ended and is not recorded as such is a stale PEP claim.
+#
+# Only entries with state: PUBLISHED are ever built into a release (see
+# screening_crawler.pipeline.process_pep_snapshot and
+# `screening-crawler build-pep-release gh_mmdce`). DRAFT / EVIDENCED /
+# REVIEWED entries may still live in this file while awaiting review; they
+# are simply excluded from a release until they reach PUBLISHED -- not
+# discarded, just not yet ready.
+#
+# Example shape of one entry (not a real person -- delete before adding
+# real data):
+#
+# assertions:
+#   - subject_key: "gh-mmdce-<district-registry-id>"
+#     assertion_kind: occupancy
+#     source_document_id: "<appointment notice document ID>"
+#     source_url_or_receipt: "<https URL, or manual-receipt:<reference> for a physical document>"
+#     retrieval_timestamp: "2024-01-01T00:00:00+00:00"
+#     locator: "<page/section/row within the source document>"
+#     supporting_passage_or_region: "<the specific passage or region evidencing the claim>"
+#     asserted_by: "<transcriber>"
+#     reviewed_by: "<independent reviewer, must differ from asserted_by>"
+#     state: PUBLISHED
+#     valid_from: "2024"
+#     valid_to: null
+#     precision: year
+#     role_classification: pep
+#     person_native_key: "<stable key for this person>"
+#     published_name: "<name as published by the source>"
+#     position_native_key: "<stable key for this district office>"
+#     published_position: "Chief Executive for <district/municipal/metropolitan assembly>"
+version: gh-mmdce-intake-v1
+assertions: []

@@ -1,0 +1,31 @@
+key: eu_fsf
+title: EU Consolidated List of Persons, Groups and Entities Subject to EU Financial Sanctions
+publisher_authority: European Commission, Financial Sanctions Database (FSD)
+legal_basis: contractual
+risk_semantics: sanction
+expected_cadence: conditional_polling
+freshness_slo_hours: 2
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: EU financial sanctions designations as supplied by the publisher
+parser_version: eu-fsf-xml-v1
+mapping_version: eu-fsf-ftm-v1
+normalization_version: base-v1
+layer_1_5_enabled: true
+layer_1_5_justification: The EU FSF separates the sanctioned party from its regulation/legal-instrument membership, which FollowTheMoney flattens.
+source_endpoint: https://webgate.ec.europa.eu/fsd/fsf/public/files/xmlFullSanctionsList_1_1/content?token=dG9rZW4tMjAxNw
+source_format: >-
+  EU Financial Sanctions Files (FSF) XML export. This URL responded live on
+  2026-08-06 with content exceeding this session's fetch tool's 10 MB cap --
+  evidence of a live, substantial response, but the content itself was NOT
+  independently inspected this session (unlike un_sc_consolidated, where full
+  content was fetched and confirmed). Element structure below (sanctionEntity
+  records carrying logicalId/euReferenceNumber, a subjectType classification
+  code, and repeated nameAlias/address/citizenship/identification/birthdate/
+  regulation groups expressed mostly as XML attributes rather than nested
+  text elements) is built from the EU FSF schema's long-published, stable
+  public documentation, not from a live capture. This is meaningfully less
+  verified than un_sc_consolidated or us_ofac_sdn -- confirm field and
+  attribute names against a live capture
+  (`screening-crawler record-fixture eu_fsf`) before any production crawl.

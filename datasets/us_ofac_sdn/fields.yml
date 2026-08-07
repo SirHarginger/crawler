@@ -1,0 +1,201 @@
+version: ofac-sdn-fields-v1
+fields:
+  $.uid:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: entity.id
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.firstName:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.lastName:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.sdnType:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [Individual, Entity]
+    disposition: retained
+    reason: Drives record kind and FtM schema selection; source-specific structure retained below the projection.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.remarks:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Publisher narrative is evidence-relevant but has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.programList[]:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Program/list membership is source-specific legal structure, retained at Layer 1 and interpreted at Layer 1.5.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.akaList[].uid:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native alias identifier is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.akaList[].type:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    known_values: [a.k.a., f.k.a., n.k.a.]
+    disposition: retained
+    reason: Alias temporal qualifier is retained alongside each source-native alias.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.akaList[].category:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    known_values: [strong, weak]
+    disposition: retained
+    reason: Alias quality is retained alongside each source-native alias.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.akaList[].firstName:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.akaList[].lastName:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.addressList[].uid:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native address identifier is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.addressList[].address1:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Street-level address text has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.addressList[].city:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.addressList[].stateOrProvince:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Sub-national detail is retained without a safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.addressList[].postalCode:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Postal code is retained without a safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.addressList[].country:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: country
+    coverage: {min: 0.0, max: 1.0}
+  $.idList[].uid:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native identifier-record key is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.idList[].idType:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Identifier type is retained for evidence; the full publisher enumeration has not yet been confirmed against live content, so it is not constrained here.
+    coverage: {min: 0.0, max: 1.0}
+  $.idList[].idNumber:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Strong identifier value is evidence-relevant but not yet mapped into the matching projection, pending calibration.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.idList[].idCountry:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Identifier issuing country is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.dateOfBirthList[].uid:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native date-of-birth record key is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.dateOfBirthList[].dateOfBirth:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: birthDate
+    coverage: {min: 0.0, max: 1.0}
+  $.dateOfBirthList[].mainEntry:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Primary-entry qualifier is retained; its enumeration has not yet been confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}
+  $.nationalityList[].uid:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native nationality record key is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.nationalityList[].country:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    coverage: {min: 0.0, max: 1.0}
+  $.nationalityList[].mainEntry:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Primary-entry qualifier is retained; its enumeration has not yet been confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}

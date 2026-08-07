@@ -1,0 +1,169 @@
+version: un-fields-v1
+fields:
+  $.DATAID:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: entity.id
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.VERSIONNUM:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Publisher record version is retained for evidence and change review.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.FIRST_NAME:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.SECOND_NAME:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.THIRD_NAME:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.FOURTH_NAME:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.UN_LIST_TYPE:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [Synthetic Committee List]
+    disposition: retained
+    reason: Source-specific legal structure is retained at Layer 1 and interpreted at Layer 1.5.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.REFERENCE_NUMBER:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Publisher designation reference is retained below the lossy matching projection.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.LISTED_ON:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: createdAt
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.COMMENTS1:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Publisher narrative is evidence-relevant but has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ALIAS[].QUALITY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    known_values: [Good, Low]
+    disposition: retained
+    reason: Alias quality is retained alongside each source-native alias.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.INDIVIDUAL_ALIAS[].ALIAS_NAME:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ALIAS[].QUALITY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    known_values: [Good, Low]
+    disposition: retained
+    reason: Alias quality is retained alongside each source-native alias.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.ENTITY_ALIAS[].ALIAS_NAME:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ADDRESS[].CITY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ADDRESS[].COUNTRY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: country
+    coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ADDRESS[].CITY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ADDRESS[].COUNTRY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: country
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DATE_OF_BIRTH[].TYPE_OF_DATE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    known_values: [EXACT, APPROXIMATELY, BETWEEN]
+    disposition: retained
+    reason: Date precision semantics are retained and projected only where explicit.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.INDIVIDUAL_DATE_OF_BIRTH[].DATE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: birthDate
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DATE_OF_BIRTH[].YEAR:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: birthDate
+    coverage: {min: 0.0, max: 1.0}
+  $.NATIONALITY[].VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    coverage: {min: 0.0, max: 1.0}

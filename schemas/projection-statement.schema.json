@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:screening-crawler:schema:projection-statement:1",
+  "title": "Property-level projection provenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "dataset_key", "ftm_entity_id", "ftm_property", "projected_value", "source_record_id", "source_path", "native_value_hash", "derivation_type", "derivation_rule", "derivation_version", "mapping_version", "normalization_version"],
+  "properties": {
+    "id": {"type": "string", "format": "uuid"},
+    "dataset_key": {"type": "string"},
+    "ftm_entity_id": {"type": "string"},
+    "ftm_property": {"type": "string"},
+    "projected_value": {"type": "string"},
+    "source_record_id": {"type": "string", "format": "uuid"},
+    "source_path": {"type": "string"},
+    "native_value_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "derivation_type": {"enum": ["published", "normalized", "derived", "inferred"]},
+    "derivation_rule": {"type": "string"},
+    "derivation_version": {"type": "string"},
+    "mapping_version": {"type": "string"},
+    "normalization_version": {"type": "string"}
+  }
+}

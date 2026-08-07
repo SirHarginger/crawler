@@ -1,0 +1,27 @@
+# Generated reference data is never public-repository content.
+/data/
+/capture_store/
+/generated/
+/releases/
+/release/
+/staging/
+*.ndjson
+*.ftm.json
+checksums.sha256
+field_coverage.json
+validation_report.json
+
+# Local and tool state.
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+

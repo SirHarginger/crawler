@@ -1,0 +1,33 @@
+key: wb_debarred
+title: World Bank Listing of Ineligible Firms and Individuals
+publisher_authority: World Bank Group, Office of Suspension and Debarment
+legal_basis: informational
+risk_semantics: debarment
+expected_cadence: scheduled_daily
+freshness_slo_hours: 24
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: World Bank debarred/ineligible firms and individuals as supplied by the publisher
+parser_version: NOT_YET_IMPLEMENTED
+mapping_version: NOT_YET_IMPLEMENTED
+normalization_version: base-v1
+layer_1_5_enabled: false
+layer_1_5_justification: null
+source_endpoint: null
+source_format: >-
+  BLOCKED, not just unconfirmed: the public search page
+  (worldbank.org/en/projects-operations/procurement/debarred-firms) documents
+  no machine-readable export -- it is described as a browser-only interactive
+  search, updating every 3 hours. Its underlying data API, guessed at
+  https://apigwext.worldbank.org/dvsvc/v1.0/json/APPLICATION/ADOBE_EXPRNCE_MGR/FIRM/SANCTIONED_FIRM,
+  returned 401 Unauthorized both plain and with query parameters -- it exists
+  but requires an API key or registration this session does not have. No
+  field names are recorded here because none were observed; this metadata
+  intentionally has no matching crawler.py, fields.yml, or fixture yet, since
+  building a parser against a schema that was never actually seen would be
+  fabrication. Unblocking this requires either World Bank API credentials or
+  confirmation of an unauthenticated bulk-export path. Lowest priority of the
+  five list-breadth datasets per the system documentation's own
+  promotion-urgency table (informational legal basis, no same-day legal
+  force), which is consistent with it being the one left incomplete.

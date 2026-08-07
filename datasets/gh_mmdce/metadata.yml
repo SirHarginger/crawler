@@ -1,0 +1,34 @@
+key: gh_mmdce
+title: Ghana Metropolitan/Municipal/District Chief Executives (MMDCEs)
+publisher_authority: Office of the President of Ghana / Ministry of Local Government, Decentralisation and Rural Development
+legal_basis: informational
+risk_semantics: pep
+expected_cadence: scheduled_weekly
+freshness_slo_hours: 168
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: >-
+  Presidentially-appointed heads of Ghana's Metropolitan, Municipal and
+  District Assemblies (MMDAs), as recorded by this dataset's reviewed
+  intake process (see intake/current.yml). MMDCE terms turn over with each
+  administration and after local-government reorganisation, so occupancy
+  end dates matter here more than in most PEP datasets -- an MMDCE whose
+  term has ended and is not recorded as such is a stale PEP claim, not a
+  current one.
+parser_version: gh-mmdce-intake-v1
+mapping_version: gh-mmdce-pep-map-v1
+normalization_version: base-v1
+layer_1_5_enabled: false
+layer_1_5_justification: null
+source_endpoint: null
+source_format: >-
+  Not a machine-crawled source; see gh_parliament's metadata.yml for the
+  same explanation, which applies identically here. Built into a release
+  with `screening-crawler build-pep-release gh_mmdce`, not `crawl-dataset`.
+  intake/current.yml ships EMPTY: this repository has been given no real,
+  reviewed MMDCE appointment data, and fabricating entries about real
+  people would be exactly the defamation risk the system documentation
+  warns against. Populating it is a compliance/data-entry task, not an
+  engineering one; the shared machinery is proven with synthetic data in
+  tests/test_gh_parliament.py.

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Entirely synthetic fixture. No real sanctioned individual, entity, or
+     identifier appears here; every value below is fabricated for testing. -->
+<export xmlns="http://eu.europa.ec/fsd">
+  <sanctionEntity logicalId="9001" euReferenceNumber="EU.SYN.9001">
+    <subjectType classificationCode="P"/>
+    <remark>Synthetic fixture record for regression testing only.</remark>
+    <nameAlias logicalId="1" firstName="Synthetic" lastName="Testperson" wholeName="Synthetic Testperson" function="Synthetic Official" gender="M" birthDate="1975-04-12" nameLanguage="en" strong="true"/>
+    <nameAlias logicalId="2" firstName="Synth" lastName="Alias" wholeName="Synth Alias" strong="false"/>
+    <citizenship logicalId="1" countryIso2Code="ZZ" countryDescription="Synthetica"/>
+    <address logicalId="1" street="1 Synthetic Way" city="Synthetic City" zipCode="00000" country="Synthetica"/>
+    <birthdate logicalId="1" birthdate="1975-04-12" city="Synthetic City" country="Synthetica" circa="false"/>
+    <identification logicalId="1" identificationTypeCode="Synthetic Passport" number="SYN0000001" countryIso2Code="ZZ"/>
+    <regulation regulationType="EU" numberTitle="Synthetic Council Regulation (EU) No 0/2024" publicationDate="2024-01-01" programme="SYNTHETIC-EU"/>
+  </sanctionEntity>
+  <sanctionEntity logicalId="9002" euReferenceNumber="EU.SYN.9002">
+    <subjectType classificationCode="E"/>
+    <nameAlias logicalId="3" wholeName="Synthetic Holdings Ltd" strong="true"/>
+    <address logicalId="2" city="Synthetic Town" country="Synthetica"/>
+    <regulation regulationType="EU" numberTitle="Synthetic Council Regulation (EU) No 0/2024" publicationDate="2024-01-01" programme="SYNTHETIC-EU"/>
+  </sanctionEntity>
+</export>

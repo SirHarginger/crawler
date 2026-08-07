@@ -1,0 +1,35 @@
+key: gh_parliament
+title: Parliament of Ghana -- Members of Parliament
+publisher_authority: Parliament of Ghana
+legal_basis: informational
+risk_semantics: pep
+expected_cadence: scheduled_weekly
+freshness_slo_hours: 168
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: >-
+  Current and former Members of Parliament of Ghana, as recorded by this
+  dataset's reviewed intake process (see intake/current.yml).
+parser_version: gh-parliament-intake-v1
+mapping_version: gh-parliament-pep-map-v1
+normalization_version: base-v1
+layer_1_5_enabled: false
+layer_1_5_justification: null
+source_endpoint: null
+source_format: >-
+  This is not a machine-crawled source. Per the system documentation section
+  4.7, Ghana PEP data is assembled by people: an analyst transcribes an
+  occupancy claim from a public-record source (e.g. a Parliament of Ghana
+  gazette or official register page), cites the document, and a second
+  person independently reviews it before it may be published. This
+  dataset's intake/current.yml is that reviewed record, not a live feed,
+  and is built into a release with
+  `screening-crawler build-pep-release gh_parliament`, not `crawl-dataset`.
+  intake/current.yml ships EMPTY: this repository has been given no real,
+  reviewed Ghana Parliament membership data, and fabricating entries about
+  real people would be exactly the defamation risk the system documentation
+  warns against ("an assertion we cannot evidence is a defamation claim we
+  cannot defend"). Populating it is a compliance/data-entry task, not an
+  engineering one; the machinery is proven with synthetic data in
+  tests/test_gh_parliament.py.

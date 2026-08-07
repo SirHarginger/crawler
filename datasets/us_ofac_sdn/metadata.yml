@@ -1,0 +1,32 @@
+key: us_ofac_sdn
+title: US OFAC Specially Designated Nationals and Blocked Persons List
+publisher_authority: US Department of the Treasury, Office of Foreign Assets Control
+legal_basis: contractual
+risk_semantics: sanction
+expected_cadence: conditional_polling
+freshness_slo_hours: 2
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: Specially Designated Nationals and Blocked Persons as supplied by the publisher
+parser_version: ofac-sdn-xml-v1
+mapping_version: ofac-sdn-ftm-v1
+normalization_version: base-v1
+layer_1_5_enabled: true
+layer_1_5_justification: OFAC separates the sanctioned party from its program/list membership and identifier records, which FollowTheMoney flattens.
+source_endpoint: https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/SDN.XML
+source_format: >-
+  OFAC SDN XML. Endpoint verified live 2026-08-06 (302-redirects to a signed,
+  time-limited S3 export URL; the redirect must be followed, never hardcoded
+  or cached). Element structure below (sdnList/sdnEntry with uid,
+  firstName/lastName, sdnType, programList, akaList, addressList, idList,
+  dateOfBirthList, nationalityList, remarks) is built from OFAC's long-
+  published, stable SDN XML schema, but this session could not independently
+  re-verify current field names against live content -- the file is tens of
+  megabytes and the fetch tool timed out retrieving it. Confirm field names
+  against a live capture (`screening-crawler record-fixture us_ofac_sdn`)
+  before the first production crawl. sdnType values other than
+  Individual/Entity (Vessel, Aircraft) are not modelled and quarantine the
+  snapshot rather than being silently mapped or dropped. idList[].idType and
+  idList[].idNumber are retained, not yet mapped into the matching
+  projection, pending calibration.

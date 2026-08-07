@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+python tools/check_public_repo.py
+python -m pytest tests/test_public_repository_controls.py -q
+

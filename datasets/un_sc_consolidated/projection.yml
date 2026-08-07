@@ -1,0 +1,6 @@
+version: un-ftm-v1
+schemas:
+  INDIVIDUAL: Person
+  ENTITY: Organization
+notes: Mapping is implemented as deterministic code so source paths and derivation labels remain explicit.
+

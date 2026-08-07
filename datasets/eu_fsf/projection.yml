@@ -1,0 +1,5 @@
+version: eu-fsf-ftm-v1
+schemas:
+  P: Person
+  E: Organization
+notes: Mapping is implemented as deterministic code so source paths and derivation labels remain explicit.

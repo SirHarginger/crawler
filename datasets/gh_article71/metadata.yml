@@ -1,0 +1,42 @@
+key: gh_article71
+title: Ghana Article 71 Office Holders
+publisher_authority: >-
+  Multiple constitutional bodies (Office of the President, Judicial
+  Service, Electoral Commission, Office of the Auditor-General, Parliament
+  of Ghana) -- Article 71 of the 1992 Constitution of Ghana spans several
+  distinct offices, not one publisher.
+legal_basis: informational
+risk_semantics: pep
+expected_cadence: scheduled_weekly
+freshness_slo_hours: 168
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: >-
+  Holders of offices whose emoluments are determined under Article 71 of
+  the 1992 Constitution of Ghana -- including the President, Vice
+  President, Speaker and Deputy Speakers of Parliament, Chief Justice and
+  Justices of the Superior Courts, Auditor-General, Chairman and Deputy
+  Chairmen of the Electoral Commission, Ministers and Deputy Ministers of
+  State, and Members of the Council of State -- as recorded by this
+  dataset's reviewed intake process (see intake/current.yml). A single
+  office holder may appear once per office if they have held more than one
+  Article 71 office over time.
+parser_version: gh-article71-intake-v1
+mapping_version: gh-article71-pep-map-v1
+normalization_version: base-v1
+layer_1_5_enabled: false
+layer_1_5_justification: null
+source_endpoint: null
+source_format: >-
+  Not a machine-crawled source; see gh_parliament's metadata.yml for the
+  same explanation, which applies identically here. Built into a release
+  with `screening-crawler build-pep-release gh_article71`, not
+  `crawl-dataset`. intake/current.yml ships EMPTY: this repository has been
+  given no real, reviewed data on Article 71 office holders, and fabricating
+  entries about real people -- several of whom hold Ghana's most senior
+  constitutional offices -- would be exactly the defamation risk the system
+  documentation warns against. Populating it is a compliance/data-entry
+  task, not an engineering one; the shared machinery is proven with
+  synthetic data in tests/test_gh_parliament.py and exercised again here in
+  tests/test_gh_article71.py.

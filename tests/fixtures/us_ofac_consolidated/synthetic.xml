@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Entirely synthetic fixture. No real sanctioned individual, entity, or
+     identifier appears here; every value below is fabricated for testing. -->
+<sdnList xmlns="https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/XML">
+  <publshInformation>
+    <Publish_Date>03/01/2024</Publish_Date>
+    <Record_Count>2</Record_Count>
+  </publshInformation>
+  <sdnEntry>
+    <uid>SYN-8001</uid>
+    <firstName>Synthetic</firstName>
+    <lastName>Sectoral</lastName>
+    <sdnType>Individual</sdnType>
+    <remarks>Synthetic non-SDN fixture record for regression testing only.</remarks>
+    <programList>
+      <program>SYNTHETIC-SSI</program>
+    </programList>
+    <akaList>
+      <aka>
+        <uid>SYN-8001-A1</uid>
+        <type>a.k.a.</type>
+        <category>strong</category>
+        <firstName>Synth</firstName>
+        <lastName>SectoralAlias</lastName>
+      </aka>
+    </akaList>
+    <addressList>
+      <address>
+        <uid>SYN-8001-AD1</uid>
+        <city>Synthetic Harbor</city>
+        <country>Synthetica</country>
+      </address>
+    </addressList>
+    <idList>
+      <id>
+        <uid>SYN-8001-ID1</uid>
+        <idType>Synthetic Tax ID</idType>
+        <idNumber>SYN8000001</idNumber>
+        <idCountry>Synthetica</idCountry>
+      </id>
+    </idList>
+    <dateOfBirthList>
+      <dateOfBirthItem>
+        <uid>SYN-8001-DOB1</uid>
+        <dateOfBirth>1980-06-15</dateOfBirth>
+        <mainEntry>true</mainEntry>
+      </dateOfBirthItem>
+    </dateOfBirthList>
+    <nationalityList>
+      <nationality>
+        <uid>SYN-8001-NAT1</uid>
+        <country>Synthetica</country>
+        <mainEntry>true</mainEntry>
+      </nationality>
+    </nationalityList>
+  </sdnEntry>
+  <sdnEntry>
+    <uid>SYN-8002</uid>
+    <lastName>Synthetic Sectoral Bank PLC</lastName>
+    <sdnType>Entity</sdnType>
+    <programList>
+      <program>SYNTHETIC-SSI</program>
+    </programList>
+    <addressList>
+      <address>
+        <uid>SYN-8002-AD1</uid>
+        <city>Synthetic Financial District</city>
+        <country>Synthetica</country>
+      </address>
+    </addressList>
+  </sdnEntry>
+</sdnList>

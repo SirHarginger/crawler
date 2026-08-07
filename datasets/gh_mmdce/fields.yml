@@ -1,0 +1,144 @@
+version: gh-mmdce-fields-v1
+fields:
+  $.subject_key:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Publisher-native subject linkage is retained for evidence and cross-assertion identity.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.assertion_kind:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [occupancy]
+    disposition: retained
+    reason: Distinguishes assertion types for future extension; only occupancy is modelled today.
+    coverage: {min: 1.0, max: 1.0}
+  $.source_document_id:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: >-
+      Citation is retained for evidence -- an assertion we cannot evidence
+      is a defamation claim we cannot defend (system documentation section
+      4.7).
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.source_url_or_receipt:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Citation is retained for evidence.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.retrieval_timestamp:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: When the cited source document was retrieved, retained for evidence.
+    coverage: {min: 1.0, max: 1.0}
+  $.locator:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Page/section/row locator within the cited source document, retained for evidence.
+    coverage: {min: 1.0, max: 1.0}
+  $.supporting_passage_or_region:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: The specific passage or region evidencing the claim, retained for evidence.
+    coverage: {min: 1.0, max: 1.0}
+  $.asserted_by:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Dual-review provenance; who transcribed the assertion.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.reviewed_by:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: >-
+      Dual-review provenance; who independently reviewed the assertion.
+      The parser already refuses to publish an entry where this equals
+      asserted_by, but the value is retained here too so it is visible in
+      the evidence pack, not just enforced silently in code.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.valid_from:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: occupancy.startDate
+    coverage: {min: 1.0, max: 1.0}
+  $.valid_to:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: occupancy.endDate
+    coverage: {min: 1.0, max: 1.0}
+  $.precision:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [exact, month, year, unknown]
+    disposition: retained
+    reason: Date-precision qualifier; an imprecise date must never be stored as exact.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.role_classification:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [pep, rca]
+    disposition: retained
+    reason: >-
+      PEP status must never be rendered in the same visual treatment as a
+      sanctions designation, and relatives/close associates use role.rca,
+      never role.pep -- this field is what that downstream distinction
+      depends on.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.person_native_key:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Deterministic identity key for the Person entity; never derived from name similarity.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.published_name:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: person.name
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.position_native_key:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: retained
+    reason: Deterministic identity key for the Position entity.
+    coverage: {min: 1.0, max: 1.0}
+  $.published_position:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: position.name
+    coverage: {min: 1.0, max: 1.0}

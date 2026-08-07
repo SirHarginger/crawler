@@ -1,0 +1,34 @@
+key: gh_siga_boards
+title: Ghana State-Owned Enterprise Board Members (SIGA-overseen)
+publisher_authority: State Interests and Governance Authority (SIGA)
+legal_basis: informational
+risk_semantics: pep
+expected_cadence: scheduled_weekly
+freshness_slo_hours: 168
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: >-
+  Board members of state-owned enterprises, joint-venture companies, and
+  other state entities specified under the State Interests and Governance
+  Authority Act, 2019 (Act 990), as recorded by this dataset's reviewed
+  intake process (see intake/current.yml). Board appointments turn over
+  independently per entity, so this dataset's occupancy records are keyed
+  per board seat, not per person -- one person may hold several
+  concurrent Occupancy records if they sit on more than one board.
+parser_version: gh-siga-boards-intake-v1
+mapping_version: gh-siga-boards-pep-map-v1
+normalization_version: base-v1
+layer_1_5_enabled: false
+layer_1_5_justification: null
+source_endpoint: null
+source_format: >-
+  Not a machine-crawled source; see gh_parliament's metadata.yml for the
+  same explanation, which applies identically here. Built into a release
+  with `screening-crawler build-pep-release gh_siga_boards`, not
+  `crawl-dataset`. intake/current.yml ships EMPTY: this repository has been
+  given no real, reviewed SIGA board appointment data, and fabricating
+  entries about real people would be exactly the defamation risk the
+  system documentation warns against. Populating it is a compliance/
+  data-entry task, not an engineering one; the shared machinery is proven
+  with synthetic data in tests/test_gh_parliament.py.

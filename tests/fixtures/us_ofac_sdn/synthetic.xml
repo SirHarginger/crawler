@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Entirely synthetic fixture. No real sanctioned individual, entity, or
+     identifier appears here; every value below is fabricated for testing. -->
+<sdnList xmlns="https://sanctionslistservice.ofac.treas.gov/api/PublicationPreview/exports/XML">
+  <publshInformation>
+    <Publish_Date>03/01/2024</Publish_Date>
+    <Record_Count>2</Record_Count>
+  </publshInformation>
+  <sdnEntry>
+    <uid>SYN-9001</uid>
+    <firstName>Synthetic</firstName>
+    <lastName>Testperson</lastName>
+    <sdnType>Individual</sdnType>
+    <remarks>Synthetic fixture record for regression testing only.</remarks>
+    <programList>
+      <program>SYNTHETIC-SDGT</program>
+      <program>SYNTHETIC-SDNTK</program>
+    </programList>
+    <akaList>
+      <aka>
+        <uid>SYN-9001-A1</uid>
+        <type>a.k.a.</type>
+        <category>strong</category>
+        <firstName>Synth</firstName>
+        <lastName>Alias</lastName>
+      </aka>
+    </akaList>
+    <addressList>
+      <address>
+        <uid>SYN-9001-AD1</uid>
+        <address1>1 Synthetic Way</address1>
+        <city>Synthetic City</city>
+        <stateOrProvince>SY</stateOrProvince>
+        <postalCode>00000</postalCode>
+        <country>Synthetica</country>
+      </address>
+    </addressList>
+    <idList>
+      <id>
+        <uid>SYN-9001-ID1</uid>
+        <idType>Synthetic Passport</idType>
+        <idNumber>SYN0000001</idNumber>
+        <idCountry>Synthetica</idCountry>
+      </id>
+    </idList>
+    <dateOfBirthList>
+      <dateOfBirthItem>
+        <uid>SYN-9001-DOB1</uid>
+        <dateOfBirth>1975-04-12</dateOfBirth>
+        <mainEntry>true</mainEntry>
+      </dateOfBirthItem>
+    </dateOfBirthList>
+    <nationalityList>
+      <nationality>
+        <uid>SYN-9001-NAT1</uid>
+        <country>Synthetica</country>
+        <mainEntry>true</mainEntry>
+      </nationality>
+    </nationalityList>
+  </sdnEntry>
+  <sdnEntry>
+    <uid>SYN-9002</uid>
+    <lastName>Synthetic Holdings Ltd</lastName>
+    <sdnType>Entity</sdnType>
+    <programList>
+      <program>SYNTHETIC-SDGT</program>
+    </programList>
+    <akaList>
+      <aka>
+        <uid>SYN-9002-A1</uid>
+        <type>f.k.a.</type>
+        <category>weak</category>
+        <lastName>Synthetic Holdings Prior Name Ltd</lastName>
+      </aka>
+    </akaList>
+    <addressList>
+      <address>
+        <uid>SYN-9002-AD1</uid>
+        <city>Synthetic Town</city>
+        <country>Synthetica</country>
+      </address>
+    </addressList>
+  </sdnEntry>
+</sdnList>

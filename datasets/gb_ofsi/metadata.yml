@@ -1,0 +1,35 @@
+key: gb_ofsi
+title: UK Sanctions List (formerly OFSI Consolidated List of Financial Sanctions Targets)
+publisher_authority: UK Foreign, Commonwealth & Development Office (FCDO)
+legal_basis: contractual
+risk_semantics: sanction
+expected_cadence: conditional_polling
+freshness_slo_hours: 2
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: UK sanctions designations as supplied by the publisher
+parser_version: gb-ofsi-xml-v1
+mapping_version: gb-ofsi-ftm-v1
+normalization_version: base-v1
+layer_1_5_enabled: true
+layer_1_5_justification: The UK Sanctions List separates the sanctioned target from its regime/listing membership, which FollowTheMoney flattens.
+source_endpoint: https://sanctionslist.fcdo.gov.uk/docs/UK-Sanctions-List.xml
+source_format: >-
+  UK Sanctions List XML. IMPORTANT PUBLISHER CHANGE found this session: the
+  OFSI Consolidated List of Financial Sanctions Targets (the historical
+  ConList.xml at ofsistorage.blob.core.windows.net, per the earlier legacy
+  gb_ofsi naming) formally closed on 28 January 2026 and is no longer
+  updated; the UK Sanctions List, published by FCDO at the URL above, is now
+  the sole authoritative source. This URL responded live on 2026-08-06 with
+  content exceeding this session's fetch tool's 10 MB cap -- evidence of a
+  live, substantial response, but the content was NOT independently
+  inspected this session. Element structure below (a FinancialSanctionsTarget
+  -style record with UniqueID, Name1-6 positional name parts, DateOfBirth,
+  Nationality, RegimeName, ListingDate, GroupTypeDescription, and repeated
+  Alias/Address groups) is built from the historical OFSI schema's
+  long-published, stable public documentation, not from a live capture of
+  the *new* FCDO-published file, and the rebrand may have changed field
+  names. This is the least-verified dataset onboarded this session -- confirm
+  field names against a live capture
+  (`screening-crawler record-fixture gb_ofsi`) before any production crawl.

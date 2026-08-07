@@ -1,0 +1,6 @@
+# Replace these placeholders with real teams before branch protection is enabled.
+/schemas/ @compliance-lead @engineering-lead
+/datasets/gh_*/ @compliance-lead @engineering-lead
+/src/screening_crawler/release.py @engineering-lead
+/src/screening_crawler/field_inventory.py @compliance-lead @engineering-lead
+

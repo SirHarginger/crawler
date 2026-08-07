@@ -1,0 +1,247 @@
+version: eu-fsf-fields-v1
+fields:
+  $.logicalId:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: entity.id
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.euReferenceNumber:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Publisher designation reference is retained below the lossy matching projection.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.subjectTypeCode:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [P, E]
+    disposition: retained
+    reason: Drives record kind and FtM schema selection; enforced in code before a record is even parsed.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.remark:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Publisher narrative is evidence-relevant but has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].logicalId:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native name-record identifier is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].firstName:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].lastName:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].wholeName:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].function:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Role/function narrative has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].gender:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; enumeration not yet confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].birthDate:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Per-alias birth date is retained; the primary matching date comes from the birthdate group.
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].nameLanguage:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Original-script/language qualifier is retained alongside each source-native name.
+    coverage: {min: 0.0, max: 1.0}
+  $.nameAlias[].strong:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher strong/weak alias qualifier is retained for evidence; enumeration not yet confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.citizenship[].logicalId:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native citizenship-record identifier is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.citizenship[].countryIso2Code:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    coverage: {min: 0.0, max: 1.0}
+  $.citizenship[].countryDescription:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    coverage: {min: 0.0, max: 1.0}
+  $.address[].logicalId:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native address-record identifier is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.address[].street:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Street-level address text has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.address[].city:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.address[].zipCode:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Postal code is retained without a safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.address[].country:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: country
+    coverage: {min: 0.0, max: 1.0}
+  $.birthdate[].logicalId:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native birth-record identifier is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.birthdate[].birthdate:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: birthDate
+    coverage: {min: 0.0, max: 1.0}
+  $.birthdate[].city:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Birth city is retained without a safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.birthdate[].country:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Birth country is retained without a safe general matching projection; nationality is sourced from the citizenship group instead.
+    coverage: {min: 0.0, max: 1.0}
+  $.birthdate[].circa:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Date-precision qualifier is retained for evidence; enumeration not yet confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.identification[].logicalId:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Publisher-native identifier-record key is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.identification[].identificationTypeCode:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Identifier type is retained for evidence; the full publisher enumeration has not yet been confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}
+  $.identification[].number:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Strong identifier value is evidence-relevant but not yet mapped into the matching projection, pending calibration.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.identification[].countryIso2Code:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Identifier issuing country is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.regulation[].regulationType:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Source-specific legal-instrument structure is retained at Layer 1 and interpreted at Layer 1.5.
+    coverage: {min: 0.0, max: 1.0}
+  $.regulation[].numberTitle:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Regulation citation is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.regulation[].publicationDate:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Regulation publication date is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}
+  $.regulation[].programme:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Sanctions programme code is retained for evidence.
+    coverage: {min: 0.0, max: 1.0}

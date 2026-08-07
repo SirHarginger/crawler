@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:screening-crawler:schema:pep-assertion:1",
+  "title": "Human-assembled Ghana PEP assertion",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "subject_key", "assertion_kind", "source_document_id", "source_url_or_receipt", "retrieval_timestamp", "locator", "supporting_passage_or_region", "asserted_by", "reviewed_by", "state", "valid_from", "valid_to", "precision", "supersedes", "correction_history", "role_classification"],
+  "properties": {
+    "id": {"type": "string", "format": "uuid"},
+    "subject_key": {"type": "string"},
+    "assertion_kind": {"type": "string"},
+    "source_document_id": {"type": "string"},
+    "source_url_or_receipt": {"type": "string"},
+    "retrieval_timestamp": {"type": "string", "format": "date-time"},
+    "locator": {"type": "string"},
+    "supporting_passage_or_region": {"type": "string"},
+    "asserted_by": {"type": "string"},
+    "reviewed_by": {"type": ["string", "null"]},
+    "state": {"enum": ["DRAFT", "EVIDENCED", "REVIEWED", "PUBLISHED", "DISPUTED", "CORRECTED", "RETIRED"]},
+    "valid_from": {"type": ["string", "null"]},
+    "valid_to": {"type": ["string", "null"]},
+    "precision": {"enum": ["exact", "month", "year", "unknown"]},
+    "supersedes": {"type": ["string", "null"]},
+    "correction_history": {"type": "array", "items": {"type": "object"}},
+    "role_classification": {"enum": ["pep", "rca"]}
+  }
+}

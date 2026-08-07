@@ -1,0 +1,19 @@
+# PLACEHOLDER -- not reviewed, not validated, not real data.
+#
+# This repository has not been given a reviewed Ghanaian given-name
+# frequency corpus. Shipping fabricated frequency counts would misrepresent
+# real Akan/Ga/Hausa/etc. name distributions and could distort matching
+# decisions in a live sanctions/PEP screening system, so this table is
+# intentionally empty rather than approximated from general knowledge.
+#
+# To populate it: obtain a reviewed, source-cited frequency distribution
+# (e.g. Ghana Statistical Service birth-registration data, an academic
+# onomastics study, or an equivalent authoritative source), record its
+# provenance in `source` below, and list each given name with its observed
+# frequency rank or count under `frequencies`. See docs/versioning.md and
+# system documentation sections 9.2-9.3 for the calibration requirements
+# this data must satisfy before screening-engine's matching policy may
+# consume it. Increment `version` whenever the data changes.
+version: gh-name-frequency-v0-placeholder
+source: null
+frequencies: {}

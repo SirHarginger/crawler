@@ -1,0 +1,168 @@
+version: gb-ofsi-fields-v1
+fields:
+  $.UniqueID:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: entity.id
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.Name1:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.Name2:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.Name3:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.Name4:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.Name5:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.Name6:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: name
+    coverage: {min: 0.0, max: 1.0}
+  $.Gender:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; enumeration not yet confirmed against live content.
+    coverage: {min: 0.0, max: 1.0}
+  $.DateOfBirth:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: birthDate
+    coverage: {min: 0.0, max: 1.0}
+  $.TownOfBirth:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Birth town has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.CountryOfBirth:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Birth country is retained without a safe general matching projection; nationality is sourced from the Nationality group instead.
+    coverage: {min: 0.0, max: 1.0}
+  $.Position:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Publisher role/position narrative has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.RegimeName:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Source-specific regime/listing structure is retained at Layer 1 and interpreted at Layer 1.5.
+    coverage: {min: 0.0, max: 1.0}
+    safety_critical: true
+  $.ListingDate:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: retained
+    reason: Publisher listing date is retained for evidence and interpreted at Layer 1.5.
+    coverage: {min: 0.0, max: 1.0}
+  $.GroupTypeDescription:
+    expected_type: string
+    cardinality: {min: 1, max: 1}
+    required: true
+    known_values: [Individual, Entity]
+    disposition: retained
+    reason: Drives record kind and FtM schema selection; enforced in code before a record is even parsed.
+    coverage: {min: 1.0, max: 1.0}
+    safety_critical: true
+  $.Alias[].Name1:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.Alias[].Name2:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.Alias[].Name6:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    coverage: {min: 0.0, max: 1.0}
+  $.Address[].AddressLine1:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.Address[].AddressLine2:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Secondary address line has no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.Address[].PostCode:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Postal code is retained without a safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.Address[].Country:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: country
+    coverage: {min: 0.0, max: 1.0}
+  $.Nationality[]:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    coverage: {min: 0.0, max: 1.0}

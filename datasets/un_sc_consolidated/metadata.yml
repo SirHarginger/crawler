@@ -1,0 +1,27 @@
+key: un_sc_consolidated
+title: United Nations Security Council Consolidated List
+publisher_authority: United Nations Security Council
+legal_basis: binding
+risk_semantics: sanction
+expected_cadence: conditional_polling
+freshness_slo_hours: 2
+anomaly_threshold: 0.15
+distribution_restriction: public
+redistribution_basis: Primary publisher public record; operational review still required
+dataset_scope: Consolidated Security Council designations as supplied by the publisher
+parser_version: un-xml-v1
+mapping_version: un-ftm-v1
+normalization_version: base-v1
+layer_1_5_enabled: true
+layer_1_5_justification: The publisher carries list type and committee context that FollowTheMoney flattens.
+source_endpoint: https://scsanctions.un.org/resources/xml/en/consolidated.xml
+source_format: >-
+  UN consolidated-list XML. Verified live 2026-08-06: this URL 302-redirects to a
+  signed, time-limited blob URL (must be followed, not hardcoded); root element
+  CONSOLIDATED_LIST, dateGenerated attribute, INDIVIDUALS records with DATAID,
+  VERSIONNUM, FIRST_NAME/SECOND_NAME, UN_LIST_TYPE, REFERENCE_NUMBER, and
+  INDIVIDUAL_ALIAS/INDIVIDUAL_ADDRESS/INDIVIDUAL_DATE_OF_BIRTH/INDIVIDUAL_DOCUMENT
+  children, matching this dataset's fields.yml. ENTITIES records were not
+  observed during verification and are not yet confirmed against fields.yml --
+  review before assuming entity records are covered.
+
