@@ -70,9 +70,82 @@ PEP-shaped datasets therefore implement `pep.PepSourceAdapter` instead of `datas
 
 A PEP source's "artifact" is not fetched over HTTP: it is a reviewed intake file (`datasets/<key>/intake/current.yml`) maintained through an external dual-review process, captured and built into a release with `screening-crawler build-pep-release <key>`. The parser is the enforcement point for the review gate — it replays each entry's `DRAFT -> EVIDENCED -> REVIEWED -> PUBLISHED` transition sequence (`assertions.PepAssertion`) and only ever emits a record for an entry that reaches `PUBLISHED` with a reviewer distinct from the asserter; anything else is left in the intake file for a future release rather than quarantining the whole crawl, since an unpublished entry isn't a data-quality problem, just not ready yet.
 
+### Live crawler run engine (Live Reference Data Platform v1)
+
+Every machine-published source with a confirmed `source_endpoint` now runs through one common
+engine, `screening_crawler.run.run_source` (invoked via `crawler crawl <key>` / `crawler crawl
+--all`), rather than each source reimplementing acquisition, retry, and publication. What it
+adds on top of the already-existing acquisition/pipeline/release primitives (see the module
+docstring in `run.py` for the exact reuse list): an explicit run lifecycle state machine
+(`SCHEDULED -> FETCHING -> FETCHED -> PARSING -> DIFFING -> READY -> PUBLISHED`, with `UNCHANGED`
+and four distinct failure/quarantine terminal states), local JSON run-record persistence
+(`CrawlRunStore`, `runs/<source_key>/<run_id>.json`), `fcntl`-based duplicate-run locking
+(`locking.py`), a last-successful-release pointer per source (`output/.pointers/`) used both to
+seed conditional-HTTP headers and to look up the previous release for diffing, and deterministic
+process exit codes so a systemd timer or cron caller can distinguish success, unchanged,
+quarantine, and hard failure without parsing output.
+
+Adding source #10 through this engine is "point a new adapter/`metadata.yml` at `run_source`",
+not a new run loop -- the only source-specific inputs are the `DatasetAdapter` and its
+`source_endpoint`/`anomaly_threshold`.
+
+### Release-to-release diff engine (`diff.py`)
+
+`diff_releases()` classifies every entity across two releases as ADDED, MODIFIED (with
+field/property-level before/after), REMOVED, or UNCHANGED, keyed by stable entity ID with
+content-hash comparison (sorted property values, so source reordering is never a modification).
+`evaluate_statistical_gate()` is the doc's own worked example turned into code: a release whose
+entity count collapses far enough (default per-source `anomaly_threshold`, e.g. previous=700,
+new=12) raises `CatastrophicChangeDetected` and the run engine quarantines instead of publishing.
+This is a genuinely different diff from anything `screening-engine` computes at promotion time
+(see below) -- it runs pre-publish, inside this repository, over this repository's own two
+releases.
+
+### The `crawl_run.json` sidecar: how crawl-run provenance crosses the repo boundary
+
+The crawler holds no database credentials, by design (see "Responsibility boundary" above) --
+so crawl-run history (HTTP status, timings, the full state-transition sequence, self-reported
+diff summary) cannot be written to `screening-engine`'s registry directly. Instead, `run_source`
+writes a `crawl_run.json` file into the finished release directory, deliberately **outside**
+`manifest["files"]` and the checksum-verified release contract: the existing, unmodified
+`importer/verifier.py::ReleaseVerifier` never looks at it and cannot be affected by its
+presence or absence. `screening-engine`'s own `reference_ops` package (documented on that side)
+reads this sidecar for an already-imported release and independently recomputes the entity diff
+from the release's own imported data rather than trusting this file's `diff_summary` outright --
+only the operational/lifecycle metadata only the crawler could have observed is taken on trust.
+A run that never produces a release (e.g. `FETCH_FAILED`) has nothing to hand across this
+boundary and stays visible only via this repository's own `list-runs`/`inspect-run` CLI.
+
+This is distinct from, and does not duplicate, `screening-engine`'s promotion-time diff
+(`indexer/service.py::_compute_delisted_entity_ids`, which feeds the existing delisting review
+workflow) -- that one compares the active index against a candidate index at promotion time, an
+entirely different pipeline stage operating on entirely different inputs.
+
 ## Scaling properties
 
 Parsers receive artifacts independently and can use streaming APIs. Local storage hashes and paths support idempotent retries and byte-level duplicate suppression. Record content hashes support incremental comparisons. Deterministic sorting occurs only at release serialization boundaries, so acquisition and parsing can later run horizontally while output remains stable. ZIP and gzip decoding is bounded. Object storage and worker scheduling are interfaces rather than mandatory distributed infrastructure.
 
 Operational metrics should include per-source last successful observation, snapshot state, artifact bytes and hash reuse, fetch/parse duration, record counts and deltas, field findings, quarantine count and age, projection duration, release validation duration, and publication delay. Metrics must use source and snapshot identifiers, never personal names or identifiers.
+
+## System invariants
+
+Enforced by the code listed, checked by `tests/test_architecture_boundary.py` (static,
+AST-based -- parses real imports and `pyproject.toml`, not a raw grep):
+
+- This repo holds no database or search-index credentials, dependency, or import -- it cannot
+  activate a release, write to Elasticsearch, or control a production alias even by accident.
+- No source file references `screening-current`/`screening-current-entities` by name -- there
+  is no legitimate reason for this repo to know them.
+- Releases are immutable once published -- content-addressed release IDs, atomic
+  same-filesystem rename, existing release IDs never overwritten
+  (`test_release_publication_is_immutable`).
+- A published crawl run's `crawl_run.json` sidecar carries `release_manifest_sha256`, computed
+  from the real on-disk manifest.json bytes after publication -- the mechanism
+  screening-engine's `reference_ops` uses to prove ingested provenance actually belongs to the
+  release it claims to (not just a matching release_id string).
+- `run_id` is a true `uuid4()` (a process event), never content-derived -- unlike every other
+  ID in this system, which is deterministic by design.
+- A run only ever reaches `PUBLISHED` after `READY`, which only follows a passing statistical
+  gate -- `QUARANTINED` and the `*_FAILED` states are all terminal; nothing transitions out of
+  them except a brand new run.
 

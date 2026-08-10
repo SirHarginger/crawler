@@ -13,12 +13,16 @@ from pathlib import Path
 from . import __version__
 from .acquisition import Acquirer, FetchRequest, FetchResponse, SnapshotAssembler
 from .datasets import DatasetAdapter, DatasetMetadata, load_adapter
+from .diff import diff_releases
+from .locking import RunAlreadyInProgress
 from .model import CompletenessEvidence, CompletenessKind, DistributionRestriction
 from .name_library import OrthographyVariantTable
 from .normalization import AdditiveNormalizer, GhanaianNameRule
 from .pep import PepSourceAdapter, load_pep_adapter
 from .pipeline import DatasetBuild, process_pep_snapshot, process_snapshot
 from .release import ReleaseBuilder, ReleaseInput, ReleaseVersions
+from .release_reader import read_entities, read_manifest
+from .run import CrawlRunStore, exit_code_for, run_source
 from .storage import LocalBlobStore
 from .transport import HttpFetchTransport
 from .validation import validate_release_bundle
@@ -340,6 +344,187 @@ def _validate_dataset(args: argparse.Namespace) -> int:
     return 0
 
 
+def _iter_machine_dataset_keys(root: Path) -> list[str]:
+    """Every `datasets/<key>/` directory that has a `metadata.yml` -- excludes
+    non-dataset directories like `gh_name_library` (a shared data artifact, no
+    metadata.yml of its own) automatically, by the same criterion `load_adapter`
+    itself depends on existing.
+    """
+    keys = []
+    for entry in sorted((root / "datasets").iterdir()):
+        if entry.is_dir() and (entry / "metadata.yml").is_file():
+            keys.append(entry.name)
+    return keys
+
+
+def _list_sources(args: argparse.Namespace) -> int:
+    root = _repository_root()
+    rows = []
+    for key in _iter_machine_dataset_keys(root):
+        metadata = DatasetMetadata.from_path(root / "datasets" / key / "metadata.yml")
+        rows.append(
+            {
+                "source_key": metadata.key,
+                "title": metadata.title,
+                "publisher_authority": metadata.publisher_authority,
+                "risk_semantics": metadata.risk_semantics,
+                "legal_basis": metadata.legal_basis,
+                "expected_cadence": metadata.expected_cadence,
+                "freshness_slo_hours": metadata.freshness_slo_hours,
+                "anomaly_threshold": metadata.anomaly_threshold,
+                "distribution_restriction": metadata.distribution_restriction.value,
+                "source_endpoint": metadata.source_endpoint,
+                "live_crawl_enabled": metadata.source_endpoint is not None,
+                "parser_version": metadata.parser_version,
+                "mapping_version": metadata.mapping_version,
+            }
+        )
+    print(json.dumps(rows, sort_keys=True, indent=2))
+    return 0
+
+
+def _crawl(args: argparse.Namespace) -> int:
+    root = _repository_root()
+    run_store = CrawlRunStore(args.work / "runs")
+    dataset_keys = (
+        [key for key in _iter_machine_dataset_keys(root) if _has_live_endpoint(root, key)]
+        if args.all
+        else [args.dataset]
+    )
+    results = []
+    exit_codes = []
+    for dataset_key in dataset_keys:
+        try:
+            run = run_source(
+                dataset_key,
+                work=args.work,
+                output=args.output,
+                schemas=args.schemas,
+                repository_root=root,
+                run_store=run_store,
+                trigger="cli",
+                timeout=args.timeout,
+                retries=args.retries,
+            )
+        except RunAlreadyInProgress as exc:
+            results.append({"dataset": dataset_key, "error": "RunAlreadyInProgress", "message": str(exc)})
+            exit_codes.append(7)
+            continue
+        results.append({"dataset": dataset_key, "run_id": run.run_id, "state": run.state, "release_id": run.release_id})
+        exit_codes.append(exit_code_for(run))
+    print(json.dumps(results if args.all else results[0], sort_keys=True, indent=2 if args.all else None))
+    if not exit_codes:
+        return 0
+    # --all: report the single worst outcome as the process exit code (a scheduler wrapper
+    # checks this to decide whether to alert; per-source detail is in the JSON above and in
+    # each source's own run records, not lost by this aggregation).
+    return max(exit_codes)
+
+
+def _has_live_endpoint(root: Path, dataset_key: str) -> bool:
+    metadata = DatasetMetadata.from_path(root / "datasets" / dataset_key / "metadata.yml")
+    return metadata.source_endpoint is not None
+
+
+def _list_runs(args: argparse.Namespace) -> int:
+    run_store = CrawlRunStore(args.work / "runs")
+    runs = run_store.list_runs(args.source)
+    print(
+        json.dumps(
+            [
+                {
+                    "run_id": run.run_id,
+                    "source_key": run.source_key,
+                    "state": run.state,
+                    "trigger": run.trigger,
+                    "started_at": run.started_at,
+                    "finished_at": run.finished_at,
+                    "entities_produced": run.entities_produced,
+                    "diff_summary": run.diff_summary,
+                    "release_id": run.release_id,
+                    "error_code": run.error_code,
+                }
+                for run in runs
+            ],
+            sort_keys=True,
+            indent=2,
+        )
+    )
+    return 0
+
+
+def _inspect_run(args: argparse.Namespace) -> int:
+    run_store = CrawlRunStore(args.work / "runs")
+    if args.source:
+        run = run_store.load(args.source, args.run_id)
+    else:
+        candidates = [run for run in run_store.list_runs() if run.run_id == args.run_id]
+        if not candidates:
+            raise ValueError(f"no run {args.run_id!r} found under {args.work / 'runs'}")
+        run = candidates[0]
+    print(json.dumps(run.to_dict(), sort_keys=True, indent=2))
+    return 0
+
+
+def _list_releases(args: argparse.Namespace) -> int:
+    rows = []
+    for entry in sorted(args.output.iterdir()):
+        if not entry.is_dir() or entry.name.startswith("."):
+            continue
+        manifest_path = entry / "manifest.json"
+        if not manifest_path.is_file():
+            continue
+        manifest = read_manifest(entry)
+        if args.dataset and args.dataset not in {item["key"] for item in manifest["datasets"]}:
+            continue
+        rows.append(
+            {
+                "release_id": manifest["release_id"],
+                "generated_at": manifest["generated_at"],
+                "status": manifest["status"],
+                "datasets": [item["key"] for item in manifest["datasets"]],
+                "entity_count": sum(int(item["entity_count"]) for item in manifest["datasets"]),
+                "crawler_revision": manifest["crawler_revision"],
+                "path": str(entry),
+            }
+        )
+    print(json.dumps(rows, sort_keys=True, indent=2))
+    return 0
+
+
+def _compare_releases(args: argparse.Namespace) -> int:
+    old_entities = read_entities(args.old_release)
+    new_entities = read_entities(args.new_release)
+    diff = diff_releases(old_entities, new_entities)
+    summary = diff.as_summary_dict()
+    output: dict[str, object] = {
+        "old_release": str(args.old_release),
+        "new_release": str(args.new_release),
+        "summary": summary,
+    }
+    if args.detail:
+        output["added"] = [
+            {"entity_id": c.entity_id, "schema": c.schema, "caption": c.caption} for c in diff.added
+        ]
+        output["removed"] = [
+            {"entity_id": c.entity_id, "schema": c.schema, "caption": c.caption} for c in diff.removed
+        ]
+        output["modified"] = [
+            {
+                "entity_id": c.entity_id,
+                "schema": c.schema,
+                "caption": c.caption,
+                "property_changes": [
+                    {"property": p.property, "before": list(p.before), "after": list(p.after)}
+                    for p in c.property_changes
+                ],
+            }
+            for c in diff.modified
+        ]
+    print(json.dumps(output, sort_keys=True, indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     root = _repository_root()
     parser = argparse.ArgumentParser(prog="screening-crawler")
@@ -413,6 +598,58 @@ def build_parser() -> argparse.ArgumentParser:
     )
     dataset.add_argument("metadata", type=Path)
     dataset.set_defaults(handler=_validate_dataset)
+
+    sources = commands.add_parser(
+        "list-sources",
+        help="list every machine-crawled dataset's registry metadata",
+    )
+    sources.set_defaults(handler=_list_sources)
+
+    live_crawl = commands.add_parser(
+        "crawl",
+        help=(
+            "orchestrated live crawl: acquire, parse/normalize/validate, diff against the "
+            "dataset's previous release, gate on catastrophic change, and publish -- "
+            "suitable for a systemd timer/cron entry"
+        ),
+    )
+    live_crawl.add_argument(
+        "dataset", nargs="?", default=None, help="dataset key, e.g. un_sc_consolidated (omit with --all)"
+    )
+    live_crawl.add_argument(
+        "--all", action="store_true", help="crawl every dataset with a configured source_endpoint"
+    )
+    live_crawl.add_argument("--work", type=Path, required=True)
+    live_crawl.add_argument("--output", type=Path, required=True)
+    live_crawl.add_argument("--schemas", type=Path, default=root / "schemas")
+    live_crawl.add_argument("--timeout", type=float, default=30.0)
+    live_crawl.add_argument("--retries", type=int, default=3)
+    live_crawl.set_defaults(handler=_crawl)
+
+    runs = commands.add_parser("list-runs", help="list recorded crawl runs")
+    runs.add_argument("--work", type=Path, required=True)
+    runs.add_argument("--source", default=None, help="restrict to one dataset key")
+    runs.set_defaults(handler=_list_runs)
+
+    inspect_run = commands.add_parser("inspect-run", help="show one crawl run's full record")
+    inspect_run.add_argument("run_id")
+    inspect_run.add_argument("--work", type=Path, required=True)
+    inspect_run.add_argument("--source", default=None, help="dataset key, speeds up lookup")
+    inspect_run.set_defaults(handler=_inspect_run)
+
+    releases = commands.add_parser("list-releases", help="list published releases under an output root")
+    releases.add_argument("--output", type=Path, required=True)
+    releases.add_argument("--dataset", default=None, help="restrict to releases containing this dataset key")
+    releases.set_defaults(handler=_list_releases)
+
+    compare = commands.add_parser(
+        "compare-releases", help="deterministic entity-level diff between two release directories"
+    )
+    compare.add_argument("old_release", type=Path)
+    compare.add_argument("new_release", type=Path)
+    compare.add_argument("--detail", action="store_true", help="include per-entity added/modified/removed rows")
+    compare.set_defaults(handler=_compare_releases)
+
     return parser
 
 

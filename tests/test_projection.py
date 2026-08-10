@@ -15,7 +15,10 @@ def test_projection_is_deterministic_across_input_order(dataset_build) -> None:
 
 def test_every_alias_is_retained_independently(dataset_build) -> None:
     person = next(item for item in dataset_build.projection.entities if item.schema == "Person")
-    assert set(person.properties["alias"]) == {"A. Example", "Example Ama"}
+    # The fixture's NAME_ORIGINAL_SCRIPT also projects to `alias` (no dedicated FtM property
+    # exists for a name's original script -- see crawler.py's UnProjectionProfileV1), so a
+    # third alias is expected alongside the two INDIVIDUAL_ALIAS entries.
+    assert set(person.properties["alias"]) == {"A. Example", "Example Ama", "Synthetic Original Script Name"}
 
 
 def test_every_property_has_provenance(dataset_build) -> None:

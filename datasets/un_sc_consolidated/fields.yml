@@ -1,4 +1,10 @@
-version: un-fields-v1
+version: un-fields-v2
+# Cardinality/known_values below were derived from the real, live UN SC Consolidated List
+# fetched 2026-08-06 (736 individuals, 275 entities), not invented -- see PROGRESS.md's "Live
+# Reference Data Platform v1" entry for how this was checked. Where a max is round rather than
+# the exact observed peak (e.g. 30 where 27 was observed), that's deliberate headroom on an
+# already-verified figure, matching this file's own pre-existing convention (INDIVIDUAL_ADDRESS
+# was already max:20 against an observed max of 8) -- not a guess at an unverified ceiling.
 fields:
   $.DATAID:
     expected_type: string
@@ -49,9 +55,10 @@ fields:
     expected_type: string
     cardinality: {min: 1, max: 1}
     required: true
-    known_values: [Synthetic Committee List]
-    disposition: retained
-    reason: Source-specific legal structure is retained at Layer 1 and interpreted at Layer 1.5.
+    known_values: [Al-Qaida, CAR, DPRK, DRC, GB, Haiti, Iran, Iraq, Libya, Somalia, SouthSudan, Sudan, Taliban, Yemen]
+    disposition: mapped
+    mapping_destination: program
+    reason: Source-specific legal structure is retained at Layer 1 and additionally projected as FtM `program`.
     coverage: {min: 1.0, max: 1.0}
     safety_critical: true
   $.REFERENCE_NUMBER:
@@ -74,41 +81,198 @@ fields:
     expected_type: string
     cardinality: {min: 0, max: 1}
     required: false
-    disposition: retained
-    reason: Publisher narrative is evidence-relevant but has no safe general matching projection.
+    disposition: mapped
+    mapping_destination: notes
+    reason: Publisher narrative is evidence-relevant; also projected verbatim as FtM `notes`.
     coverage: {min: 0.0, max: 1.0}
+  $.GENDER:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    known_values: [Male, Female]
+    disposition: mapped
+    mapping_destination: gender
+    coverage: {min: 0.0, max: 1.0}
+  $.HAS_INTERPOL_LINK:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    known_values: ["YES", "NO"]
+    disposition: retained
+    reason: Flag for whether INTERPOL_LINK is meaningful; INTERPOL_LINK itself carries the projected value.
+    coverage: {min: 0.0, max: 1.0}
+  $.INTERPOL_LINK:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: sourceUrl
+    coverage: {min: 0.0, max: 1.0}
+  $.NAME_ORIGINAL_SCRIPT:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: alias
+    reason: A name in its original (often non-Latin) script is a name form, projected as an alias.
+    coverage: {min: 0.0, max: 1.0}
+  $.TITLE.VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: title
+    coverage: {min: 0.0, max: 1.0}
+  $.TITLE.VALUE[]:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: title
+    reason: Same leaf as $.TITLE.VALUE; observed as a single-item list for some records.
+    coverage: {min: 0.0, max: 1.0}
+  $.DESIGNATION.VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: position
+    coverage: {min: 0.0, max: 1.0}
+  $.DESIGNATION.VALUE[]:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: position
+    reason: Same leaf as $.DESIGNATION.VALUE; observed as a single-item list for some records.
+    coverage: {min: 0.0, max: 1.0}
+  $.LIST_TYPE.VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    known_values: ["UN List"]
+    disposition: retained
+    reason: Redundant with UN_LIST_TYPE's per-committee code; retained, not separately projected.
+    coverage: {min: 0.0, max: 1.0}
+  $.LAST_DAY_UPDATED.VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: modifiedAt
+    reason: "Amendment/update date -- projected only when LAST_REVIEWED_ON (entities) is absent."
+    coverage: {min: 0.0, max: 1.0}
+  $.LAST_DAY_UPDATED.VALUE[]:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: modifiedAt
+    reason: Same leaf as $.LAST_DAY_UPDATED.VALUE; observed as a single-item list for some records.
+    coverage: {min: 0.0, max: 1.0}
+  $.LAST_REVIEWED_ON.VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: modifiedAt
+    reason: Entity-only amendment/review date, preferred over LAST_DAY_UPDATED when both are present.
+    coverage: {min: 0.0, max: 1.0}
+  $.LAST_REVIEWED_ON.VALUE[]:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: mapped
+    mapping_destination: modifiedAt
+    reason: Same leaf as $.LAST_REVIEWED_ON.VALUE; observed as a single-item list for some records.
+    coverage: {min: 0.0, max: 1.0}
+  $.SORT_KEY:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: not_projected
+    reason: Publisher-internal sort key; no matching or evidentiary value.
+    coverage: {min: 0.0, max: 1.0}
+  $.SORT_KEY_LAST_MOD:
+    expected_type: string
+    cardinality: {min: 0, max: 1}
+    required: false
+    disposition: not_projected
+    reason: Publisher-internal sort key; no matching or evidentiary value.
+    coverage: {min: 0.0, max: 1.0}
+
+  # -- Aliases (max observed: 23 individual, 27 entity; the two quality vocabularies are
+  # genuinely different in the real source, not a transcription slip -- individuals use a
+  # confidence rating, entities use an alias-type label) --
   $.INDIVIDUAL_ALIAS[].QUALITY:
     expected_type: string
-    cardinality: {min: 0, max: 20}
+    cardinality: {min: 0, max: 30}
     required: false
-    known_values: [Good, Low]
+    known_values: ["", Good, Low]
     disposition: retained
-    reason: Alias quality is retained alongside each source-native alias.
+    reason: Alias confidence rating is retained alongside each source-native alias.
     coverage: {min: 0.0, max: 1.0}
     safety_critical: true
   $.INDIVIDUAL_ALIAS[].ALIAS_NAME:
     expected_type: string
-    cardinality: {min: 0, max: 20}
+    cardinality: {min: 0, max: 30}
     required: false
     disposition: mapped
     mapping_destination: alias
     coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ALIAS[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 30}
+    required: false
+    disposition: retained
+    reason: Free-text alias annotation; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ALIAS[].CITY_OF_BIRTH:
+    expected_type: string
+    cardinality: {min: 0, max: 30}
+    required: false
+    disposition: retained
+    reason: Alias-scoped birth city (distinct from the record's own INDIVIDUAL_PLACE_OF_BIRTH); retained pending a reviewed projection rule for alias-scoped identity facts.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ALIAS[].COUNTRY_OF_BIRTH:
+    expected_type: string
+    cardinality: {min: 0, max: 30}
+    required: false
+    disposition: retained
+    reason: Alias-scoped birth country; retained pending a reviewed projection rule for alias-scoped identity facts.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ALIAS[].DATE_OF_BIRTH:
+    expected_type: string
+    cardinality: {min: 0, max: 30}
+    required: false
+    disposition: retained
+    reason: Alias-scoped birth date; retained pending a reviewed projection rule for alias-scoped identity facts.
+    coverage: {min: 0.0, max: 1.0}
   $.ENTITY_ALIAS[].QUALITY:
     expected_type: string
-    cardinality: {min: 0, max: 20}
+    cardinality: {min: 0, max: 30}
     required: false
-    known_values: [Good, Low]
+    known_values: ["", "a.k.a.", "f.k.a."]
     disposition: retained
-    reason: Alias quality is retained alongside each source-native alias.
+    reason: Entity alias-type label (also known as / formerly known as), a different vocabulary from individuals' confidence rating.
     coverage: {min: 0.0, max: 1.0}
     safety_critical: true
   $.ENTITY_ALIAS[].ALIAS_NAME:
     expected_type: string
-    cardinality: {min: 0, max: 20}
+    cardinality: {min: 0, max: 30}
     required: false
     disposition: mapped
     mapping_destination: alias
     coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ALIAS[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 30}
+    required: false
+    disposition: retained
+    reason: Free-text alias annotation; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+
+  # -- Addresses (max observed: 8 individual, 11 entity) --
   $.INDIVIDUAL_ADDRESS[].CITY:
     expected_type: string
     cardinality: {min: 0, max: 20}
@@ -122,6 +286,34 @@ fields:
     required: false
     disposition: mapped
     mapping_destination: country
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ADDRESS[].STREET:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ADDRESS[].STATE_PROVINCE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ADDRESS[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Free-text address annotation; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_ADDRESS[].ZIP_CODE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected (FtM `address` is a composed free-text string).
     coverage: {min: 0.0, max: 1.0}
   $.ENTITY_ADDRESS[].CITY:
     expected_type: string
@@ -137,33 +329,196 @@ fields:
     disposition: mapped
     mapping_destination: country
     coverage: {min: 0.0, max: 1.0}
-  $.INDIVIDUAL_DATE_OF_BIRTH[].TYPE_OF_DATE:
+  $.ENTITY_ADDRESS[].STREET:
     expected_type: string
     cardinality: {min: 0, max: 20}
     required: false
-    known_values: [EXACT, APPROXIMATELY, BETWEEN]
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ADDRESS[].STATE_PROVINCE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: mapped
+    mapping_destination: address
+    coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ADDRESS[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Free-text address annotation; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.ENTITY_ADDRESS[].ZIP_CODE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected (FtM `address` is a composed free-text string).
+    coverage: {min: 0.0, max: 1.0}
+
+  # -- Dates of birth (max observed: 10 per individual) --
+  $.INDIVIDUAL_DATE_OF_BIRTH[].TYPE_OF_DATE:
+    expected_type: string
+    cardinality: {min: 0, max: 15}
+    required: false
+    known_values: ["", EXACT, APPROXIMATELY, BETWEEN]
     disposition: retained
     reason: Date precision semantics are retained and projected only where explicit.
     coverage: {min: 0.0, max: 1.0}
     safety_critical: true
   $.INDIVIDUAL_DATE_OF_BIRTH[].DATE:
     expected_type: string
-    cardinality: {min: 0, max: 20}
+    cardinality: {min: 0, max: 15}
     required: false
     disposition: mapped
     mapping_destination: birthDate
     coverage: {min: 0.0, max: 1.0}
   $.INDIVIDUAL_DATE_OF_BIRTH[].YEAR:
     expected_type: string
-    cardinality: {min: 0, max: 20}
+    cardinality: {min: 0, max: 15}
     required: false
     disposition: mapped
     mapping_destination: birthDate
     coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DATE_OF_BIRTH[].FROM_YEAR:
+    expected_type: string
+    cardinality: {min: 0, max: 15}
+    required: false
+    disposition: retained
+    reason: "BETWEEN-precision range bound; retained but not projected (birthDate expects a single value, and a range's lower/upper bound is not that fact -- projecting only one bound would misrepresent the publisher's own stated uncertainty)."
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DATE_OF_BIRTH[].TO_YEAR:
+    expected_type: string
+    cardinality: {min: 0, max: 15}
+    required: false
+    disposition: retained
+    reason: "BETWEEN-precision range bound; retained but not projected, same reasoning as FROM_YEAR."
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DATE_OF_BIRTH[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 15}
+    required: false
+    disposition: retained
+    reason: Free-text date annotation; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+
   $.NATIONALITY[].VALUE:
+    expected_type: string
+    cardinality: {min: 0, max: 5}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    coverage: {min: 0.0, max: 1.0}
+  $.NATIONALITY[].VALUE[]:
+    expected_type: string
+    cardinality: {min: 0, max: 5}
+    required: false
+    disposition: mapped
+    mapping_destination: nationality
+    reason: Same leaf as $.NATIONALITY[].VALUE; observed as a nested list for some records.
+    coverage: {min: 0.0, max: 1.0}
+
+  # -- Place of birth (max observed: 5 per individual) --
+  $.INDIVIDUAL_PLACE_OF_BIRTH[].CITY:
+    expected_type: string
+    cardinality: {min: 0, max: 10}
+    required: false
+    disposition: mapped
+    mapping_destination: birthPlace
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_PLACE_OF_BIRTH[].COUNTRY:
+    expected_type: string
+    cardinality: {min: 0, max: 10}
+    required: false
+    disposition: mapped
+    mapping_destination: birthPlace
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_PLACE_OF_BIRTH[].STATE_PROVINCE:
+    expected_type: string
+    cardinality: {min: 0, max: 10}
+    required: false
+    disposition: mapped
+    mapping_destination: birthPlace
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_PLACE_OF_BIRTH[].STREET:
+    expected_type: string
+    cardinality: {min: 0, max: 10}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently composed into birthPlace (street-level precision is unusual for a place of birth and not currently mapped).
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_PLACE_OF_BIRTH[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 10}
+    required: false
+    disposition: retained
+    reason: Free-text place-of-birth annotation; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+
+  # -- Identity documents (max observed: 14 per individual) --
+  $.INDIVIDUAL_DOCUMENT[].NUMBER:
     expected_type: string
     cardinality: {min: 0, max: 20}
     required: false
     disposition: mapped
-    mapping_destination: nationality
+    mapping_destination: passportNumber_or_idNumber
+    reason: "Routed to FtM passportNumber when TYPE_OF_DOCUMENT names a passport, else idNumber -- see projection.py."
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].TYPE_OF_DOCUMENT:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Free-text (observed in multiple languages, e.g. "Numéro de passeport"); retained verbatim and used only to route NUMBER's projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].TYPE_OF_DOCUMENT2:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Free-text secondary document-type description; no safe general matching projection.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].COUNTRY_OF_ISSUE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected as a standalone FtM property.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].ISSUING_COUNTRY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected as a standalone FtM property.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].CITY_OF_ISSUE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected as a standalone FtM property.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].DATE_OF_ISSUE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected as a standalone FtM property.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].DATE_OF_EXPIRY:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Retained for evidence; not currently projected as a standalone FtM property.
+    coverage: {min: 0.0, max: 1.0}
+  $.INDIVIDUAL_DOCUMENT[].NOTE:
+    expected_type: string
+    cardinality: {min: 0, max: 20}
+    required: false
+    disposition: retained
+    reason: Free-text document annotation; no safe general matching projection.
     coverage: {min: 0.0, max: 1.0}

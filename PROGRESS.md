@@ -5,10 +5,11 @@ the full crawler roadmap described in the system documentation. Read this before
 work here — it says what's done, what's verified vs. placeholder, and exactly what's left.
 
 **Last updated:** 2026-08-07
-**Verification status as of last update:** `python -m pytest tests -q` (135 passed, including a
-new schema-sync contract test) all green. A real `build-fixture-release` bundle produced by this
-repo's own CLI was independently verified against `screening-engine`'s actual, unmodified
-`importer/verifier.py::ReleaseVerifier` — passed. See "Phase 7" below.
+**Verification status as of last update:** `python -m pytest tests -q` (158 passed) all green,
+`ruff`/`mypy` clean. A **real live crawl** against the actual UN Security Council Consolidated
+List endpoint was executed end-to-end and independently verified against `screening-engine`'s
+actual, unmodified `importer/verifier.py::ReleaseVerifier` — passed (1011 entities, 1011 source
+records, 14621 projection statements). See "Phase 8" below.
 
 ---
 
@@ -208,16 +209,16 @@ against an unresolved legal question. When that answer exists:
   cleared — this is a hard requirement, not a nice-to-have.
 
 ### Phase 6 — scheduled polling infrastructure
-**Not started**, deliberately — it only makes sense once real endpoints are actually being
-polled in a real deployment. When that's imminent:
-- Respect each dataset's cadence from its `metadata.yml` (`expected_cadence`,
-  `freshness_slo_hours`) and the doc's §6.1 table (binding/contractual sources: on detected
-  change, target under 2 hours; PEP: scheduled daily/weekly; debarment: scheduled daily).
-- Coalesce promotions within a window (§11.3) rather than firing one release per detected
-  change.
-- This is infrastructure/deployment work (cron, GitHub Actions scheduled workflow, or
-  equivalent) layered on top of the already-built `crawl-dataset`/`build-pep-release` commands
-  — no new crawler-side primitives should be needed.
+**Crawler-side primitives are now done (Phase 8); only the OS-level trigger is left.** The
+common run engine (`crawler crawl --all`, Phase 8 below) already owns everything that used to
+be listed here as a prerequisite: per-source cadence is respected via conditional HTTP against
+each source's last-known ETag/Last-Modified (a source with nothing new returns `UNCHANGED` at
+effectively no cost, so polling more often than a source's actual cadence is cheap, not
+wasteful), duplicate-run locking prevents overlap, and deterministic exit codes let a caller
+distinguish success/unchanged/quarantine/failure. What remains is purely infrastructure/
+deployment: wire `crawler crawl --all` into a systemd timer, cron entry, or scheduled CI
+workflow at whatever cadence matches the doc's §6.1 table (binding/contractual: e.g. hourly;
+PEP: daily/weekly; debarment: daily) — no new crawler-side code should be needed for this.
 
 ### Smaller open items, not phase-blocking
 - `importer.service.ReleaseImporter.import_release()` (screening-engine side) has never been
@@ -225,8 +226,6 @@ polled in a real deployment. When that's imminent:
   file-contract layer is now proven (Phase 7); the actual COPY-into-database step is not. Needs
   a real (or CI-ephemeral) Postgres in either repo's sandbox to close.
 - `.github/CODEOWNERS` placeholders (see Phase 0 above).
-- `un_sc_consolidated`'s `ENTITIES` records were never confirmed against `fields.yml`, only
-  `INDIVIDUALS` — worth a follow-up live check before relying on entity coverage.
 - `us_ofac_sdn`/`us_ofac_consolidated`/`eu_fsf`/`gb_ofsi` all need a `record-fixture` capture +
   review against real live content before a first production crawl — endpoints are confirmed
   live, field-level schemas are not.
@@ -368,3 +367,73 @@ git add -A && git commit -m "Reconcile release-bundle contract with screening-en
 
 Review `git status`/`git diff` first if you want to split this into smaller commits instead —
 nothing here requires a single commit, that's just the minimum needed to stop being untracked.
+
+---
+
+## 7. File map — Phase 8 ("Live Reference Data Platform v1")
+
+The task this phase implements: build a production-quality common live-crawler run engine on
+top of everything Phase 0-7 already established, execute a genuine first live crawl of
+`un_sc_consolidated` end to end, and give `screening-engine` a way to see crawl-run provenance
+and release-to-release diffs without ever handing the crawler database credentials. Full detail
+in `docs/architecture.md`'s "Live crawler run engine" / "Release-to-release diff engine" /
+"The `crawl_run.json` sidecar" sections (added this phase) — this is the file map and honesty
+record.
+
+```text
+src/screening_crawler/
+  diff.py         new — ChangeType/PropertyChange/EntityChange/ReleaseDiff, diff_releases(),
+                  evaluate_statistical_gate() (raises CatastrophicChangeDetected)
+  locking.py      new — fcntl-based run_lock()/RunAlreadyInProgress
+  release_reader.py  new — read_manifest/read_role_rows/read_entities/dataset_entry, used by
+                  both run.py (previous-release lookup) and cli.py's compare-releases
+  run.py          new — the common run engine: RunState machine, CrawlRun/CrawlRunStore,
+                  exit codes, sanitize_error() (redacts query-string credentials before any
+                  error ever reaches a run record), run_source()/_run_pipeline()
+  cli.py          + list-sources, crawl (now --all-capable), list-runs, inspect-run,
+                  list-releases, compare-releases -- every pre-existing command unchanged
+
+datasets/un_sc_consolidated/
+  crawler.py      real-data-driven fixes: INDIVIDUAL_DOCUMENT/INDIVIDUAL_PLACE_OF_BIRTH were
+                  silently collapsing multi-valued fields to their last occurrence (real bug,
+                  found against real data, e.g. DATAID 112138's 14 documents); topics="sanction"
+                  now unconditionally set (previously UN SC entities never got Yente's target
+                  flag at all); ~15 new property mappings; parser/mapping versions bumped v1->v2
+  fields.yml      rewritten against real observed live data (not invented) -- real committee
+                  codes, real alias cardinality (max 23 observed, 30 configured), the genuinely
+                  different ENTITY_ALIAS vs INDIVIDUAL_ALIAS quality vocabularies
+  metadata.yml    parser/mapping versions bumped; source_format note records the real
+                  2026-08-07 live verification (736 individuals / 275 entities, zero quarantine)
+
+tests/
+  test_diff.py            new, 12 tests -- includes the doc's own worked example
+                           (previous=700, new=12 must quarantine)
+  test_run_engine.py      new, 7 tests -- loopback-server only, never live
+  test_cli_reference_ops.py  new, 4 tests -- loopback-server only; caught and fixed a real
+                           monkeypatch-target bug during authoring (see below)
+  test_field_accounting.py, test_projection.py  updated for the real-data-corrected fixture
+  tests/fixtures/un_sc_consolidated/synthetic.xml  enriched with previously-unobserved fields
+```
+
+**Real live crawl, actually executed** (not fixture-simulated): `crawler crawl
+un_sc_consolidated` against `https://scsanctions.un.org/resources/xml/en/consolidated.xml`
+produced `release-27704443-c2f9-59b8-9fc8-2fcf71b8588a`, state `PUBLISHED`, 1011 entities /
+1011 source records / 14621 projection statements, real SHA-256 `e1650b35...c2ca8c`, real ETag
+`"0x8DEF40ECBA4A45D"`. A second immediate `crawl` correctly returned `UNCHANGED` via real 304
+conditional HTTP -- no duplicate release. The resulting bundle passed `validate-release` and,
+independently, `screening-engine`'s real, unmodified `ReleaseVerifier`.
+
+**A real bug was found and fixed during test authoring, not before**:
+`tests/test_cli_reference_ops.py` initially monkeypatched `cli_module.load_adapter`, but
+`_crawl()` delegates to `run_source()` in `run.py`, which imports `load_adapter` into its own
+module namespace -- patching the wrong module silently left the *real* adapter (and its real
+live endpoint) in effect during what was supposed to be an offline test. Caught by an anomalous
+entity count (1011 instead of the fixture's 2) and a 56-second runtime instead of ~2 seconds;
+fixed by patching `run_module.load_adapter` instead. Recorded here as the same "patch where
+it's used, not where it's defined" pitfall it always is.
+
+**Not exercised this phase** (same boundary as Phase 7, still true): the Postgres COPY-in step
+on the `screening-engine` side (`ReleaseImporter.import_release`) against this phase's actual
+live UN release bundle -- neither sandbox has had a live Postgres this whole engagement. The
+crawler-side half (produce a real, checksummed, independently-verifiable bundle) is proven;
+the database-write half is not.

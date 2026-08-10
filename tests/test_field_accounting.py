@@ -56,7 +56,10 @@ def test_type_and_cardinality_drift_are_detected(dataset_build) -> None:
 def test_excess_cardinality_is_detected(dataset_build) -> None:
     records = list(dataset_build.source_records)
     individual = records[1]
-    aliases = [{"QUALITY": "Good", "ALIAS_NAME": f"Synthetic Alias {number}"} for number in range(21)]
+    # fields.yml's max (30) is derived from the real live source's observed peak (23 aliases
+    # on one real individual, 2026-08-06) -- exceed that, not an arbitrary smaller number, so
+    # this keeps testing "the configured ceiling is enforced", not a stale one.
+    aliases = [{"QUALITY": "Good", "ALIAS_NAME": f"Synthetic Alias {number}"} for number in range(31)]
     records[1] = replace(individual, parsed={**individual.parsed, "INDIVIDUAL_ALIAS": aliases})
     coverage = adapter.inventory.assess(records)
     assert "cardinality_high" in _codes(coverage)
