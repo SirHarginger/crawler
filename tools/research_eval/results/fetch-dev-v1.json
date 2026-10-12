@@ -1,0 +1,470 @@
+{
+  "dataset": "external_research_fetch_dev",
+  "version": "fetch-dev-v1",
+  "dataset_sha256": "69fc1309fb9c8aeac0e8ddf1d60717b0551429d5b7f61497802989d027722ab4",
+  "started": "2026-10-11T08:08:04+0000",
+  "finished": "2026-10-11T08:09:59+0000",
+  "search_provider_contacted": false,
+  "summary": {
+    "urls": 32,
+    "eligible": 30,
+    "metrics": {
+      "eligible_fetch_success": {
+        "k": 29,
+        "n": 30,
+        "rate": 0.967
+      },
+      "usable_extraction": {
+        "k": 21,
+        "n": 28,
+        "rate": 0.75
+      },
+      "subject_mention_recovered": {
+        "k": 19,
+        "n": 19,
+        "rate": 1.0
+      },
+      "network_policy_violations": 0,
+      "ungoverned_outbound_requests": 0
+    },
+    "reported_separately": {
+      "unsupported_format_by_label": [
+        {
+          "id": "san-05",
+          "format": "pdf",
+          "outcome": "too_large"
+        },
+        {
+          "id": "san-06",
+          "format": "js_app",
+          "outcome": "js_required"
+        }
+      ],
+      "js_required": [
+        "san-02"
+      ],
+      "consent_wall": [],
+      "robots_disallowed": []
+    },
+    "outcomes": {
+      "http_error": 1,
+      "js_required": 2,
+      "no_article_text": 7,
+      "ok": 21,
+      "too_large": 1
+    },
+    "pages_with_a_published_date": {
+      "k": 20,
+      "n": 21,
+      "rate": 0.952
+    },
+    "median_seconds_per_page": 3.2,
+    "network": {
+      "connections": 55,
+      "distinct_addresses": 28,
+      "network_policy_violations": 0,
+      "ungoverned_outbound_requests": 0
+    },
+    "gate": {
+      "eligible_fetch_success": true,
+      "usable_extraction": false,
+      "subject_mention_recovered": true,
+      "network_policy_violations": true,
+      "ungoverned_outbound_requests": true
+    }
+  },
+  "passed": false,
+  "rows": [
+    {
+      "id": "news-01",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "3news.com",
+      "outcome": "ok",
+      "bytes": 325736,
+      "text_chars": 1357,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.4
+    },
+    {
+      "id": "news-02",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "3news.com",
+      "outcome": "ok",
+      "bytes": 337770,
+      "text_chars": 3116,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.5
+    },
+    {
+      "id": "news-03",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "3news.com",
+      "outcome": "ok",
+      "bytes": 349670,
+      "text_chars": 3091,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.4
+    },
+    {
+      "id": "news-04",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.citinewsroom.com",
+      "outcome": "ok",
+      "bytes": 135099,
+      "text_chars": 2229,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 4.5
+    },
+    {
+      "id": "news-05",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.citinewsroom.com",
+      "outcome": "ok",
+      "bytes": 132499,
+      "text_chars": 1750,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.1
+    },
+    {
+      "id": "news-06",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.citinewsroom.com",
+      "outcome": "ok",
+      "bytes": 130415,
+      "text_chars": 1294,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.1
+    },
+    {
+      "id": "news-07",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "ghanaiantimes.com.gh",
+      "outcome": "ok",
+      "bytes": 120946,
+      "text_chars": 498,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.3
+    },
+    {
+      "id": "news-08",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "ghanaiantimes.com.gh",
+      "outcome": "ok",
+      "bytes": 113102,
+      "text_chars": 2722,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 1.9
+    },
+    {
+      "id": "news-09",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "ghanaiantimes.com.gh",
+      "outcome": "ok",
+      "bytes": 125831,
+      "text_chars": 2963,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.0
+    },
+    {
+      "id": "news-10",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "gna.org.gh",
+      "outcome": "ok",
+      "bytes": 122913,
+      "text_chars": 3682,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.8
+    },
+    {
+      "id": "news-11",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "gna.org.gh",
+      "outcome": "ok",
+      "bytes": 118973,
+      "text_chars": 894,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.5
+    },
+    {
+      "id": "news-12",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "gna.org.gh",
+      "outcome": "ok",
+      "bytes": 128798,
+      "text_chars": 7262,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.7
+    },
+    {
+      "id": "news-13",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.graphic.com.gh",
+      "outcome": "ok",
+      "bytes": 173462,
+      "text_chars": 1291,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.4
+    },
+    {
+      "id": "news-14",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.graphic.com.gh",
+      "outcome": "ok",
+      "bytes": 177829,
+      "text_chars": 3463,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.9
+    },
+    {
+      "id": "news-15",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.graphic.com.gh",
+      "outcome": "ok",
+      "bytes": 178787,
+      "text_chars": 3688,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 2.7
+    },
+    {
+      "id": "news-16",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.myjoyonline.com",
+      "outcome": "ok",
+      "bytes": 207380,
+      "text_chars": 8284,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 4.4
+    },
+    {
+      "id": "news-17",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.myjoyonline.com",
+      "outcome": "ok",
+      "bytes": 195908,
+      "text_chars": 2832,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.8
+    },
+    {
+      "id": "news-18",
+      "category": "ghanaian_publisher",
+      "format": "html",
+      "host": "www.myjoyonline.com",
+      "outcome": "ok",
+      "bytes": 202517,
+      "text_chars": 4723,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 3.4
+    },
+    {
+      "id": "gov-01",
+      "category": "parliament",
+      "format": "html",
+      "host": "www.parliament.gh",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 3.6
+    },
+    {
+      "id": "gov-02",
+      "category": "parliament",
+      "format": "html",
+      "host": "www.parliament.gh",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 4.0
+    },
+    {
+      "id": "gov-03",
+      "category": "parliament",
+      "format": "html",
+      "host": "www.parliament.gh",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 2.8
+    },
+    {
+      "id": "gov-04",
+      "category": "government",
+      "format": "html",
+      "host": "judicial.gov.gh",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 3.0
+    },
+    {
+      "id": "gov-05",
+      "category": "government",
+      "format": "html",
+      "host": "judicial.gov.gh",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 3.0
+    },
+    {
+      "id": "gov-06",
+      "category": "government",
+      "format": "html",
+      "host": "www.bog.gov.gh",
+      "outcome": "ok",
+      "bytes": 202387,
+      "text_chars": 617,
+      "has_published_date": false,
+      "redirected_to_another_host": false,
+      "mention_recovered": true,
+      "class": "extracted",
+      "seconds": 6.2
+    },
+    {
+      "id": "gov-07",
+      "category": "government",
+      "format": "html",
+      "host": "mofep.gov.gh",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 3.3
+    },
+    {
+      "id": "gov-08",
+      "category": "government",
+      "format": "html",
+      "host": "presidency.gov.gh",
+      "outcome": "http_error",
+      "class": "fetch_failed",
+      "seconds": 2.3
+    },
+    {
+      "id": "san-01",
+      "category": "sanctions_authority",
+      "format": "html",
+      "host": "www.gov.uk",
+      "outcome": "ok",
+      "bytes": 274468,
+      "text_chars": 443,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "class": "extracted",
+      "seconds": 3.3
+    },
+    {
+      "id": "san-02",
+      "category": "sanctions_authority",
+      "format": "html",
+      "host": "ofac.treasury.gov",
+      "outcome": "js_required",
+      "class": "js_required",
+      "seconds": 14.1
+    },
+    {
+      "id": "san-03",
+      "category": "sanctions_authority",
+      "format": "html",
+      "host": "main.un.org",
+      "outcome": "no_article_text",
+      "class": "extraction_failed",
+      "seconds": 3.3
+    },
+    {
+      "id": "san-04",
+      "category": "sanctions_authority",
+      "format": "html",
+      "host": "finance.ec.europa.eu",
+      "outcome": "ok",
+      "bytes": 196205,
+      "text_chars": 8876,
+      "has_published_date": true,
+      "redirected_to_another_host": false,
+      "class": "extracted",
+      "seconds": 3.2
+    },
+    {
+      "id": "san-05",
+      "category": "sanctions_authority",
+      "format": "pdf",
+      "host": "www.treasury.gov",
+      "outcome": "too_large",
+      "class": "unsupported_format",
+      "seconds": 5.0
+    },
+    {
+      "id": "san-06",
+      "category": "sanctions_authority",
+      "format": "js_app",
+      "host": "www.sanctionsmap.eu",
+      "outcome": "js_required",
+      "class": "unsupported_format",
+      "seconds": 2.5
+    }
+  ]
+}

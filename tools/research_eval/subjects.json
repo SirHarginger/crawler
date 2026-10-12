@@ -1,0 +1,239 @@
+{
+  "dataset": "external_research_dev",
+  "version": "dev-v1",
+  "created": "2026-10-11",
+  "author": "the implementer; DEV set, may be used while engineering",
+  "scope": "Public figures and public-interest organisations only (Ghana first, then other African states and bodies). Name, role or organisation, and country: nothing else is sent to the search provider.",
+  "requirements_status": "Set by the owner on 2026-10-11 as Trustora pilot engineering gates, not literature-derived constants. NOT RUN: Exa standard named-person search is not approved; a provider whose terms explicitly support this use (DPA and zero data retention) is required first.",
+  "requirements": {
+    "api_technical_success_min": 0.95,
+    "relevant_lead_hit_at_5_min": 0.9,
+    "reported_not_gated": [
+      "official-source Hit@5 on the subset of subjects pre-labelled as having an official source",
+      "fetch and mention rate of relevant leads"
+    ],
+    "definitions": {
+      "api technical success": "the search call returned a well-formed result list",
+      "relevant lead": "a lead in the top 5 whose host is, or is a subdomain of, one of the subject's official_hosts or one of credible_hosts",
+      "official-source Hit@5": "a lead in the top 5 on one of the subject's official_hosts; only subjects with a non-empty official_hosts list are counted"
+    }
+  },
+  "credible_hosts": [
+    "myjoyonline.com",
+    "graphic.com.gh",
+    "gna.org.gh",
+    "citinewsroom.com",
+    "3news.com",
+    "ghanaiantimes.com.gh",
+    "bbc.com",
+    "bbc.co.uk",
+    "reuters.com",
+    "apnews.com",
+    "aljazeera.com",
+    "theafricareport.com",
+    "africanews.com",
+    "premiumtimesng.com",
+    "nation.africa",
+    "dailymaverick.co.za",
+    "wikipedia.org"
+  ],
+  "subjects": [
+    {
+      "id": "gh-president",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "John Dramani Mahama",
+      "role": "President of Ghana",
+      "country": "gh",
+      "official_hosts": [
+        "presidency.gov.gh",
+        "ghana.gov.gh"
+      ]
+    },
+    {
+      "id": "gh-speaker",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Alban Sumana Kingsford Bagbin",
+      "role": "Speaker of Parliament",
+      "country": "gh",
+      "official_hosts": [
+        "parliament.gh"
+      ]
+    },
+    {
+      "id": "gh-finance",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Cassiel Ato Forson",
+      "role": "Minister for Finance",
+      "country": "gh",
+      "official_hosts": [
+        "mofep.gov.gh",
+        "parliament.gh"
+      ]
+    },
+    {
+      "id": "gh-foreign",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Samuel Okudzeto Ablakwa",
+      "role": "Minister for Foreign Affairs",
+      "country": "gh",
+      "official_hosts": [
+        "mfa.gov.gh",
+        "parliament.gh"
+      ]
+    },
+    {
+      "id": "gh-education",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Haruna Iddrisu",
+      "role": "Minister for Education",
+      "country": "gh",
+      "official_hosts": [
+        "moe.gov.gh",
+        "parliament.gh"
+      ]
+    },
+    {
+      "id": "gh-attorney-general",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Dominic Akuritinga Ayine",
+      "role": "Attorney-General",
+      "country": "gh",
+      "official_hosts": [
+        "mojagd.gov.gh",
+        "parliament.gh"
+      ]
+    },
+    {
+      "id": "gh-central-bank-governor",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Johnson Pandit Asiama",
+      "role": "Governor",
+      "organisation": "Bank of Ghana",
+      "country": "gh",
+      "official_hosts": [
+        "bog.gov.gh"
+      ]
+    },
+    {
+      "id": "gh-former-president",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Nana Addo Dankwa Akufo-Addo",
+      "role": "former President of Ghana",
+      "country": "gh",
+      "official_hosts": [
+        "presidency.gov.gh"
+      ]
+    },
+    {
+      "id": "gh-former-vice-president",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Mahamudu Bawumia",
+      "role": "former Vice President of Ghana",
+      "country": "gh",
+      "official_hosts": []
+    },
+    {
+      "id": "gh-former-finance",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Ken Ofori-Atta",
+      "role": "former Minister for Finance",
+      "country": "gh",
+      "official_hosts": [
+        "mofep.gov.gh"
+      ]
+    },
+    {
+      "id": "gh-org-central-bank",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "Bank of Ghana",
+      "country": "gh",
+      "official_hosts": [
+        "bog.gov.gh"
+      ]
+    },
+    {
+      "id": "gh-org-electricity",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "Electricity Company of Ghana",
+      "country": "gh",
+      "official_hosts": [
+        "ecg.com.gh",
+        "ecggh.com"
+      ]
+    },
+    {
+      "id": "gh-org-petroleum",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "Ghana National Petroleum Corporation",
+      "country": "gh",
+      "official_hosts": [
+        "gnpcghana.com"
+      ]
+    },
+    {
+      "id": "gh-org-revenue",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "Ghana Revenue Authority",
+      "country": "gh",
+      "official_hosts": [
+        "gra.gov.gh"
+      ]
+    },
+    {
+      "id": "gh-org-eoco",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "Economic and Organised Crime Office",
+      "country": "gh",
+      "official_hosts": [
+        "eoco.gov.gh"
+      ]
+    },
+    {
+      "id": "ng-president",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Bola Ahmed Tinubu",
+      "role": "President of Nigeria",
+      "country": "ng",
+      "official_hosts": [
+        "statehouse.gov.ng"
+      ]
+    },
+    {
+      "id": "ke-president",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "William Samoei Ruto",
+      "role": "President of Kenya",
+      "country": "ke",
+      "official_hosts": [
+        "president.go.ke"
+      ]
+    },
+    {
+      "id": "za-president",
+      "subject_kind": "PUBLIC_FIGURE",
+      "name": "Cyril Ramaphosa",
+      "role": "President of South Africa",
+      "country": "za",
+      "official_hosts": [
+        "thepresidency.gov.za",
+        "gov.za"
+      ]
+    },
+    {
+      "id": "org-ecowas",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "ECOWAS Commission",
+      "official_hosts": [
+        "ecowas.int"
+      ]
+    },
+    {
+      "id": "org-african-union",
+      "subject_kind": "PUBLIC_INTEREST_ORGANISATION",
+      "name": "African Union Commission",
+      "official_hosts": [
+        "au.int"
+      ]
+    }
+  ]
+}

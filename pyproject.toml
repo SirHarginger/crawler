@@ -24,8 +24,23 @@ dev = [
   "types-jsonschema>=4.23,<5",
 ]
 
+# The research egress service (docs/research-egress.md): the only place live investigation
+# search and page fetches leave the platform. Optional: the release crawler needs none of it.
+# trafilatura and htmldate are pinned exactly: the extractor version is recorded with every
+# piece of evidence, and the engine pins the same trafilatura.
+research = [
+  "fastapi>=0.115,<1",
+  "htmldate==1.11.0",
+  "httpx>=0.28,<1",
+  "lxml>=5,<7",
+  "pydantic>=2.7,<3",
+  "trafilatura==2.0.0",
+  "uvicorn>=0.34,<1",
+]
+
 [project.scripts]
 screening-crawler = "screening_crawler.cli:main"
+screening-research-egress = "screening_crawler.research.service:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/screening_crawler", "datasets"]
@@ -46,3 +61,7 @@ ignore = ["E501"]
 python_version = "3.11"
 strict = true
 packages = ["screening_crawler"]
+
+[[tool.mypy.overrides]]
+module = ["trafilatura", "trafilatura.*", "htmldate", "htmldate.*", "lxml", "lxml.*"]
+ignore_missing_imports = true

@@ -1,0 +1,286 @@
+{
+  "dataset": "external_research_fetch_dev",
+  "version": "fetch-dev-v1",
+  "created": "2026-10-11",
+  "author": "the implementer, from the platform's own records and the publishers' and authorities' own sites; no search provider was used",
+  "frozen": "Frozen before execution. The SHA-256 of this file is recorded in the result and in the research record. No URL is added, removed or relabelled after a run.",
+  "scope": "Public pages only: Ghana government and Parliament, sanctions authorities, and Ghanaian publishers already registered as sources. Names are of sitting public officials and appear only as the string a page is expected to contain.",
+  "labels": {
+    "format": "html = eligible for the gates; pdf and js_app are known unsupported formats, fetched to record what happens and reported separately",
+    "expected_mention": "a string the page is known to contain (from the headline or the record the URL came from); null where the page is not about a named subject"
+  },
+  "gates": {
+    "eligible_fetch_success_min": 0.9,
+    "usable_extraction_min": 0.9,
+    "subject_mention_recovered_min": 0.9,
+    "network_policy_violations_max": 0,
+    "ungoverned_outbound_requests_max": 0,
+    "set_by": "owner, 2026-10-11; Trustora pilot engineering gates",
+    "definitions": {
+      "eligible page": "format html",
+      "fetch success": "the gateway returned a 2xx HTML response for an eligible page (a robots refusal, HTTP error, timeout or oversize counts against it)",
+      "usable extraction": "of eligible pages fetched successfully and not classified js_required or consent_wall, article text was extracted",
+      "subject mention recovered": "of eligible pages with an expected_mention that yielded text, the text contains it",
+      "network policy violation": "a connection to an address that is not public, or a request the gateway would refuse",
+      "ungoverned outbound request": "a connection from the evaluation process to an address the gateway did not validate for a URL in this list, or any socket attempt inside the parsing child"
+    }
+  },
+  "urls": [
+    {
+      "id": "news-01",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_3news_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://3news.com/news/dissolution-of-boards"
+    },
+    {
+      "id": "news-02",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_3news_news",
+      "format": "html",
+      "expected_mention": "Agbodza",
+      "url": "https://3news.com/news/agbodza-orders-reduction-in-scope-of-road-project-awarded-two-contractors-over-disappointing-progress"
+    },
+    {
+      "id": "news-03",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_3news_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://3news.com/sports/mahama-dissolves-national-sports-authority-board-with-immediate-effect"
+    },
+    {
+      "id": "news-04",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_citi_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://www.citinewsroom.com/2026/09/national-cathedral-mahama-ndc-want-consensus-on-location-funding-ayariga/"
+    },
+    {
+      "id": "news-05",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_citi_news",
+      "format": "html",
+      "expected_mention": "Ahmed Ibrahim",
+      "url": "https://www.citinewsroom.com/2026/09/ahmed-ibrahim-gods-hand-is-in-my-ministerial-reshuffle/"
+    },
+    {
+      "id": "news-06",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_citi_news",
+      "format": "html",
+      "expected_mention": "Ato Forson",
+      "url": "https://www.citinewsroom.com/2026/09/ato-forson-begins-consultations-on-us10bn-new-economy-programme/"
+    },
+    {
+      "id": "news-07",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_ghanaian_times_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://ghanaiantimes.com.gh/65th-commemorative-summit-of-the-nam-nam-must-resist-pressure-from-power-blocs-pres-mahama/"
+    },
+    {
+      "id": "news-08",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_ghanaian_times_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://ghanaiantimes.com.gh/prez-mahama-calls-for-renewed-action-oriented-non-aligned-movement/"
+    },
+    {
+      "id": "news-09",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_ghanaian_times_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://ghanaiantimes.com.gh/ghatsea-alleges-intimidation-victimisation-at-gcaa-petitions-mahama-for-intervention/"
+    },
+    {
+      "id": "news-10",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_gna_news",
+      "format": "html",
+      "expected_mention": "Ablakwa",
+      "url": "https://gna.org.gh/2026/09/ablakwa-calls-for-new-african-leadership-paradigm-to-tackle-conflicts/"
+    },
+    {
+      "id": "news-11",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_gna_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://gna.org.gh/2026/09/president-mahama-dissolves-boards-of-nine-state-institutions/"
+    },
+    {
+      "id": "news-12",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_gna_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://gna.org.gh/2026/09/mahama-lauds-dr-kwame-nkrumahs-pioneering-role-towards-nam-formation/"
+    },
+    {
+      "id": "news-13",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_graphic_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://www.graphic.com.gh/news/general-news/president-mahama-in-belgrade-for-65th-non-aligned-movement-summit.html"
+    },
+    {
+      "id": "news-14",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_graphic_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://www.graphic.com.gh/news/general-news/bog-sec-warn-against-fake-mahama-video-promoting-crypto-scam.html"
+    },
+    {
+      "id": "news-15",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_graphic_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://www.graphic.com.gh/news/general-news/mahama-dissolves-boards-of-nine-state-institutions-including-gnpc-valco-and-ghana-post.html"
+    },
+    {
+      "id": "news-16",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_myjoyonline_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://www.myjoyonline.com/mahama-lauds-dr-kwame-nkrumahs-pioneering-role-towards-nam-formation"
+    },
+    {
+      "id": "news-17",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_myjoyonline_news",
+      "format": "html",
+      "expected_mention": "Ahmed Ibrahim",
+      "url": "https://www.myjoyonline.com/ahmed-ibrahim-describes-ministerial-reassignment-as-divine-intervention"
+    },
+    {
+      "id": "news-18",
+      "category": "ghanaian_publisher",
+      "origin": "articles table, source gh_myjoyonline_news",
+      "format": "html",
+      "expected_mention": "Mahama",
+      "url": "https://www.myjoyonline.com/volta-npp-chair-urges-president-mahama-to-dismiss-sammy-gyamfi-over-misconduct"
+    },
+    {
+      "id": "gov-01",
+      "category": "parliament",
+      "origin": "raw_records, source gh_parliament",
+      "format": "html",
+      "expected_mention": "Gakpey",
+      "url": "https://www.parliament.gh/members?mp=94040"
+    },
+    {
+      "id": "gov-02",
+      "category": "parliament",
+      "origin": "raw_records, source gh_parliament",
+      "format": "html",
+      "expected_mention": "Agyekum",
+      "url": "https://www.parliament.gh/members?mp=94103"
+    },
+    {
+      "id": "gov-03",
+      "category": "parliament",
+      "origin": "source registry base_url, gh_parliament",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://www.parliament.gh/members"
+    },
+    {
+      "id": "gov-04",
+      "category": "government",
+      "origin": "raw_records, source gh_judicial",
+      "format": "html",
+      "expected_mention": "Koomson",
+      "url": "https://judicial.gov.gh/index.php/about-the-judiciary/judges-and-magistrates/supremecourt-judges"
+    },
+    {
+      "id": "gov-05",
+      "category": "government",
+      "origin": "raw_records, source gh_judicial",
+      "format": "html",
+      "expected_mention": "Bannerman",
+      "url": "https://judicial.gov.gh/index.php/about-the-judiciary/history/list-of-chief-justices"
+    },
+    {
+      "id": "gov-06",
+      "category": "government",
+      "origin": "official site of the Bank of Ghana",
+      "format": "html",
+      "expected_mention": "Bank of Ghana",
+      "url": "https://www.bog.gov.gh/about-the-bank/"
+    },
+    {
+      "id": "gov-07",
+      "category": "government",
+      "origin": "official site of the Ministry of Finance",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://mofep.gov.gh/"
+    },
+    {
+      "id": "gov-08",
+      "category": "government",
+      "origin": "official site of the Presidency",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://presidency.gov.gh/"
+    },
+    {
+      "id": "san-01",
+      "category": "sanctions_authority",
+      "origin": "UK government, publisher of the UK Sanctions List",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://www.gov.uk/government/publications/the-uk-sanctions-list"
+    },
+    {
+      "id": "san-02",
+      "category": "sanctions_authority",
+      "origin": "US Treasury OFAC, publisher of the SDN list",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://ofac.treasury.gov/specially-designated-nationals-and-blocked-persons-list-sdn-human-readable-lists"
+    },
+    {
+      "id": "san-03",
+      "category": "sanctions_authority",
+      "origin": "UN Security Council, publisher of the consolidated list",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list"
+    },
+    {
+      "id": "san-04",
+      "category": "sanctions_authority",
+      "origin": "European Commission, sanctions overview",
+      "format": "html",
+      "expected_mention": null,
+      "url": "https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_en"
+    },
+    {
+      "id": "san-05",
+      "category": "sanctions_authority",
+      "origin": "US Treasury OFAC, SDN list as PDF",
+      "format": "pdf",
+      "expected_mention": null,
+      "url": "https://www.treasury.gov/ofac/downloads/sdnlist.pdf"
+    },
+    {
+      "id": "san-06",
+      "category": "sanctions_authority",
+      "origin": "EU Sanctions Map, a JavaScript application",
+      "format": "js_app",
+      "expected_mention": null,
+      "url": "https://www.sanctionsmap.eu/"
+    }
+  ]
+}
