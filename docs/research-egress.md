@@ -74,14 +74,34 @@ fixed code (`invalid_request`); what was sent is never echoed. Bodies over 16 KB
 
 ## Extraction
 
-Two extractors run inside the parsing child, in a fixed order. Neither uses a model, runs
-JavaScript or fetches anything.
+The page is parsed once inside the parsing child. `<template>` and the elements the markup
+marks as hidden (the `hidden` attribute, `aria-hidden="true"`, an inline `display:none`,
+`visibility:hidden` or `content-visibility:hidden` declaration, a few framework class names)
+are removed before anything reads the page. Then two extractors, in a fixed order. Neither
+uses a model, runs JavaScript or fetches anything.
 
-1. **Article text** (`page_text.py`, `trafilatura-2.0.0|precision|v1`): Trafilatura in
-   precision mode, at least 400 characters and a headline. Its result is used unchanged, with
-   the publication date the page states.
-2. **Structured text** (`structured_text.py`, `lxml-structured-html|v1`), only when the first
-   finds no article. A fixed walk over the tree parsed by lxml's HTML parser: one line per
+1. **Article text** (`trafilatura-2.0.0|precision|v1+declared-visible|v1`): the shared
+   article extractor (`page_text.py`: Trafilatura in precision mode, at least 400 characters
+   and a headline), given the page without those elements, and used only when all hold:
+   - the page declares an article in standard markup: Open Graph `og:type` of `article`, an
+     `article:` property, or its `<h1>` inside `<article>` or inside an element with a
+     schema.org article `itemtype`. Many sites declare this on every page, so it permits
+     the article path and decides nothing by itself;
+   - the structured walk found the page readable (below);
+   - the page's running text (visible text outside links, from the content root) is no more
+     than twice the article text;
+   - the first full line of the article text (40 characters or more: a date, a place or a
+     byline is skipped) is found in what the walk read from the content root, at a place
+     where the nearest heading (`<h1>` to `<h6>`) at or above it is the page's own. Text
+     that sits under another heading is an item on the page with a title of its own, whether
+     or not the article extractor kept that title; text above the page's headline is
+     something placed before the page;
+   - the page, once re-serialised, still fits in the 2,000,000 characters the article
+     extractor reads. Re-serialising escapes and quotes, and can lengthen a page by up to
+     about three times.
+   The publication date the page states is returned with it.
+2. **Structured text** (`structured_text.py`, `lxml-structured-html|v2`) for every other
+   page. A fixed walk over the tree parsed by lxml's HTML parser: one line per
    heading, paragraph and list item; a row of a data table is one line with ` | ` between
    cells; a definition is `term: value`. The walk starts at `<main>` when the page has one
    that is not hidden, else at `<body>`; an `<article>` is not treated as the page, because
@@ -121,11 +141,97 @@ precision than article text and must not be read as the same thing.** What it ca
 - A walk that stops at a limit (200,000 elements or characters), or a page longer than the
   2,000,000 characters the parser is given, sets `text_truncated`.
 
-The article extractor has limits of its own, unchanged here: on a landing page with enough
-paragraph text it can return a teaser as the article under the page's title, and it does not
-drop `hidden` or `<template>` content the way the structured walk does (seen on this
-repository's landing-page fixture with a news card added). `page_text.py` is shared with the
-engine and was not changed in this work.
+Why the article path has two conditions (E1, 2026-10-12). Measured before anything was
+changed, the bare article extractor:
+
+- kept `hidden`, `<template>` and `hidden="until-found"` text. Trafilatura 2.0.0 strips the
+  `<template>` tag and keeps what is inside it, and has no rule for the `hidden` attribute;
+- returned a two-paragraph news card as the whole article of a profile, table or index page,
+  under that page's headline, with the page's own content gone;
+- on live pages, returned a cookie banner as the article of one official page and the first
+  617 of about 9,000 characters of another.
+
+Removing these elements before extraction is what Mozilla's Readability does
+(`_isProbablyVisible`: inline `display:none`, `visibility:hidden`, the `hidden` attribute,
+`aria-hidden="true"`), and the HTML standard says an element in the hidden state should not
+be rendered. The factor of two is the one Trafilatura itself uses to prefer another
+extraction of the same page (`compare_extraction`). The declaration is the page's own
+statement, in Open Graph or schema.org terms; all five Ghanaian publishers sampled make it
+and none of the six official pages sampled do, which is a small sample. No threshold was
+fitted to the sample: gaps and length ratios between a heading and the text were measured
+and separated the cases by too little to justify a number. The opening-line condition was
+added after an independent review showed that a declaration alone brought the card failure
+straight back on any page that declares an article and is not one, and made positional after
+a second review showed that the article extractor drops a card's heading for most card
+markups, so a check on the article's own first line saw nothing wrong. A third showed that
+looking only at the first place the line occurs let a card through when its first line was
+a date or a place the page also stated. Requiring every occurrence to qualify fixed that
+and demoted a live publisher's articles, which print the first sentence twice (a standfirst
+under the headline, then the body below a "listen" widget with its own heading); short lines
+are skipped instead, and one qualifying place is enough. The 40 characters are a project
+choice, not a measured constant.
+
+What this costs, knowingly:
+
+- A page that reads like an article and declares nothing (a ministry press release, for
+  example) is returned as structured text: complete, but with the site's menus where they
+  are built from plain `<div>`s, and without a publication date.
+- **Known gap.** A news card with no `<h1>` to `<h6>` heading of its own, below the page's
+  headline inside the content root of a page that declares an article, and at least half of
+  that page's running text, is still returned as the article under the page's headline.
+  Running text leaves out link text, so a page made of links (a linked table, an index of
+  members) is "short" for this purpose however long it looks. A card titled with `<b>`,
+  `<strong>`, a styled `<p>` or `<div>`, or a bare link looks headed to a reader and is in
+  the same position, as is a card whose heading the walk does not read as a heading: one
+  inside a `<header>`, an `<aside>` or a data-table cell, or marked `aria-hidden`. The same
+  holds on a page whose own `<h1>` is in a dropped `<header>`, or that has no headings at
+  all. Nothing the walk reads separates such a card from the page. A test holds the plain
+  case so that it is not forgotten.
+- **Known gap, second.** A card with a heading of its own is still taken as the article
+  when its first line of 40 characters or more also stands under the page's own headline:
+  a page that lists a headline as a link directly under its `<h1>` and carries the same
+  story as a card, a tagline of that length printed in both places, shared boilerplate.
+  This cannot be closed by position, because it is the same structure as a real
+  publisher's article that prints its first sentence twice. It needs the same 40 or more
+  characters in both places, the page's copy under no sub-heading, and the card at least
+  half of the running text. A test holds the linked-headline case.
+- A genuine article whose first paragraph sits under a second heading (a standfirst or a
+  subhead set as `<h2>` directly under the headline), or whose `<h1>` comes after its text,
+  is returned as structured text. So is one with no line of 40 characters or more, and one
+  whose `<h1>` is two long lines split by `<br>`.
+- On a page with a `<main>`, the content root is `<main>`. A declared article that sits
+  outside it, or is split across it, is returned as what `<main>` holds, as structured text
+  and without a truncation flag; before, the article path returned the body.
+- When the page's own content is in `<main>` and a card or banner sits outside it, the
+  article extractor may still append that card or banner after the page's content; the
+  opening is the page's, so the conditions hold. Lower quality, not another page's text
+  under this one's headline.
+- `aria-hidden="true"` and the screen-reader class names (`sr-only`, `visually-hidden`,
+  `screen-reader-text`) mark text that is on screen or spoken, not text that is absent. It
+  is dropped all the same, as Readability drops it. Where a page shows a date to the eye
+  and repeats it for a screen reader, both copies are lost; where a wrapper around the whole
+  article carries one of these marks, the page yields nothing.
+- A page that is demoted to structured text is then subject to the structured-text
+  refusals below: an article that declares nothing and carries an "enable JavaScript"
+  notice, names a consent tool, or is short and uses one of the error-page wordings is
+  refused, where before it was returned as article text.
+- Trafilatura has a looser rule of its own for the article path: it drops any `div`, `p`,
+  `section` or `span` whose `style` merely contains "hidden" or "display:none".
+- An article whose page also carries a great deal of running text outside links (long
+  server-rendered comments, for example) is returned as structured text.
+- An inline element that a browser does not draw (`hidden`, an inline hiding style) is
+  removed without leaving a space, so the word around it stays whole as it does on screen.
+  A hidden block, and an inline element that is drawn but dropped (`aria-hidden`, the
+  screen-reader classes: often a separator between two names), leaves one. Structured text changed in the same
+  way, which is why it is now `v2`.
+- The article text is not always byte-identical to what the bare extractor returns, because
+  it reads a re-serialised tree; on one of five live articles a "latest stories" tail came
+  out with its timestamps. Hence the separate version. `page_text.py` itself is unchanged
+  and still shared with the engine, whose own use of it (the visual-investigation path)
+  does not have these conditions.
+- Neither path removes a block of related headlines that a publisher places inside the
+  article's own container, or a site menu built from `<div>`s on a structured page. On the
+  judiciary's pages about sixty menu lines precede the list of judges.
 
 Why this and not something else (recorded 2026-10-12): Trafilatura's documentation offers
 `favor_recall`, `baseline()` and `html2txt()` for pages where content is missing, and
@@ -203,6 +309,74 @@ now give structured text (`gov-01` to `gov-05`, `gov-07`); `san-03` still gives 
 21 article pages still come from the article extractor. The rate counts a page that yielded
 text; it does not measure the quality of that text, the harness keeps none, and the
 structured output of those six pages has not been read by a person.
+
+**Evidence quality (E1, 2026-10-12).** `quality_eval.py` runs synthetic pages, each built for
+one way extraction goes wrong, through the real parsing child, offline. Each case states the
+text a reader sees, the text that must not appear, the headline and the expected extractor.
+A result keeps counts and labels and no page text, and is never overwritten. The gates are
+project gates, set before the extractor was changed and not altered since: every expected
+segment recovered, no forbidden segment, right headline and path on every case, identical
+output on a repeat, no network attempt, under 15 seconds and 20,000 characters a page.
+
+Two frozen case files:
+
+- `quality_cases.json` (v1, 20 cases, SHA-256
+  `a321b13fe9186b761f17b78cae80ed2dc0923a5ffd7023fe1f66e7ef23f7a736`), frozen before any
+  change. A first draft was run once before freezing; that run exposed a broken fixture and
+  led to five more cases, and its result was discarded (the file's `history` says so).
+- `quality_cases_v2.json` (v2, the same 20 plus 13, SHA-256
+  `6a70efa29390fee3f41856dece2059e5b4e83a256dcea9e08fbaa5281076f243`), added after an
+  independent review showed v1 could not tell whether the rules worked: every article
+  fixture in v1 declares an article and no other fixture does. v2 was frozen and run against
+  the committed extractor and against the first change before that change was revised.
+
+| Run (`results/…`) | Cases passing | Expected segments | Forbidden segments | Pages led by another item | Expected extractor |
+|---|---|---|---|---|---|
+| v1 `baseline` (committed extractor) | 15/20 | 64/73 | 3 | 3 | 16/20 |
+| v1 `after` (first change) | 20/20 | 73/73 | 0 | 0 | 20/20 |
+| v1 `final` (revised after review) | 20/20 | 73/73 | 0 | 0 | 20/20 |
+| v2 `baseline` (committed extractor) | 17/33 | 78/117 | 6 | 10 | 18/33 |
+| v2 `first-change` | 24/33 | 92/117 | 2 | 7 | 24/33 |
+| v2 `final` (revised after review) | 32/33 | 114/117 | 0 | 1 | 32/33 |
+| v1 `revision-2` (revised after re-review) | 20/20 | 73/73 | 0 | 0 | 20/20 |
+| v2 `revision-2` | 32/33 | 114/117 | 0 | 1 | 32/33 |
+| v1 `revision-3` (every occurrence must qualify; withdrawn) | 20/20 | 73/73 | 0 | 0 | 20/20 |
+| v2 `revision-3` | 32/33 | 114/117 | 0 | 1 | 32/33 |
+| v1 `revision-4` (the code as it stands) | 20/20 | 73/73 | 0 | 0 | 20/20 |
+| v2 `revision-4` | 32/33 | 114/117 | 0 | 1 | 32/33 |
+
+**v2 does not meet its gate.** One case fails, `r-09`: the known gap above (a card with no
+heading element of its own that is most of a short page declaring an article). It was put in
+the set knowing it might not be passable, and it stays there.
+
+v2 has a blind spot of its own, found on re-review: every headed card in it is an
+`<article>` or a `class="story"` block, which is the markup where the article extractor
+keeps the card's heading, and so where a check on the article's first line was enough. The
+later revisions changed no v2 row, and the third, which the case sets passed, demoted a
+live publisher's article: only the hand-read live pages showed that. The card markups that defeated the first revision
+(`class="card"`, no class, a grid column, a list item, a card above the headline, a page
+with no `<h1>`), and the short repeated first line that defeated the second, are held by
+unit tests, not by a case file.
+
+This is development evidence: the extractor was changed in view of these cases, so the
+results show the listed properties on these pages and nothing about pages in general.
+
+Review. One independent read-only reviewer made five passes over this change. The first
+three returned BLOCKER, each for a way a news card was still returned as a page's article;
+the fourth, on the code as it stands, returned PASS with non-blocking findings, which were
+documentation and two tests and are in. Its closing remark is kept here because it is the
+honest state of the rule: it "has now been revised four times against constructed shapes",
+a further pass would find it narrower and not complete, and a labelled sample of real pages
+would say more than another round of constructed ones.
+
+Fourteen pages of the frozen fetch list were also fetched once through the gateway, kept
+outside the repository, and read by hand before and after. The six Ghana government and
+Parliament pages and four of five news articles came out identical. The page that had
+yielded only a cookie banner now yields its content as article text, and the page that had
+yielded a 617-character fragment now yields its whole text as structured text. One EU page
+that declares `og:type` `website` moved from article text to structured text and lost its
+date. The frozen fetch list was not run a third time, so its recorded rates describe the
+extractor as it was on the second run.
 
 ## Not covered
 

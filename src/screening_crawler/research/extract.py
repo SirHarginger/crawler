@@ -13,10 +13,17 @@ policy on this process is still a deployment control.
 Nothing here opens a socket. The date finder is given a parsed tree, never a string: handed a
 string that looks like a URL, `htmldate` would download it.
 
-Two extractors run, in a fixed order. The article extractor goes first and its result is used
-unchanged. Only when it finds no article does the structured-page extractor read the same
-markup; what it returns is marked with its own version and carries no publication date, because
-a date found on a list or a landing page says nothing reliable about the text taken from it.
+The page is parsed once and what a browser would not render (`<template>`, hidden elements)
+is removed before anything reads it. Then two extractors, in a fixed order:
+
+- Article text, only when all of these hold: the page's own markup declares an article; the
+  structured walk found the page readable at all; the article text is at least half of the
+  page's running text; and it begins with text from the page's content root whose nearest
+  heading there is the page's own. A news card on a profile page, a cookie banner or the first paragraph of a long
+  page is text the article extractor will happily return; it is not the page.
+- Structured text for every other page. It is marked with its own version and carries no
+  publication date, because a date found on a list or a landing page says nothing reliable
+  about the text taken from it.
 """
 
 from __future__ import annotations
@@ -27,7 +34,15 @@ from dataclasses import dataclass, replace
 from multiprocessing.connection import Connection
 
 from .page_text import TEXT_EXTRACTOR_VERSION, extract_article_text
-from .structured_text import STRUCTURED_EXTRACTOR_VERSION, extract_structured_text
+from .structured_text import STRUCTURED_EXTRACTOR_VERSION, read_page
+
+# The shared article extractor, given only the rendered part of a page that declares an
+# article. The text can differ from what the bare extractor returns, so it has its own name.
+ARTICLE_EXTRACTOR_VERSION = f"{TEXT_EXTRACTOR_VERSION}+declared-visible|v1"
+# Trafilatura prefers another extraction of the same page when it is more than twice as long
+# as its own (`compare_extraction`). The same factor here: an "article" that is less than half
+# of the page's running text is a fragment of the page, or something beside it.
+_MAX_RUNNING_TEXT_TO_ARTICLE = 2
 
 EXTRACTION_TIMEOUT_SECONDS = 15.0
 _MEMORY_LIMIT_BYTES = 1024 * 1024 * 1024
@@ -39,12 +54,12 @@ class Extracted:
     headline: str
     text: str
     published_date: str | None  # as stated by the page (YYYY-MM-DD), or None
-    extractor_version: str = TEXT_EXTRACTOR_VERSION
+    extractor_version: str = ARTICLE_EXTRACTOR_VERSION
     truncated: bool = False  # extraction stopped at a limit: there was more on the page
 
     @property
     def is_article(self) -> bool:
-        return self.extractor_version == TEXT_EXTRACTOR_VERSION
+        return self.extractor_version == ARTICLE_EXTRACTOR_VERSION
 
 
 class ParserTriedNetwork(Exception):
@@ -87,14 +102,23 @@ def published_date(html: str) -> str | None:
 
 def extract(html: str) -> Extracted | None:
     """In this process. For tests and for callers that already isolate the work."""
-    article = extract_article_text(html)
-    if article is not None:
-        return Extracted(article.headline, article.text, published_date(html))
-    page = extract_structured_text(html)
+    page = read_page(html)
     if page is None:
         return None
-    return Extracted(page.headline, page.text, None, STRUCTURED_EXTRACTOR_VERSION,
-                     page.truncated)
+    # Re-serialising can lengthen a page past what the article extractor reads; it would then
+    # see a prefix and return an article that stops early. Such a page is read whole instead.
+    if page.declares_article and len(page.visible_html) <= _MAX_HTML_CHARS:
+        article = extract_article_text(page.visible_html)
+        if article is not None and (
+                page.running_chars <= _MAX_RUNNING_TEXT_TO_ARTICLE * len(article.text)
+                and page.is_opened_by(article.text)):
+            return Extracted(article.headline, article.text,
+                             published_date(page.visible_html))
+    structured = page.structured
+    if structured is None:
+        return None
+    return Extracted(structured.headline, structured.text, None, STRUCTURED_EXTRACTOR_VERSION,
+                     structured.truncated)
 
 
 def _child(html: str, out: Connection) -> None:

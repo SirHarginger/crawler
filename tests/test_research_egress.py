@@ -830,20 +830,20 @@ STRUCTURED = Path(__file__).parent / "fixtures" / "research_structured"
 
 
 def test_a_non_article_page_is_returned_as_structured_text_and_marked_as_such() -> None:
-    from screening_crawler.research.page_text import TEXT_EXTRACTOR_VERSION
+    from screening_crawler.research.extract import ARTICLE_EXTRACTOR_VERSION
     from screening_crawler.research.structured_text import STRUCTURED_EXTRACTOR_VERSION
 
     web = Web()
     web.add("https://parliament.example/member", (STRUCTURED / "parliament_profile.html").read_bytes())
     web.add("https://news.example/story", (STRUCTURED / "article.html").read_bytes())
     profile = _fetch_first(web, "https://parliament.example/member")
-    assert profile.extractor_version == STRUCTURED_EXTRACTOR_VERSION != TEXT_EXTRACTOR_VERSION
+    assert profile.extractor_version == STRUCTURED_EXTRACTOR_VERSION != ARTICLE_EXTRACTOR_VERSION
     assert profile.headline == "Hon. Synthetic Member Alpha"
     assert "Party: Example Democratic Party" in profile.text.split("\n")
     assert "NAVIGATION-" not in profile.text and "FOOTER-" not in profile.text
     assert profile.published_date is None and not profile.text_truncated
     article = _fetch_first(web, "https://news.example/story")
-    assert article.extractor_version == TEXT_EXTRACTOR_VERSION
+    assert article.extractor_version == ARTICLE_EXTRACTOR_VERSION
     assert article.published_date == "2026-03-14"
 
 
@@ -1407,7 +1407,8 @@ def test_the_fetch_harness_separates_unsupported_formats_from_failures() -> None
     assert summary["metrics"]["usable_extraction"] == {"k": 2, "n": 3, "rate": 0.667}
     assert summary["metrics"]["subject_mention_recovered"] == {"k": 2, "n": 2, "rate": 1.0}
     assert summary["reported_separately"]["extracted_by"] == {
-        "lxml-structured-html|v1": ["profile"], "trafilatura-2.0.0|precision|v1": ["a"]}
+        "lxml-structured-html|v2": ["profile"],
+        "trafilatura-2.0.0|precision|v1+declared-visible|v1": ["a"]}
     assert summary["gate"]["usable_extraction"] is False
     assert summary["reported_separately"]["js_required"] == ["js"]
     assert summary["reported_separately"]["unsupported_format_by_label"] == [

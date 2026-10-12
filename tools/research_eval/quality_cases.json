@@ -1,0 +1,354 @@
+{
+  "dataset": "external_research_extraction_quality_dev",
+  "version": "e1-quality-dev-v1",
+  "what_this_is": "A small DEV set of synthetic pages, each built for one way extraction can go wrong. It is development evidence: the extractor may be changed in view of it, so passing it proves the listed properties on these pages and nothing about pages in general.",
+  "forbidden_everywhere": {
+    "chrome": [
+      "NAVIGATION-",
+      "SEARCH-",
+      "FOOTER-",
+      "SCRIPT-TEXT",
+      "STYLE-TEXT"
+    ],
+    "hidden": [
+      "HIDDEN-ATTRIBUTE-TEXT",
+      "TEMPLATE-TEXT",
+      "NOSCRIPT-TEXT",
+      "ARIA-HIDDEN-TEXT",
+      "DISPLAY-NONE-TEXT",
+      "VISIBILITY-HIDDEN-TEXT",
+      "UNTIL-FOUND-TEXT",
+      "HIDDEN-CLASS-TEXT",
+      "ASIDE-TEXT",
+      "ROLE-NAVIGATION-LINK"
+    ]
+  },
+  "gates": {
+    "set_by": "Trustora engineering, 2026-10-12, before any extractor change; a project gate, not a literature-derived threshold",
+    "security": {
+      "parser_network_attempts_max": 0,
+      "seconds_per_page_max": 15,
+      "text_chars_max": 20000,
+      "basis": "measured here through the real parsing child; DTD, entity, include and credential properties are held by the test suite"
+    },
+    "content_safety": {
+      "forbidden_segments_found_max": 0,
+      "cases_starting_with_a_forbidden_lead_max": 0
+    },
+    "fidelity": {
+      "expected_segments_recovered_min": 1.0,
+      "headline_correct_min": 1.0,
+      "expected_path_min": 1.0
+    },
+    "determinism": {
+      "cases_with_differing_repeat_output_max": 0
+    },
+    "definitions": {
+      "expected segment": "a string that a reader of the page sees and that the evidence must carry",
+      "forbidden segment": "a marker placed in navigation, footer, script, style, form controls or markup-hidden elements, plus any case-specific string that is not part of the page's own content",
+      "expected path": "article text for a page that is an article, structured text for a page that is not; 'either' where both are honest readings"
+    }
+  },
+  "cases": [
+    {
+      "id": "q-01",
+      "kind": "news_article",
+      "fixture": "tests/fixtures/research_quality/news_article.html",
+      "expected_path": "article",
+      "headline": "Review to be published in full",
+      "must_contain": [
+        "during the first session",
+        "during the second session",
+        "during the third session",
+        "during the fourth session",
+        "during the fifth session",
+        "during the sixth session"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-02",
+      "kind": "news_article",
+      "fixture": "tests/fixtures/research_structured/article.html",
+      "expected_path": "article",
+      "headline": "Plant opened in Fixture East",
+      "must_contain": [
+        "the first phase",
+        "the sixth phase",
+        "opened a new water treatment plant"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-03",
+      "kind": "article_with_teaser",
+      "fixture": "tests/fixtures/research_quality/article_teaser_then_body.html",
+      "expected_path": "article",
+      "headline": "Review to be published in full",
+      "must_contain": [
+        "during the first session",
+        "during the second session",
+        "during the third session",
+        "during the fourth session",
+        "during the fifth session",
+        "during the sixth session"
+      ],
+      "must_not_contain": [],
+      "note": "a standfirst is followed by the full body; the body must not be lost to the standfirst"
+    },
+    {
+      "id": "q-04",
+      "kind": "article_with_teaser",
+      "fixture": "tests/fixtures/research_quality/article_with_teaser_rail.html",
+      "expected_path": "article",
+      "headline": "Review to be published in full",
+      "must_contain": [
+        "during the first session",
+        "during the second session",
+        "during the third session",
+        "during the fourth session",
+        "during the fifth session",
+        "during the sixth session"
+      ],
+      "must_not_contain": [
+        "TEASER-CARD",
+        "Another Person"
+      ],
+      "note": "teaser cards about other people sit beside the article and are not part of it"
+    },
+    {
+      "id": "q-05",
+      "kind": "hidden_text",
+      "fixture": "tests/fixtures/research_quality/article_with_hidden_text.html",
+      "expected_path": "article",
+      "headline": "Review to be published in full",
+      "must_contain": [
+        "during the first session",
+        "during the third session",
+        "BODY-AFTER"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-06",
+      "kind": "profile",
+      "fixture": "tests/fixtures/research_structured/parliament_profile.html",
+      "expected_path": "structured",
+      "headline": "Hon. Synthetic Member Alpha",
+      "must_contain": [
+        "Member of Parliament for Fixture East",
+        "Party: Example Democratic Party",
+        "Constitutional and Legal Affairs Committee",
+        "Partner, Fixture Chambers, 2009 to 2020."
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-07",
+      "kind": "profile",
+      "fixture": "tests/fixtures/research_quality/profile_with_teaser_card.html",
+      "expected_path": "structured",
+      "headline": "Hon. Synthetic Member Alpha",
+      "must_contain": [
+        "Member of Parliament for Fixture East",
+        "Party: Example Democratic Party",
+        "Constitutional and Legal Affairs Committee",
+        "Partner, Fixture Chambers, 2009 to 2020."
+      ],
+      "must_not_contain": [],
+      "must_not_start_with": "Court remands",
+      "note": "one long teaser card about someone else must not replace the profile"
+    },
+    {
+      "id": "q-08",
+      "kind": "profile",
+      "fixture": "tests/fixtures/research_structured/definition_profile.html",
+      "expected_path": "structured",
+      "headline": "Justice Synthetic Gamma",
+      "must_contain": [
+        "Court: Supreme Court",
+        "Appointed: 2015",
+        "Previous office: Justice of the Court of Appeal"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-09",
+      "kind": "government_index",
+      "fixture": "tests/fixtures/research_structured/government_index.html",
+      "expected_path": "structured",
+      "headline": "Members of Parliament",
+      "must_contain": [
+        "Hon. Synthetic Member Alpha - Fixture Alpha Constituency",
+        "Hon. Synthetic Member Delta - Fixture Delta Constituency"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-10",
+      "kind": "table_page",
+      "fixture": "tests/fixtures/research_structured/table_page.html",
+      "expected_path": "structured",
+      "headline": "Designated persons",
+      "must_contain": [
+        "Name | Reference | Listed on | Measure",
+        "Synthetic Person Alpha | SYN.001 | 12 March 2019 | Asset freeze",
+        "Synthetic Person Beta | SYN.002 | | Travel ban"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-11",
+      "kind": "landing_page",
+      "fixture": "tests/fixtures/research_structured/landing_page.html",
+      "expected_path": "structured",
+      "headline": "Synthetic Ministry of Finance",
+      "must_contain": [
+        "2026 Budget Statement presented",
+        "Hon. Synthetic Minister Delta, Minister",
+        "Hon. Synthetic Deputy Epsilon, Deputy Minister"
+      ],
+      "must_not_contain": [
+        "Wrongname"
+      ]
+    },
+    {
+      "id": "q-12",
+      "kind": "landing_page",
+      "fixture": "tests/fixtures/research_quality/landing_with_teaser_and_hidden.html",
+      "expected_path": "structured",
+      "headline": "Synthetic Ministry of Finance",
+      "must_contain": [
+        "2026 Budget Statement presented",
+        "Public notice on treasury bills",
+        "Hon. Synthetic Minister Delta, Minister",
+        "Hon. Synthetic Deputy Epsilon, Deputy Minister"
+      ],
+      "must_not_contain": [],
+      "must_not_start_with": "Court remands",
+      "note": "a teaser card and hidden blocks on a landing page: the page's own items must be there, the hidden text must not"
+    },
+    {
+      "id": "q-13",
+      "kind": "teaser_index",
+      "fixture": "tests/fixtures/research_quality/teaser_index.html",
+      "expected_path": "structured",
+      "headline": "Politics",
+      "must_contain": [
+        "Another Person Beta",
+        "Another Person Gamma",
+        "Another Person Delta"
+      ],
+      "must_not_contain": [],
+      "note": "a page of teasers only is a list page, not an article"
+    },
+    {
+      "id": "q-14",
+      "kind": "malformed",
+      "fixture": "tests/fixtures/research_quality/malformed_article.html",
+      "expected_path": "either",
+      "headline": "Review to be published in full",
+      "must_contain": [
+        "during the first session",
+        "during the second session",
+        "during the third session",
+        "during the fourth session",
+        "during the fifth session",
+        "during the sixth session"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-15",
+      "kind": "encoding",
+      "fixture": "tests/fixtures/research_quality/non_ascii_article.html",
+      "expected_path": "article",
+      "headline": "Ɔsɛe Kwadwo Méndez to chair review",
+      "must_contain": [
+        "Nana Akufo‑Addo — “the review” café Ɔsɛe Kwadwo Méndez;",
+        "during the sixth session"
+      ],
+      "must_not_contain": []
+    },
+    {
+      "id": "q-16",
+      "kind": "landing_page",
+      "fixture": "tests/fixtures/research_quality/landing_page_with_news_card.html",
+      "expected_path": "structured",
+      "headline": "Synthetic Ministry of Finance",
+      "must_contain": [
+        "2026 Budget Statement presented",
+        "Hon. Synthetic Minister Delta, Minister",
+        "Hon. Synthetic Deputy Epsilon, Deputy Minister"
+      ],
+      "must_not_contain": [
+        "Wrongname"
+      ],
+      "must_not_start_with": "Court remands",
+      "note": "the case recorded on 2026-10-12: a news card on a landing page was returned as the article, with hidden and template text"
+    },
+    {
+      "id": "q-17",
+      "kind": "table_page",
+      "fixture": "tests/fixtures/research_quality/table_page_with_news_card.html",
+      "expected_path": "structured",
+      "headline": "Designated persons",
+      "must_contain": [
+        "Name | Reference | Listed on | Measure",
+        "Synthetic Person Alpha | SYN.001 | 12 March 2019 | Asset freeze",
+        "Synthetic Person Beta | SYN.002 | | Travel ban"
+      ],
+      "must_not_contain": [],
+      "must_not_start_with": "Court remands",
+      "note": "a news card on a table page must not replace the table"
+    },
+    {
+      "id": "q-18",
+      "kind": "profile",
+      "fixture": "tests/fixtures/research_quality/profile_with_two_paragraph_card.html",
+      "expected_path": "structured",
+      "headline": "Hon. Synthetic Member Alpha",
+      "must_contain": [
+        "Member of Parliament for Fixture East",
+        "Party: Example Democratic Party",
+        "Constitutional and Legal Affairs Committee",
+        "Partner, Fixture Chambers, 2009 to 2020."
+      ],
+      "must_not_contain": [],
+      "must_not_start_with": "Court remands",
+      "note": "a news card long enough for the article extractor to take it as the article"
+    },
+    {
+      "id": "q-19",
+      "kind": "table_page",
+      "fixture": "tests/fixtures/research_quality/table_page_with_two_paragraph_card.html",
+      "expected_path": "structured",
+      "headline": "Designated persons",
+      "must_contain": [
+        "Name | Reference | Listed on | Measure",
+        "Synthetic Person Alpha | SYN.001 | 12 March 2019 | Asset freeze",
+        "Synthetic Person Beta | SYN.002 | | Travel ban"
+      ],
+      "must_not_contain": [],
+      "must_not_start_with": "Court remands",
+      "note": "a news card long enough for the article extractor to take it as the article"
+    },
+    {
+      "id": "q-20",
+      "kind": "government_index",
+      "fixture": "tests/fixtures/research_quality/index_with_three_cards.html",
+      "expected_path": "structured",
+      "headline": "Members of Parliament",
+      "must_contain": [
+        "Hon. Synthetic Member Alpha - Fixture Alpha Constituency",
+        "Hon. Synthetic Member Delta - Fixture Delta Constituency"
+      ],
+      "must_not_contain": [],
+      "must_not_start_with": "Court remands",
+      "note": "a news card long enough for the article extractor to take it as the article"
+    }
+  ],
+  "history": [
+    "A first draft of this set (15 cases) was run once against the committed extractor before the set was frozen. That run showed the malformed fixture had an unclosed <title>, which leaves any HTML parser, a browser included, with an empty page; the fixture was corrected. Five cases were added for the risk recorded on 2026-10-12, a news card on a page that is not an article: two with a short card and three with a card long enough for the article extractor to take. No extractor code had been changed. The draft result was discarded; the baseline is the run of this frozen file."
+  ]
+}

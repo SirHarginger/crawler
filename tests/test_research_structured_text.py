@@ -17,10 +17,8 @@ pytest.importorskip("lxml")
 
 from screening_crawler.research import extract as extraction  # noqa: E402
 from screening_crawler.research import structured_text  # noqa: E402
-from screening_crawler.research.page_text import (  # noqa: E402
-    TEXT_EXTRACTOR_VERSION,
-    extract_article_text,
-)
+from screening_crawler.research.extract import ARTICLE_EXTRACTOR_VERSION  # noqa: E402
+from screening_crawler.research.page_text import extract_article_text  # noqa: E402
 from screening_crawler.research.structured_text import (  # noqa: E402
     STRUCTURED_EXTRACTOR_VERSION,
     extract_structured_text,
@@ -127,20 +125,15 @@ def test_a_stub_or_a_page_that_is_only_chrome_yields_nothing(html: str) -> None:
 # --- the article path is unchanged ------------------------------------------------------------------
 
 
-def test_an_article_is_still_extracted_by_the_article_extractor_alone(
-    monkeypatch: pytest.MonkeyPatch
-) -> None:
-    def never(html: str) -> None:
-        raise AssertionError("the fallback ran for a page the article extractor handled")
-
+def test_an_article_is_still_extracted_by_the_article_extractor_alone() -> None:
     html = _fixture("article")
     article = extract_article_text(html)
     assert article is not None
-    monkeypatch.setattr(extraction, "extract_structured_text", never)
     result = extraction.extract(html)
     assert result is not None and result.is_article
+    # Nothing on this page is hidden, so the text is exactly what the bare extractor returns.
     assert (result.headline, result.text) == (article.headline, article.text)
-    assert result.extractor_version == TEXT_EXTRACTOR_VERSION
+    assert result.extractor_version == ARTICLE_EXTRACTOR_VERSION
     assert result.published_date == "2026-03-14"
     assert "opened a new water treatment plant" in result.text
     assert not [marker for marker in CHROME if marker in result.text]
@@ -309,7 +302,7 @@ def test_the_fallback_runs_inside_the_child_without_credentials_or_sockets(
     for name in ("RESEARCH_EXA_API_KEY", "RESEARCH_EGRESS_TOKEN", "RESEARCH_LEAD_SECRET"):
         monkeypatch.setenv(name, "secret-value")
     seen: dict[str, Any] = {}
-    real = extraction.extract_structured_text
+    real = extraction.read_page
 
     def spy(html: str) -> Any:
         seen["environment"] = [n for n in os.environ if n.startswith("RESEARCH_")]
@@ -326,7 +319,7 @@ def test_the_fallback_runs_inside_the_child_without_credentials_or_sockets(
         def close(self) -> None:
             pass
 
-    monkeypatch.setattr(extraction, "extract_structured_text", spy)
+    monkeypatch.setattr(extraction, "read_page", spy)
     monkeypatch.setattr("resource.setrlimit", lambda *a: None)  # not on the test process
     out = Out()
     extraction._child(_fixture("parliament_profile"), out)  # type: ignore[arg-type]
@@ -497,7 +490,8 @@ def test_what_is_dropped_still_separates_what_was_around_it() -> None:
         f"Gamma</div><p>Chair<span hidden>x</span>person <b>Delta</b></p>{FILLER}")
     assert result is not None
     lines = result.text.split("\n")
-    assert lines[1:5] == ["Minister: Alpha", "Deputy: Beta", "Gamma", "Chair person Delta"]
+    # A block that was dropped kept its neighbours apart; an inline one sat inside a word.
+    assert lines[1:5] == ["Minister: Alpha", "Deputy: Beta", "Gamma", "Chairperson Delta"]
 
 
 def test_content_no_browser_renders_is_left_out() -> None:

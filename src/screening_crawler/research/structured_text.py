@@ -37,6 +37,7 @@ The text is hostile external input: plain text out, never rendered, never an ins
 
 from __future__ import annotations
 
+import unicodedata
 from collections.abc import Iterator
 from dataclasses import dataclass
 from itertools import islice
@@ -44,12 +45,13 @@ from itertools import islice
 from lxml import etree
 from lxml import html as lxml_html
 
-STRUCTURED_EXTRACTOR_VERSION = "lxml-structured-html|v1"
+STRUCTURED_EXTRACTOR_VERSION = "lxml-structured-html|v2"
 _MAX_HTML_CHARS = 2_000_000
 _MAX_TEXT_CHARS = 200_000
 _MAX_ELEMENTS = 200_000
 # Half the article minimum: a real profile or list page is short, a stub is shorter still.
 _MIN_TEXT_CHARS = 200
+_OPENING_CHARS = 40  # a line this long is a sentence, not a date, a place or a byline
 _MAX_BLOCKS_IN_A_CELL = 3  # more paragraphs or lines than this is a column of a page
 _MAX_ROOTS_CONSIDERED = 200  # of each kind; a page with more has no single content root
 _CONTROL = {c: None for c in (*range(9), 11, 12, *range(14, 32), 127)}
@@ -67,7 +69,16 @@ _DROPPED_ROLES = frozenset({"navigation", "banner", "contentinfo", "search", "co
 # Class names that hide an element in the common frameworks. A convention, not a rendering.
 _HIDDEN_CLASSES = frozenset({"hidden", "d-none", "sr-only", "visually-hidden",
                              "screen-reader-text", "invisible"})
-_HIDDEN_STYLES = ("display:none", "visibility:hidden")
+# Whole declarations, so `backface-visibility: hidden` on a visible element is not one of them.
+_HIDDEN_STYLES = frozenset({"display:none", "visibility:hidden", "content-visibility:hidden"})
+# Removing one of these from the middle of a word leaves the word whole, as a browser does.
+_INLINE = frozenset({"a", "abbr", "b", "bdi", "bdo", "cite", "code", "data", "del", "dfn", "em",
+                     "font", "i", "ins", "kbd", "mark", "q", "s", "samp", "small", "span",
+                     "strong", "sub", "sup", "time", "u", "var"})
+_SCHEMA_ARTICLE_TYPES = frozenset({
+    "Article", "NewsArticle", "ReportageNewsArticle", "AnalysisNewsArticle",
+    "BackgroundNewsArticle", "OpinionNewsArticle", "ReviewNewsArticle", "BlogPosting",
+    "TechArticle", "ScholarlyArticle", "Report"})
 _HEADINGS = ("h1", "h2", "h3", "h4", "h5", "h6")
 _BLOCKS = frozenset({
     "h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "ul", "ol", "dl", "dd", "div", "section",
@@ -102,14 +113,22 @@ def _parser() -> lxml_html.HTMLParser:
                                 recover=True)
 
 
-def _is_hidden(element: etree._Element) -> bool:
+def _is_unpainted(element: etree._Element) -> bool:
+    """A browser draws nothing for it: the `hidden` attribute or an inline hiding style."""
     attributes = element.attrib
-    if "hidden" in attributes or attributes.get("aria-hidden", "").strip().lower() == "true":
+    if "hidden" in attributes:
         return True
-    style = "".join(attributes.get("style", "").lower().split())
-    if any(rule in style for rule in _HIDDEN_STYLES):
-        return True
-    return not _HIDDEN_CLASSES.isdisjoint(attributes.get("class", "").lower().split())
+    style = "".join(attributes.get("style", "").lower().split()).replace("!important", "")
+    return not _HIDDEN_STYLES.isdisjoint(style.split(";"))
+
+
+def _is_hidden(element: etree._Element) -> bool:
+    """Unpainted, or marked as not for the reader: `aria-hidden="true"` and the screen-reader
+    class names. Those are on screen or spoken; they are dropped as decoration or duplicates."""
+    attributes = element.attrib
+    return (_is_unpainted(element)
+            or attributes.get("aria-hidden", "").strip().lower() == "true"
+            or not _HIDDEN_CLASSES.isdisjoint(attributes.get("class", "").lower().split()))
 
 
 def _is_dropped(element: etree._Element, tag: str, inside_content: bool) -> bool:
@@ -155,6 +174,13 @@ class _Lines:
         return self.size >= _MAX_TEXT_CHARS
 
 
+def _folded(line: str) -> str:
+    """A line as it is compared: case, spacing and invisible format characters aside (a soft
+    hyphen or a zero-width space is in one extractor's text and not the other's)."""
+    visible = "".join(ch for ch in line if unicodedata.category(ch) != "Cf")
+    return " ".join(visible.split()).casefold()
+
+
 def _is_data_table(table: etree._Element) -> bool:
     """True for a table of rows and columns. A table that holds another table, a heading in
     one of its body cells or a cell with several blocks in it, or that never has two cells in
@@ -187,12 +213,17 @@ def _is_simple_term(term: etree._Element) -> bool:
             and next(term.iter(*_BLOCKS, "table", "br"), None) is None)
 
 
-def _walk(root: etree._Element) -> tuple[str, str, bool]:
-    """(first h1, text, truncated) for one subtree. Iterative: depth in the markup is never
-    Python depth."""
+def _walk(root: etree._Element, *, links: bool = True
+          ) -> tuple[str, str, bool, frozenset[int], int | None]:
+    """(first h1, text, truncated, which lines are headings, which line is the first h1) for
+    one subtree. Iterative: depth in the markup is never Python depth. With `links=False`
+    the text of every link is left out: what remains is the page's running text, without its
+    menus and lists of other pages."""
     lines = _Lines()
     first_h1 = ""
-    h1_from: int | None = None  # where the open h1's lines begin
+    first_h1_line: int | None = None
+    heading_lines: set[int] = set()  # the index of every line that came from h1 to h6
+    heading_from: int | None = None  # where the open heading's lines begin
     content_depth = 0  # how many <main>/<article> ancestors the walk is inside
     tables: list[bool] = []  # the open tables, innermost last: is each one a data table?
     cell: etree._Element | None = None  # the open data cell or simple term, if any
@@ -207,7 +238,8 @@ def _walk(root: etree._Element) -> tuple[str, str, bool]:
             if seen > _MAX_ELEMENTS or lines.full():
                 truncated = True
                 break
-            if not tag or _is_dropped(element, tag, content_depth > 0):
+            if not tag or (tag == "a" and not links) or _is_dropped(
+                    element, tag, content_depth > 0):
                 skipped = element
                 walker.skip_subtree()
                 continue
@@ -223,15 +255,17 @@ def _walk(root: etree._Element) -> tuple[str, str, bool]:
             else:
                 if tag in _LINE_STARTS or tag in _CELL_END:
                     lines.end_line()
-                    if tag == "h1" and not first_h1:
-                        h1_from = len(lines.lines)
+                    if tag in _HEADINGS:
+                        heading_from = len(lines.lines)
                 if tag == "dt" and _is_simple_term(element):
                     cell = element
             lines.add(element.text)
             continue
         if element is skipped:
             skipped = None
-            if cell is not None or tag not in _DROPPED_BLOCKS:
+            if tag in _INLINE and _is_unpainted(element):
+                pass  # the text either side of it touches, as it does on screen
+            elif cell is not None or tag not in _DROPPED_BLOCKS:
                 lines.add(" ")  # what was dropped still separated its neighbours
             else:
                 lines.end_line()
@@ -248,14 +282,17 @@ def _walk(root: etree._Element) -> tuple[str, str, bool]:
                     lines.add(" ")
             elif tag in _BLOCKS or tag in _CELL_END:
                 lines.end_line()
-                if tag == "h1" and h1_from is not None:
-                    first_h1 = "".join(lines.lines[h1_from:h1_from + 1])
-                    h1_from = None
+                if tag in _HEADINGS and heading_from is not None:
+                    if tag == "h1" and not first_h1 and len(lines.lines) > heading_from:
+                        first_h1, first_h1_line = lines.lines[heading_from], heading_from
+                    heading_lines.update(range(heading_from, len(lines.lines)))
+                    heading_from = None
         if element is not root:
             lines.add(element.tail)
     lines.end_line()
     text = "\n".join(lines.lines)
-    return first_h1, text[:_MAX_TEXT_CHARS], truncated or len(text) > _MAX_TEXT_CHARS
+    return (first_h1, text[:_MAX_TEXT_CHARS], truncated or len(text) > _MAX_TEXT_CHARS,
+            frozenset(heading_lines), first_h1_line)
 
 
 def _is_reachable(element: etree._Element) -> bool:
@@ -281,18 +318,145 @@ def _candidates(tree: etree._Element) -> list[etree._Element]:
     return [*mains[:1], *([body] if body is not None else [])]
 
 
-def extract_structured_text(html: str) -> StructuredText | None:
-    """The page's visible structured text, or None when there is too little to be a page."""
+@dataclass(frozen=True)
+class PageReading:
+    """One parse of a page, with what the article path needs to decide whether to trust itself."""
+
+    structured: StructuredText | None
+    running_chars: int  # visible text outside links, from the page's content root
+    declares_article: bool  # the page's own markup says it is an article
+    heading_lines: frozenset[int]  # which lines of the structured text are headings
+    headline_line: int | None  # which of them is the page's own (its first h1), if any
+    visible_html: str  # the page again, without the elements the markup marks as hidden
+
+    def is_opened_by(self, text: str) -> bool:
+        """Does `text` begin as the page's own content begins? Its first full line must be
+        found, in what the walk read from the content root, at a place where the nearest
+        heading at or above it is the page's own. Text that sits under another heading is an
+        item with a title of its own, wherever the article extractor put that title; text
+        above the page's headline, or not in the content root at all, is something beside
+        the page.
+
+        A full line is one of at least `_OPENING_CHARS` characters: a date, a place or a
+        byline is skipped, because such a line recurs across a page and finding it under the
+        page's headline says nothing. One qualifying place is enough, because a publisher
+        often prints an article's first sentence twice, once as a standfirst under the
+        headline and again in the body below a widget that has a heading of its own."""
+        if self.structured is None:
+            return False
+        own = _folded(self.structured.headline)  # the article extractor may print it first
+        opening = next((folded[:_OPENING_CHARS]
+                        for folded in (_folded(line.lstrip("-•* ")) for line in text.split("\n"))
+                        if len(folded) >= _OPENING_CHARS and folded != own), "")
+        if not opening:
+            return False
+        above: int | None = None  # the nearest heading at or above the current line
+        for n, line in enumerate(self.structured.text.split("\n")):
+            if n in self.heading_lines:
+                above = n
+            # Both are None on a page with no h1 in its content root.
+            if above == self.headline_line and n != above and opening in _folded(line):
+                return True
+        return False
+
+
+def _drop_unrendered(tree: etree._Element) -> None:
+    """Remove `<template>` and the elements the markup marks as hidden. The same rule the
+    walk applies, done to the tree so that the article extractor, which keeps `<template>`
+    text and does not know the `hidden` attribute, never sees it either. Not all of it is
+    invisible in a browser: `aria-hidden="true"` and the screen-reader class names mark text
+    that is on screen or spoken. It is dropped all the same, as Readability drops it,
+    because it is so often a decorative or duplicate copy; where a page shows a date to the
+    eye and repeats it for a screen reader, both are lost."""
+    unrendered = []
+    walker = etree.iterwalk(tree, events=("start",))
+    for _, element in walker:
+        if isinstance(element.tag, str) and element is not tree and (
+                element.tag == "template" or _is_hidden(element)):
+            unrendered.append(element)
+            walker.skip_subtree()  # whatever is inside goes with it
+    # The text that followed each removed element is gathered per surviving neighbour and
+    # written once. Appending as it goes, as lxml's own `drop_tree` does, is quadratic in the
+    # number of siblings, which hostile markup can make large.
+    after_sibling: dict[etree._Element, list[str]] = {}
+    at_start_of: dict[etree._Element, list[str]] = {}
+    for element in unrendered:
+        parent = element.getparent()
+        if parent is None:
+            continue
+        before = element.getprevious()
+        pieces = (after_sibling.setdefault(before, []) if before is not None
+                  else at_start_of.setdefault(parent, []))
+        # An inline element that was never drawn sat inside a word or between two; anything
+        # else (a block, or an inline separator marked aria-hidden) kept its neighbours apart.
+        fused = element.tag in _INLINE and _is_unpainted(element)
+        pieces.append(f"{'' if fused else ' '}{element.tail or ''}")
+        parent.remove(element)
+    for sibling, pieces in after_sibling.items():
+        sibling.tail = (sibling.tail or "") + "".join(pieces)
+    for parent, pieces in at_start_of.items():
+        parent.text = (parent.text or "") + "".join(pieces)
+
+
+def _declares_article(tree: etree._Element) -> bool:
+    """The page says, in standard markup, that it is one article: Open Graph `og:type`, an
+    `article:` property, or its heading inside `<article>` or inside an element with a
+    schema.org article `itemtype`. It is the page's own statement, not a finding. Many sites
+    say it on every page, so it permits the article path and decides nothing by itself."""
+    for meta in tree.iter("meta"):
+        name = (meta.get("property") or meta.get("name") or "").strip().lower()
+        if name.startswith("article:") or (
+                name == "og:type" and (meta.get("content") or "").strip().lower() == "article"):
+            return True
+    heading = next((h for h in islice(tree.iter("h1"), _MAX_ROOTS_CONSIDERED)
+                    if _is_reachable(h)), None)
+    if heading is None:
+        return False
+    for ancestor in heading.iterancestors():
+        if ancestor.tag == "article" or _is_schema_article(ancestor.get("itemtype") or ""):
+            return True
+    return False
+
+
+def _is_schema_article(itemtype: str) -> bool:
+    for kind in itemtype.split():
+        scheme, _, rest = kind.partition("://")
+        host, _, name = rest.partition("/")
+        if scheme in ("http", "https") and host in ("schema.org", "www.schema.org") and (
+                name.rstrip("/") in _SCHEMA_ARTICLE_TYPES):
+            return True
+    return False
+
+
+def read_page(html: str) -> PageReading | None:
+    """Parse the page once and read it. None when the markup cannot be parsed at all."""
     try:
         tree = lxml_html.document_fromstring(html[:_MAX_HTML_CHARS].encode("utf-8", "ignore"),
                                              parser=_parser())
         title = " ".join((tree.findtext(".//head/title") or "").translate(_CONTROL).split())
+        declares_article = _declares_article(tree)
+        structured, running_chars = None, 0
+        heading_lines, headline_line = frozenset[int](), None
         for root in _candidates(tree):
-            first_h1, text, truncated = _walk(root)
+            first_h1, text, truncated, heading_lines, headline_line = _walk(root)
             headline = (first_h1 or title)[:2000]
             if len(text) >= _MIN_TEXT_CHARS and headline:
-                return StructuredText(headline=headline, text=text,
-                                      truncated=truncated or len(html) > _MAX_HTML_CHARS)
-    except Exception:  # noqa: BLE001 -- hostile markup: no text, never a crash
+                structured = StructuredText(
+                    headline=headline, text=text,
+                    truncated=truncated or len(html) > _MAX_HTML_CHARS)
+                if declares_article:  # only the article path asks
+                    running_chars = len(_walk(root, links=False)[1])
+                break
+        if structured is None or not declares_article:
+            return PageReading(structured, 0, False, frozenset(), None, "")
+        _drop_unrendered(tree)  # last: the walk skips these itself and marks where they stood
+        return PageReading(structured, running_chars, True, heading_lines, headline_line,
+                           lxml_html.tostring(tree, encoding="unicode"))
+    except Exception:  # noqa: BLE001 -- hostile markup: nothing read, never a crash
         return None
-    return None
+
+
+def extract_structured_text(html: str) -> StructuredText | None:
+    """The page's visible structured text, or None when there is too little to be a page."""
+    page = read_page(html)
+    return None if page is None else page.structured
