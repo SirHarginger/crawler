@@ -292,16 +292,18 @@ retrieval.
 
 ### Provider restriction
 
-A search request may name the only provider its caller permits (`"provider":
-"staging-fixtures"`). The egress compares it with the provider it is configured with and, if
+Every search request over HTTP names the only provider its caller permits (`"provider":
+"staging-fixtures"`); since A2.1 the field is required, and a request without it, or with
+`null`, is refused as `invalid_request` before the provider is asked (closes N1-a). The
+in-process method still accepts no restriction for the evaluation tools in
+`tools/research_eval/`; making it required is open (engine ADR research-access, R2). The egress compares it with the provider it is configured with and, if
 they differ, answers `403 provider_not_permitted` **before** the daily budget is touched and
 before the provider is asked (`ResearchEgress.search`). A refused search sends nothing to any
 provider. A successful answer names the provider that answered (`"provider"`), which the
 engine checks as a second line. The engine's staging investigation always sends the
 restriction, from a constant, so an engine pointed at a live-mode egress gets a refusal, never
 a live search. An egress older than this field refuses any request carrying it as
-`invalid_request` (the request model forbids unknown fields), again before searching. A
-request without the field behaves as before.
+`invalid_request` (the request model forbids unknown fields), again before searching.
 
 This is deny-by-default authorisation enforced at the server, the egress, not in the caller
 (OWASP Authorization Cheat Sheet, "Deny by Default", "Verify that Authorization Checks are
@@ -310,6 +312,18 @@ in the engine after the answer, because the search has already happened by then;
 staging egress token, because the token authenticates the engine, not what it may ask for, and
 would add a credential without stopping a misconfiguration; an attestation endpoint the engine
 asks first, because the mode could change between the two requests.
+
+### Source policy (live mode)
+
+A live egress needs `RESEARCH_SOURCE_DOMAINS`, the approved source domains, and refuses to
+start without it or with a value that is not a list of domains of at least two labels ("gh"
+or "com" alone would approve a whole top-level domain). The list is enforced in the gateway's
+resolver (`research/source_policy.py`), which the gateway calls for every hop, the first
+request and each redirect, before DNS and before any connection: a lead or a redirect to any
+other host is refused as `source_not_permitted` (HTTP 403), and nothing is sent to it. A
+domain approves itself and its subdomains; `gov.gh` approves `mofep.gov.gh` and not
+`evilgov.gh`. The gateway itself is unchanged. Which domains are approved is an owner decision
+(engine `docs/decisions/research-access.md`); no list is shipped.
 
 ## Provider
 

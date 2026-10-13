@@ -10,6 +10,8 @@ configured: off is the default.
   RESEARCH_EGRESS_TOKEN=...             shared with the engine; at least 32 characters
   RESEARCH_LEAD_SECRET=...              signs lead tokens; at least 32 characters
   RESEARCH_EXA_API_KEY=...              the search provider credential
+  RESEARCH_SOURCE_DOMAINS=gov.gh,...    live mode: the approved source domains; a fetch to
+                                        any other host is refused before it is made
   RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED=true
                                         only when terms that permit named-person queries
                                         (a DPA and zero data retention) are in place.
@@ -39,6 +41,7 @@ from .egress import EgressRefused, ResearchEgress
 from .gateway import ResearchGateway
 from .query import ResearchQuery
 from .search import ExaSearchProvider, SearchProvider
+from .source_policy import SourcePolicyInvalid, parse_domains, restricted_resolver
 from .staging import Fixtures, FixtureSearchProvider, FixturesInvalid, fixture_gateway
 
 _MIN_SECRET_LENGTH = 32
@@ -56,8 +59,9 @@ class SearchRequest(BaseModel):
     query: ResearchQuery
     limit: int = Field(default=5, ge=1, le=10)
     # The only provider the caller permits (docs/research-egress.md, "Provider restriction").
-    # An egress older than this field refuses the whole request as invalid, before searching.
-    provider: str | None = Field(default=None, pattern=r"^[a-z0-9-]{1,40}$")
+    # Required: a search that names no provider is refused, never run unrestricted. An egress
+    # older than this field refuses the whole request as invalid, before searching.
+    provider: str = Field(pattern=r"^[a-z0-9-]{1,40}$")
 
 
 class FetchRequest(BaseModel):
@@ -127,7 +131,7 @@ def create_app(egress: ResearchEgress, token: str) -> FastAPI:
         try:
             document = egress.fetch(body.lead_token)
         except EgressRefused as exc:
-            status = (403 if exc.reason in ("invalid_lead", "expired_lead")
+            status = (403 if exc.reason in ("invalid_lead", "expired_lead", "source_not_permitted")
                       else 503 if exc.reason in ("host_busy", "egress_busy") else 422)
             raise HTTPException(status_code=status, detail=exc.reason) from None
         payload = asdict(document)
@@ -144,8 +148,9 @@ def app_from_environment(environ: dict[str, str] | None = None) -> tuple[FastAPI
     mode = env.get("RESEARCH_EGRESS_MODE", "live")
     if mode not in ("live", STAGING_MODE):
         raise EgressNotConfigured("RESEARCH_EGRESS_MODE must be live or staging-fixtures")
-    source = "RESEARCH_FIXTURE_DIR" if mode == STAGING_MODE else "RESEARCH_EXA_API_KEY"
-    missing = [name for name in ("RESEARCH_EGRESS_TOKEN", "RESEARCH_LEAD_SECRET", source)
+    sources = (("RESEARCH_FIXTURE_DIR",) if mode == STAGING_MODE
+               else ("RESEARCH_EXA_API_KEY", "RESEARCH_SOURCE_DOMAINS"))
+    missing = [name for name in ("RESEARCH_EGRESS_TOKEN", "RESEARCH_LEAD_SECRET", *sources)
                if not env.get(name)]
     if missing:
         raise EgressNotConfigured(f"missing configuration: {', '.join(missing)}")
@@ -171,7 +176,12 @@ def app_from_environment(environ: dict[str, str] | None = None) -> tuple[FastAPI
             api_key=env["RESEARCH_EXA_API_KEY"],
             named_person_terms_approved=(
                 env.get("RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED") == "true"))
-        gateway, pace = ResearchGateway(), 2.0
+        try:
+            domains = parse_domains(env["RESEARCH_SOURCE_DOMAINS"])
+        except SourcePolicyInvalid as exc:
+            raise EgressNotConfigured(str(exc)) from None
+        # Every hop, redirects included, is checked against the approved domains before DNS.
+        gateway, pace = ResearchGateway(resolver=restricted_resolver(domains)), 2.0
     egress = ResearchEgress(provider=provider, gateway=gateway,
                             lead_secret=env["RESEARCH_LEAD_SECRET"].encode(),
                             min_seconds_between_host_requests=pace)

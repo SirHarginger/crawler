@@ -345,7 +345,8 @@ def test_a_named_person_is_never_sent_to_exa_under_its_standard_terms() -> None:
 
 def test_the_service_refuses_named_person_search_unless_terms_are_declared() -> None:
     app, _, _ = service.app_from_environment(dict(GOOD_ENV))
-    answer = TestClient(app).post("/internal/research/search", json=SEARCH, headers=AUTH)
+    answer = TestClient(app).post("/internal/research/search", json=SEARCH | {"provider": "exa"},
+                                     headers=AUTH)
     assert answer.status_code == 502
     assert answer.json() == {"detail": "search_provider_terms_not_approved"}
 
@@ -1118,7 +1119,7 @@ def _client(web: Web, urls: list[str]) -> TestClient:
 
 AUTH = {"Authorization": f"Bearer {TOKEN}"}
 SEARCH = {"query": {"subject_kind": "PUBLIC_FIGURE", "name": "Ama Fixture Mensah",
-                    "country": "gh"}}
+                    "country": "gh"}, "provider": "fake"}
 
 
 def test_search_then_fetch_through_the_service() -> None:
@@ -1208,7 +1209,8 @@ def test_a_refused_fetch_reports_a_reason_and_nothing_else() -> None:
 
 
 GOOD_ENV = {"RESEARCH_EGRESS_ENABLED": "true", "RESEARCH_EGRESS_TOKEN": TOKEN,
-            "RESEARCH_LEAD_SECRET": SECRET.decode(), "RESEARCH_EXA_API_KEY": KEY}
+            "RESEARCH_LEAD_SECRET": SECRET.decode(), "RESEARCH_EXA_API_KEY": KEY,
+            "RESEARCH_SOURCE_DOMAINS": "gov.gh,news.example"}
 
 
 @pytest.mark.parametrize("change", [

@@ -69,7 +69,7 @@ def _client() -> TestClient:
 
 def _search(client: TestClient, query: dict[str, Any], limit: int = 5) -> list[dict[str, Any]]:
     response = client.post("/internal/research/search", headers=AUTH,
-                           json={"query": query, "limit": limit})
+                           json={"query": query, "limit": limit, "provider": PROVIDER_NAME})
     assert response.status_code == 200
     return list(response.json()["leads"])
 
@@ -204,7 +204,8 @@ def _live_client(monkeypatch: pytest.MonkeyPatch) -> tuple[TestClient, list[Any]
     monkeypatch.setattr(ExaSearchProvider, "search", record)
     live = {k: v for k, v in ENV.items() if k not in ("RESEARCH_EGRESS_MODE",
                                                       "RESEARCH_FIXTURE_DIR")}
-    app, _, _ = service.app_from_environment(live | {"RESEARCH_EXA_API_KEY": "placeholder"})
+    app, _, _ = service.app_from_environment(live | {"RESEARCH_EXA_API_KEY": "placeholder",
+                                                     "RESEARCH_SOURCE_DOMAINS": "gov.gh"})
     return TestClient(app), calls
 
 
@@ -225,9 +226,9 @@ def test_a_live_egress_refuses_a_staging_restricted_search_before_asking_its_pro
         "query": MINISTRY, "limit": 4, "provider": PROVIDER_NAME})
     assert (response.status_code, response.json()) == (403, {"detail": "provider_not_permitted"})
     assert calls == []
-    # The instrument works: an unrestricted search does reach the provider method.
+    # The instrument works: a search restricted to the live provider does reach its method.
     assert client.post("/internal/research/search", headers=AUTH,
-                       json={"query": MINISTRY, "limit": 4}).status_code == 200
+                       json={"query": MINISTRY, "limit": 4, "provider": "exa"}).status_code == 200
     assert len(calls) == 1
 
 
