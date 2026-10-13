@@ -196,11 +196,9 @@ def test_a_query_is_built_only_from_the_minimum_fields_and_is_deterministic() ->
     {"name": "Ama Mensah", "organisation": "12-3456-789"},
     {"name": "Ama Mensah", "organisation": "G1234 567"},
     {"name": "Ama Mensah", "role": "024 412 3456"},
-    {"name": "Ama Mensah", "organisation": "12 Independence Avenue, Accra"},
     {"name": "Ama Mensah", "role": "ama.mensah@gmail.com"},
     {"name": "Ama Mensah", "role": "contact gmail.com"},
     {"name": "Ama Mensah", "organisation": "www.example.com"},
-    {"name": "Ama Mensah", "role": "minister since May"},
     {"name": "Ama Mensah 3"},
     # a hyphen at the edge of a word is a search exclusion operator
     {"name": "Ama Mensah", "role": "-minister"},
@@ -218,13 +216,20 @@ def test_a_query_is_built_only_from_the_minimum_fields_and_is_deterministic() ->
     {"name": "Ama Mensah", "role": "minister NOT finance"},
     # a date or an address spread over numbered tokens of an organisation
     {"name": "Ama Mensah", "organisation": "born 3rd of 2nd", "birth_year": 1970},
-    {"name": "Ama Mensah", "organisation": "d3 m2", "birth_year": 1970},
-    {"name": "Ama Mensah", "organisation": "5th Avenue, Flat B2"},
-    {"name": "Ama Mensah", "organisation": "Unit 5th"},
     # one character that normalises to eighteen: the length is checked after normalising
     {"name": "\ufdfa" * 120},
     {"name": "Ama Mensah", "role": "\ufdfa" * 80},
     {"name": "Ama Mensah", "subject_kind": None},
+    # digits are allowed in a role or an organisation, but not in the shape of an identifier,
+    # a telephone number or a date
+    {"name": "Ama Mensah", "organisation": "passport G1234567"},
+    {"name": "Ama Mensah", "organisation": "Ministry 1970-02-03"},
+    {"name": "Ama Mensah", "role": "February 1970"},
+    {"name": "Ama Mensah", "role": "3rd of Feb"},
+    {"name": "Ama Mensah", "organisation": "Office 12 34"},
+    {"name": "Ama Mensah", "organisation": "born 3 2 1970"},
+    # a typographic hyphen is folded to a plain one and then judged as one
+    {"name": "Ama Mensah", "role": "minister \u2013finance"},
 ])
 def test_a_query_cannot_carry_sensitive_identifiers_free_text_or_operators(
     fields: dict[str, Any]
@@ -247,6 +252,44 @@ def test_ordinary_roles_and_organisation_names_are_still_accepted() -> None:
                              organisation=name).organisation == name
 
 
+@pytest.mark.parametrize("organisation", [
+    "37 Military Hospital", "Channel 4", "France 24", "Citi 97.3 FM", "UN 1267 Committee",
+    "U.S. Department of the Treasury", "J.P. Morgan", "TotalEnergies S.A.", "May & Baker",
+    "OR Tambo International Airport", "Expo 2020 Dubai", "Ernst & Young (Ghana)",
+])
+def test_real_organisation_names_are_not_refused_for_their_digits_or_initials(
+    organisation: str
+) -> None:
+    query = ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION", name="Body",
+                          organisation=organisation)
+    assert query.organisation == organisation
+
+
+def test_an_organisation_subject_may_have_digits_in_its_own_name_and_a_person_may_not() -> None:
+    for name in ("37 Military Hospital", "Channel 4", "3news"):
+        assert ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION", name=name).name == name
+        with pytest.raises(ValidationError):
+            ResearchQuery(subject_kind="PUBLIC_FIGURE", name=name)
+    for identifier in ("TIN 0012345678", "Body 1970-02-03", "www.example.com"):
+        with pytest.raises(ValidationError):
+            ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION", name=identifier)
+
+
+def test_roles_with_ordinals_and_initials_are_accepted() -> None:
+    for role in ("2nd Deputy Speaker", "M.P.", "Ph.D.", "Member of Parliament for Keta",
+                 "minister since May"):
+        assert ResearchQuery(subject_kind="PUBLIC_FIGURE", name="Ama Mensah", role=role).role
+
+
+def test_typographic_apostrophes_and_hyphens_are_one_spelling() -> None:
+    curly = ResearchQuery(subject_kind="PUBLIC_FIGURE", name="Seán O\u2019Brien",
+                          role="Vice\u2011President")
+    plain = ResearchQuery(subject_kind="PUBLIC_FIGURE", name="Seán O'Brien",
+                          role="Vice-President")
+    assert (curly.name, curly.role) == ("Seán O'Brien", "Vice-President")
+    assert curly.sha256() == plain.sha256()  # one normal form, so one query and one hash
+
+
 def test_the_contract_cannot_stop_a_second_name_and_says_so() -> None:
     # A known limit, kept visible: free text cannot be made safe by rules.
     query = ResearchQuery(subject_kind="PUBLIC_FIGURE", name="Ama Mensah and Kofi Boateng")
@@ -254,11 +297,12 @@ def test_the_contract_cannot_stop_a_second_name_and_says_so() -> None:
     from screening_crawler.research import query as contract
 
     assert "cannot make free text safe" in (contract.__doc__ or "")
-    # Known too: one numbered token is allowed, so a house number written as one passes.
-    assert ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION", name="Body",
-                         organisation="12A Ring Road, Accra").organisation
-    assert "12A Ring Road" in (contract.__doc__ or "")
-    # And one short token with two digits cannot be told from "G4S".
+    # Known too: a short street address cannot be told from "37 Military Hospital".
+    for address in ("12 Ring Road", "12 Independence Avenue, Accra", "5th Avenue, Flat B2"):
+        assert ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION", name="Body",
+                             organisation=address).organisation
+    assert "12 Ring Road" in (contract.__doc__ or "")
+    # And a short token with digits cannot be told from "G4S".
     assert ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION", name="Body",
                          organisation="passport G1X2").organisation
     # Also known, and stated in the same place: words can spell what digits may not.
@@ -1201,7 +1245,7 @@ def test_a_fully_configured_service_binds_to_loopback_by_default() -> None:
 SHARED_FILES = {
     "gateway.py": "b8db9862c47b6e590d05ff5e544cc184b7c27bba09742cd7b82d74499c7805de",
     "page_text.py": "9667ea1a0231551c38f56b613fe1cd170277c3066a7a922b32c648312fbbcdc1",
-    "query.py": "87223c02e20d46b3b07efdd4438284d204c510460ab81689ea5159f2f4e62ebb",
+    "query.py": "30ba6992e8a7e1d06e10abb8638ad0ebda68cda17d74410a41959fa6f9a2f3ef",
 }
 
 

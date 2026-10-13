@@ -231,8 +231,16 @@ class ResearchEgress:
 
     # -- operations ------------------------------------------------------------------------------
 
-    def search(self, query: ResearchQuery, *, limit: int = 5) -> list[IssuedLead]:
+    def search(self, query: ResearchQuery, *, limit: int = 5,
+               provider: str | None = None) -> list[IssuedLead]:
+        """`provider`, when given, is the only provider this caller may use. Checked before
+        the budget and before the provider is asked, so a refused search sends nothing."""
         digest = query.sha256()
+        if provider is not None and provider != self.provider.name:
+            logger.warning("research_search", extra={
+                "query_sha256": digest, "outcome": "provider_not_permitted",
+                "provider": self.provider.name})
+            raise EgressRefused("provider_not_permitted")
         with self._lock:
             day = int(self.clock() // 86400)
             used = self._searches[1] if self._searches[0] == day else 0

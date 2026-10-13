@@ -1,23 +1,32 @@
 """The only question the egress will ask a search provider on the engine's behalf.
 
-A query is built here, from structured fields, and nowhere else. There is no field for a date of
-birth, an identity number or an address, and every field is checked: digits are allowed only
-inside an organisation's name token ("G4S", "3news"), never as a number on its own; month
-names and domain shapes are refused in a role or organisation; search operators are refused
-everywhere.
+A query is a small typed record, built in trusted code and nowhere else: the subject's name,
+what kind of subject it is, and optionally a role, an organisation, a country and a birth
+year. There is no field for a date of birth, an identity number, an address, a URL or free
+text, and the string a provider receives is assembled here (`text`), never by a caller.
+
+Each field is validated for what it is, after one normalisation step (Unicode NFKC, with
+typographic apostrophes and hyphens folded to the plain ones):
+
+- every field: letters and marks of any script, spaces and ``. , ' - ( ) &``; no quote, colon,
+  slash or ``@``, so no search operator, URL or e-mail address; a hyphen only between two parts
+  of a word; the capitalised words OR, AND and NOT only as the first word of a value ("OR Tambo
+  International Airport"), never between two others, where a search engine reads an operator;
+- a person's `name`: no digits;
+- `role`, `organisation` and the `name` of an organisation: digits are allowed, because real
+  organisations and titles carry them ("37 Military Hospital", "Channel 4", "2nd Deputy
+  Speaker"), but not in the shapes of an identifier or a date: more than six digits in all,
+  more than one free-standing number, numbers joined by hyphens or by several separators, a
+  number beside a month name, or a domain name.
 
 This narrows what can be sent; it cannot make free text safe. A caller who is determined to can
-still put a second person's name in `name`, spell a date or an address out in words, or write
-a domain without its dots; and `name` is not checked for month names or domain shapes at all,
-because real names contain both ("Theresa May", "J.A. Kufuor"). The contract makes a mistake
-hard, not a bypass impossible. One numbered token is still allowed in an organisation, so a
-house number written as one token ("12A Ring Road") passes, and so does any one short token
-with two digits in it, which cannot be told from "G4S". Deriving role and organisation from
-canonical records, so that no caller text travels at all, is the stronger control and is not
-built yet.
+still put a second person's name in `name`, spell a date out in words, or write a short street
+address as an organisation ("12 Ring Road"). The contract makes a mistake hard, not a bypass
+impossible. Which fields may be sent for an investigation, and whether the subject may be
+researched at all, is decided by the engine's controller from its own records, not here.
 
-`subject_kind` is the caller's statement that the subject is a public figure or a
-public-interest organisation. Nothing here can check it.
+`subject_kind` says what kind of subject it is. It is a statement by the code that built the
+query; nothing in this file can check it.
 
 This file is identical in the crawler (`screening_crawler/research/query.py`) and the engine
 (`screening_engine/external_research/query.py`); a test in each repository fails if they drift.
@@ -31,54 +40,59 @@ import unicodedata
 from datetime import UTC, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator
 
-QUERY_POLICY_VERSION = "research_query_v3"
-# No colon, quote, slash, @ or operator characters: a field cannot carry a search operator, a
-# URL or an e-mail address.
+QUERY_POLICY_VERSION = "research_query_v4"
 _ALLOWED_PUNCTUATION = frozenset(" .,'-()&")
-_MONTH = re.compile(
-    r"(?<![^\W\d_])(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|"
-    r"sep(t(ember)?)?|oct(ober)?|nov(ember)?|dec(ember)?)(?![^\W\d_])", re.IGNORECASE)
-_DOMAIN_SHAPE = re.compile(r"[^\W\d_]\.[^\W\d_]")  # letter.letter: "gmail.com", "www.x"
+# One spelling for the apostrophes and hyphens people really type and publishers really print.
+_FOLDED = str.maketrans({"\u2019": "'", "\u2018": "'", "\u02bc": "'", "\u2010": "-",
+                         "\u2011": "-", "\u2012": "-", "\u2013": "-"})
+_MONTH = (r"(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may|june?|july?|aug(ust)?|"
+          r"sep(t(ember)?)?|oct(ober)?|nov(ember)?|dec(ember)?)")
+# A month name next to a number, in either order: a date written out.
+_DATE_IN_WORDS = re.compile(
+    rf"(?<![^\W_])(\d+(st|nd|rd|th)?[\s,.-]+(of\s+)?{_MONTH}|{_MONTH}[\s,.-]+\d+)(?![^\W\d_])",
+    re.IGNORECASE)
+# Two labels of two or more characters joined by a dot: "gmail.com", "www.example". Initials
+# ("U.S.", "J.P.", "Ph.D.") and decimals ("97.3") are not this shape.
+_DOMAIN_SHAPE = re.compile(r"[^\W_]{2,}\.[^\W\d_]{2,}")
 # A hyphen joins two parts of a name ("Akufo-Addo"). Anywhere else -- at the start or end of a
 # word, or after punctuation -- it is a search engine's exclusion operator.
 _JOINING_HYPHEN = re.compile(r"(?<=[^\W_])-(?=[^\W_])")
-_ORDINAL = re.compile(r"\d(st|nd|rd|th)\b", re.IGNORECASE)
+_NUMBERS_JOINED = re.compile(r"\d-\d|\d[.,]\d+[.,]\d")  # 1970-02-03, 12-3456, 3,2,1970
+_FREE_NUMBER = re.compile(r"\d+([.,]\d+)?(st|nd|rd|th)?", re.IGNORECASE)
 _OPERATOR_WORDS = frozenset({"OR", "AND", "NOT"})  # operators only in capitals
 _MAX_CLEAN_CHARS = {"name": 120, "role": 80, "organisation": 120}
+_MAX_DIGITS = 6
 
 
 def _clean(value: str, *, kind: Literal["name", "role", "organisation"]) -> str:
-    text = " ".join(unicodedata.normalize("NFKC", value).split())
+    text = " ".join(unicodedata.normalize("NFKC", value).translate(_FOLDED).split())
     if not text:
         raise ValueError("must not be empty")
+    if len(text) > _MAX_CLEAN_CHARS[kind]:
+        raise ValueError("too long")  # checked again here: normalising can lengthen a value
     for ch in text:
         category = unicodedata.category(ch)
         if ch in _ALLOWED_PUNCTUATION or category[0] in ("L", "M"):
             continue
-        if kind == "organisation" and category == "Nd":
+        if kind != "name" and category == "Nd":
             continue
         raise ValueError("contains a character that is not allowed in a research query")
-    if len(text) > _MAX_CLEAN_CHARS[kind]:
-        raise ValueError("too long")  # checked again here: normalising can lengthen a value
     if "-" in _JOINING_HYPHEN.sub("", text):
         raise ValueError("a hyphen may only join two parts of a word")
-    tokens = [token for token in re.split(r"[\s.,'()&-]+", text) if token]
-    if not _OPERATOR_WORDS.isdisjoint(tokens):
+    words = text.split(" ")
+    if not _OPERATOR_WORDS.isdisjoint(word.strip(".,'()&") for word in words[1:]):
         raise ValueError("contains a search operator")
-    if kind == "organisation":
+    if kind != "name":
         digits = sum(ch.isdigit() for ch in text)
-        numbered = [token for token in tokens if any(ch.isdigit() for ch in token)]
-        # A digit belongs inside one name token ("G4S", "3news"). A number standing alone, a
-        # second numbered token or an ordinal is a house number, a day, a year or part of an
-        # identifier.
-        if (digits > 2 or len(numbered) > 1 or any(token.isdigit() for token in numbered)
-                or _ORDINAL.search(text)):
-            raise ValueError("an organisation name may not carry a number")
-    # A role or organisation never needs a month name or a domain.
-    if kind != "name" and (_MONTH.search(text) or _DOMAIN_SHAPE.search(text)):
-        raise ValueError("looks like a date or a domain")
+        free_numbers = sum(bool(_FREE_NUMBER.fullmatch(word.strip(".,'()&"))) for word in words)
+        if digits > _MAX_DIGITS or free_numbers > 1 or _NUMBERS_JOINED.search(text):
+            raise ValueError("looks like an identifier, a telephone number or a date")
+        if _DATE_IN_WORDS.search(text):
+            raise ValueError("looks like a date")
+        if _DOMAIN_SHAPE.search(text):
+            raise ValueError("looks like a domain name")
     return text
 
 
@@ -98,8 +112,10 @@ class ResearchQuery(BaseModel):
 
     @field_validator("name")
     @classmethod
-    def _name(cls, value: str) -> str:
-        return _clean(value, kind="name")
+    def _name(cls, value: str, info: ValidationInfo) -> str:
+        # An organisation's name is an organisation name: "37 Military Hospital" is a subject.
+        organisation = info.data.get("subject_kind") == "PUBLIC_INTEREST_ORGANISATION"
+        return _clean(value, kind="organisation" if organisation else "name")
 
     @field_validator("role")
     @classmethod

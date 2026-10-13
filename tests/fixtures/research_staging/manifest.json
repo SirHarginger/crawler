@@ -1,0 +1,54 @@
+{
+  "what_this_is": "Synthetic pages for the staging research source. Every name is invented. Served in-process under a host that cannot exist.",
+  "host": "pages.fixture.invalid",
+  "subjects": [
+    {
+      "name": "Synthetic Ministry of Finance",
+      "pages": [
+        "/ministry/about",
+        "/news/quarterly-report",
+        "/news/hostile-notice",
+        "/ministry/withdrawn"
+      ]
+    },
+    {
+      "name": "Synthetic Member Alpha",
+      "pages": [
+        "/members/alpha",
+        "/news/member-opens-plant"
+      ]
+    },
+    {
+      "name": "Synthetic Unreachable Body",
+      "pages": [
+        "/ministry/withdrawn",
+        "/files/report"
+      ]
+    }
+  ],
+  "pages": {
+    "/ministry/about": {
+      "file": "ministry-about.html"
+    },
+    "/news/quarterly-report": {
+      "file": "news-quarterly-report.html"
+    },
+    "/news/hostile-notice": {
+      "file": "news-hostile.html"
+    },
+    "/ministry/withdrawn": {
+      "file": null,
+      "status": 404
+    },
+    "/members/alpha": {
+      "file": "member-profile.html"
+    },
+    "/news/member-opens-plant": {
+      "file": "news-member.html"
+    },
+    "/files/report": {
+      "file": "ministry-about.html",
+      "content_type": "application/pdf"
+    }
+  }
+}

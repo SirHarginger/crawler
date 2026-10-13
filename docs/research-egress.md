@@ -19,21 +19,20 @@ fixed code (`invalid_request`); what was sent is never echoed. Bodies over 16 KB
 
 ## Rules
 
-- **Minimum query data.** `ResearchQuery` has `subject_kind` (`PUBLIC_FIGURE` or
-  `PUBLIC_INTEREST_ORGANISATION`), `name`, `role`, `organisation`, `country` and `birth_year`.
-  Nothing else can be sent. Digits are refused except inside one organisation name token
-  ("G4S"); ordinals, month names, `letter.letter` domain shapes, `@`, quotes, colons, slashes,
-  a hyphen that does not join two parts of a word, and the capitalised words `OR`, `AND` and
-  `NOT` are refused; length is checked after Unicode normalisation (policy
-  `research_query_v3`). This narrows what can be sent and cannot make free text safe: a
-  second name in `name`, a date or an address spelled out in words ("at gmail dot com"), and
-  a house number written as one token ("12A Ring Road") still pass. The rules also refuse
-  some genuine forms, and fail closed: initials with full stops ("U.S. Department of the
-  Treasury", "J.P. Morgan", "M.P."), an organisation with a number of its own ("37 Military
-  Hospital", "Channel 4"), an ordinal ("2nd Deputy Speaker"), a month word ("May & Baker"),
-  a typographic apostrophe or hyphen ("O’Brien"), and a capitalised "OR" ("OR Tambo").
-  `subject_kind` is the caller's assertion and is not verified here. `query.py` is identical
-  in the engine.
+- **Minimum query data.** `ResearchQuery` is a small typed record: `subject_kind`
+  (`PUBLIC_FIGURE` or `PUBLIC_INTEREST_ORGANISATION`), `name`, `role`, `organisation`,
+  `country` and `birth_year`. Nothing else can be sent, and the string a provider receives
+  is assembled in trusted code. Each field is validated for what it is, after one
+  normalisation step (NFKC, typographic apostrophes and hyphens folded): letters of any
+  script and a few punctuation marks everywhere; no quote, colon, slash or `@`; a hyphen only
+  between two parts of a word; `OR`, `AND` and `NOT` in capitals only as a first word. A name
+  carries no digits. A role or an organisation may ("37 Military Hospital", "Channel 4",
+  "2nd Deputy Speaker", "U.S. Department of the Treasury"), but not in the shape of an
+  identifier, a telephone number, a date or a domain (policy `research_query_v4`). This
+  narrows what can be sent and cannot make free text safe: a second name in `name`, a date
+  spelled out in words and a short street address ("12 Ring Road") still pass. `subject_kind`
+  is a statement by the code that built the query and is not verified here; in the engine
+  the controller sets it from its own records. `query.py` is identical in the engine.
 - **A result is a lead.** The provider adapter keeps a URL, its rank and the provider's date
   estimate. It discards the title, snippet, author and the raw response, and requests no page
   content from the provider.
@@ -271,6 +270,46 @@ It refuses to start if any of these is missing or the host is not loopback or pr
 This gives the crawler side three credentials it did not hold before: the provider key, the
 bearer token and the lead-signing secret. It still holds no database or search-index
 credential.
+
+## Staging mode
+
+`RESEARCH_EGRESS_MODE=staging-fixtures` with `RESEARCH_FIXTURE_DIR` (and no provider key: the
+two are refused together) runs the whole egress with no internet (`research/staging.py`). The
+search provider answers from the directory's `manifest.json`: subjects by name, each with the
+local pages that are its leads. The gateway is the real one with an in-process transport that
+serves those pages and a resolver that knows one host, which must end in `.invalid`, a
+top-level domain reserved never to exist. Every other name is a DNS failure, so a fixture
+page that links to a real site cannot make this process reach it.
+
+Everything between provider and transport is the production code: lead tokens are signed and
+redeemed, the gateway validates scheme, port, address, robots and size, pages are parsed in
+the killable child, and extraction and refusals are unchanged. The pages in
+`tests/fixtures/research_staging/` are synthetic: an official-style profile, a news article,
+a page of hostile instructions, a page that is gone and one that is not HTML. This mode
+exists so the engine's staging investigation can be demonstrated end to end
+(`docs/external-research.md` in the engine, "Staging"). It proves the integration, not live
+retrieval.
+
+### Provider restriction
+
+A search request may name the only provider its caller permits (`"provider":
+"staging-fixtures"`). The egress compares it with the provider it is configured with and, if
+they differ, answers `403 provider_not_permitted` **before** the daily budget is touched and
+before the provider is asked (`ResearchEgress.search`). A refused search sends nothing to any
+provider. A successful answer names the provider that answered (`"provider"`), which the
+engine checks as a second line. The engine's staging investigation always sends the
+restriction, from a constant, so an engine pointed at a live-mode egress gets a refusal, never
+a live search. An egress older than this field refuses any request carrying it as
+`invalid_request` (the request model forbids unknown fields), again before searching. A
+request without the field behaves as before.
+
+This is deny-by-default authorisation enforced at the server, the egress, not in the caller
+(OWASP Authorization Cheat Sheet, "Deny by Default", "Verify that Authorization Checks are
+Performed in the Right Location"; retrieved 2026-10-13). Rejected: checking the provider only
+in the engine after the answer, because the search has already happened by then; a separate
+staging egress token, because the token authenticates the engine, not what it may ask for, and
+would add a credential without stopping a misconfiguration; an attestation endpoint the engine
+asks first, because the mode could change between the two requests.
 
 ## Provider
 

@@ -24,6 +24,7 @@ import hmac
 import ipaddress
 import logging
 import os
+import pathlib
 from dataclasses import asdict
 from typing import Any
 
@@ -37,9 +38,11 @@ from starlette.responses import Response
 from .egress import EgressRefused, ResearchEgress
 from .gateway import ResearchGateway
 from .query import ResearchQuery
-from .search import ExaSearchProvider
+from .search import ExaSearchProvider, SearchProvider
+from .staging import Fixtures, FixtureSearchProvider, FixturesInvalid, fixture_gateway
 
 _MIN_SECRET_LENGTH = 32
+STAGING_MODE = "staging-fixtures"
 _MAX_BODY_BYTES = 16 * 1024  # a query or one lead token; nothing larger is legitimate
 
 
@@ -52,6 +55,9 @@ class SearchRequest(BaseModel):
 
     query: ResearchQuery
     limit: int = Field(default=5, ge=1, le=10)
+    # The only provider the caller permits (docs/research-egress.md, "Provider restriction").
+    # An egress older than this field refuses the whole request as invalid, before searching.
+    provider: str | None = Field(default=None, pattern=r"^[a-z0-9-]{1,40}$")
 
 
 class FetchRequest(BaseModel):
@@ -109,10 +115,12 @@ def create_app(egress: ResearchEgress, token: str) -> FastAPI:
     @app.post("/internal/research/search")
     def search(body: SearchRequest) -> dict[str, Any]:
         try:
-            leads = egress.search(body.query, limit=body.limit)
+            leads = egress.search(body.query, limit=body.limit, provider=body.provider)
         except EgressRefused as exc:
-            raise HTTPException(status_code=502, detail=exc.reason) from None
-        return {"query_sha256": body.query.sha256(), "leads": [asdict(lead) for lead in leads]}
+            status = 403 if exc.reason == "provider_not_permitted" else 502
+            raise HTTPException(status_code=status, detail=exc.reason) from None
+        return {"query_sha256": body.query.sha256(), "provider": egress.provider.name,
+                "leads": [asdict(lead) for lead in leads]}
 
     @app.post("/internal/research/fetch")
     def fetch(body: FetchRequest) -> dict[str, Any]:
@@ -133,21 +141,40 @@ def app_from_environment(environ: dict[str, str] | None = None) -> tuple[FastAPI
     env = os.environ if environ is None else environ
     if env.get("RESEARCH_EGRESS_ENABLED") != "true":
         raise EgressNotConfigured("research egress is disabled (RESEARCH_EGRESS_ENABLED != true)")
-    missing = [name for name in ("RESEARCH_EGRESS_TOKEN", "RESEARCH_LEAD_SECRET",
-                                 "RESEARCH_EXA_API_KEY") if not env.get(name)]
+    mode = env.get("RESEARCH_EGRESS_MODE", "live")
+    if mode not in ("live", STAGING_MODE):
+        raise EgressNotConfigured("RESEARCH_EGRESS_MODE must be live or staging-fixtures")
+    source = "RESEARCH_FIXTURE_DIR" if mode == STAGING_MODE else "RESEARCH_EXA_API_KEY"
+    missing = [name for name in ("RESEARCH_EGRESS_TOKEN", "RESEARCH_LEAD_SECRET", source)
+               if not env.get(name)]
     if missing:
         raise EgressNotConfigured(f"missing configuration: {', '.join(missing)}")
+    if mode == STAGING_MODE and env.get("RESEARCH_EXA_API_KEY"):
+        # One or the other: a process that serves fixtures holds no provider credential.
+        raise EgressNotConfigured("staging-fixtures mode takes no provider key")
     if len(env["RESEARCH_LEAD_SECRET"]) < _MIN_SECRET_LENGTH:
         raise EgressNotConfigured("the lead secret must be at least 32 characters")
     host = env.get("RESEARCH_EGRESS_HOST", "127.0.0.1")
     if not _is_internal_host(host):
         raise EgressNotConfigured("the egress binds to a loopback or private address only")
-    provider = ExaSearchProvider(
-        api_key=env["RESEARCH_EXA_API_KEY"],
-        named_person_terms_approved=env.get("RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED") == "true")
-    egress = ResearchEgress(provider=provider,
-                            gateway=ResearchGateway(),
-                            lead_secret=env["RESEARCH_LEAD_SECRET"].encode())
+    provider: SearchProvider
+    if mode == STAGING_MODE:
+        try:
+            fixtures = Fixtures.load(pathlib.Path(env["RESEARCH_FIXTURE_DIR"]))
+        except FixturesInvalid as exc:
+            raise EgressNotConfigured(str(exc)) from None
+        # No provider is contacted and the gateway can resolve the fixture host only.
+        provider, gateway = FixtureSearchProvider(fixtures), fixture_gateway(fixtures)
+        pace = 0.0  # pacing protects a publisher; there is none here
+    else:
+        provider = ExaSearchProvider(
+            api_key=env["RESEARCH_EXA_API_KEY"],
+            named_person_terms_approved=(
+                env.get("RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED") == "true"))
+        gateway, pace = ResearchGateway(), 2.0
+    egress = ResearchEgress(provider=provider, gateway=gateway,
+                            lead_secret=env["RESEARCH_LEAD_SECRET"].encode(),
+                            min_seconds_between_host_requests=pace)
     port = env.get("RESEARCH_EGRESS_PORT", "8090")
     if not (port.isascii() and port.isdigit()) or not 1024 <= int(port) <= 65535:
         raise EgressNotConfigured("RESEARCH_EGRESS_PORT must be a port number from 1024 to 65535")
