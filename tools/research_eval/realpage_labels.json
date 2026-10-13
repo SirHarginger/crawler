@@ -1,0 +1,2081 @@
+{
+  "dataset": "external_research_realpage_dev",
+  "version": "e11-realpage-dev-v1",
+  "labels": {
+    "f-gov-01": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Hon. Kwame Dzudzorli Gakpey",
+          "critical": true
+        },
+        {
+          "text": "Member of Parliament for Keta",
+          "critical": true
+        },
+        {
+          "text": "National Democratic Congress (NDC)",
+          "critical": true
+        },
+        {
+          "text": "MSc. Public Health",
+          "critical": false
+        },
+        {
+          "text": "Public Accounts - Deputy Ranking Member",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Votes & Proceedings",
+          "kind": "navigation"
+        },
+        {
+          "text": "AskParly, your AI assistant",
+          "kind": "control"
+        },
+        {
+          "text": "Get In Touch",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "2025 OGP Global Summit",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "The profile also shows a date of birth, telephone number and e-mail address; none is used as a segment.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-02": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Hon. Emmanuel Kwadwo Agyekum",
+          "critical": true
+        },
+        {
+          "text": "Member of Parliament for Nkoranza South",
+          "critical": true
+        },
+        {
+          "text": "KINGSTON UNIVERSITY",
+          "critical": false
+        },
+        {
+          "text": "6th Parliament",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Votes & Proceedings",
+          "kind": "navigation"
+        },
+        {
+          "text": "AskParly, your AI assistant",
+          "kind": "control"
+        },
+        {
+          "text": "Get In Touch",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "2025 OGP Global Summit",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-03": {
+      "page_type": "list_index",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Members of Parliament",
+          "critical": true
+        },
+        {
+          "text": "Abena Osei-Asare",
+          "critical": true
+        },
+        {
+          "text": "Atiwa East",
+          "critical": false
+        },
+        {
+          "text": "Alfred Nii Kotey Ashie",
+          "critical": true
+        },
+        {
+          "text": "Bede Anwataazumo Ziedeng",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Votes & Proceedings",
+          "kind": "navigation"
+        },
+        {
+          "text": "AskParly, your AI assistant",
+          "kind": "control"
+        },
+        {
+          "text": "Get In Touch",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "2025 OGP Global Summit",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-04": {
+      "page_type": "list_index",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Supreme Court Judges",
+          "critical": true
+        },
+        {
+          "text": "His Lordship Justice Paul Baffoe-Bonnie",
+          "critical": true
+        },
+        {
+          "text": "His Lordship Justice George Kingsley Koomson",
+          "critical": true
+        },
+        {
+          "text": "His Lordship Justice Anthony Forson Jnr",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Remember Me",
+          "kind": "control"
+        },
+        {
+          "text": "Judicial Newsflash",
+          "kind": "related_item"
+        },
+        {
+          "text": "We use cookies to improve our website",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "E-Justice Portal",
+          "kind": "navigation"
+        },
+        {
+          "text": "Select Language",
+          "kind": "control"
+        },
+        {
+          "text": "Leave Application Form",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "No h1 on the page; the headline can only come from the title.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-05": {
+      "page_type": "table",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "List of Chief Justices",
+          "critical": true
+        },
+        {
+          "text": "E.A.L. Bannerman, Esq.",
+          "critical": true
+        },
+        {
+          "text": "1970-1972",
+          "critical": true
+        },
+        {
+          "text": "J.T. Hutchinson Esq.",
+          "critical": false
+        },
+        {
+          "text": "H.W. Macleod",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Remember Me",
+          "kind": "control"
+        },
+        {
+          "text": "Judicial Newsflash",
+          "kind": "related_item"
+        },
+        {
+          "text": "We use cookies to improve our website",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "E-Justice Portal",
+          "kind": "navigation"
+        },
+        {
+          "text": "Select Language",
+          "kind": "control"
+        },
+        {
+          "text": "Leave Application Form",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "No h1 on the page.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-06": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "article",
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "The Central Bank of Ghana traces its roots to the Bank of the Gold Coast (BCG)",
+          "critical": true
+        },
+        {
+          "text": "The Establishment of Bank of Ghana, 1957",
+          "critical": true
+        },
+        {
+          "text": "6. Economics/Statistics Department",
+          "critical": false
+        },
+        {
+          "text": "k. do all other things that are incidental or conducive",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Necessary cookies are absolutely",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "SAVE & ACCEPT",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "Bank Notes & Coins",
+          "kind": "navigation"
+        },
+        {
+          "text": "Weekly GOG T-Bills Results",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "Long narrative page whose paragraphs are set as h2 elements.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-07": {
+      "page_type": "landing",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Dr. Ato Forson leads Ghana to IMF–World Bank High Level",
+          "critical": true
+        },
+        {
+          "text": "2027-2030 Budget Preparation Guidelines",
+          "critical": true
+        },
+        {
+          "text": "Malawian Delegation Lauds Ghana on Deposit Insurance",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to main content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Call Center Line",
+          "kind": "navigation"
+        },
+        {
+          "text": "Chief Economic Officers",
+          "kind": "navigation"
+        },
+        {
+          "text": "Useful Links",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Continue Reading",
+          "kind": "control"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-gov-08": {
+      "page_type": "unsupported_other",
+      "supported": false,
+      "acceptable_routes": [
+        "refusal"
+      ],
+      "expected": [],
+      "forbidden": [],
+      "notes": "The server answered with an HTTP error when fetched.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "the fetch outcome only: there was no page to read"
+    },
+    "f-news-01": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Mahama dissolves Boards of VALCO, GNPC, BOST, CBG and five other",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has directed the immediate dissolution of the boards of nine state institutions and companies.",
+          "critical": true
+        },
+        {
+          "text": "In a letter issued on September 2 by the Secretary to the President, Dr. Callistus Mahama",
+          "critical": false
+        },
+        {
+          "text": "management has been directed not to take any major policy, financial or contractual decisions requiring board approval",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Watch live",
+          "kind": "navigation"
+        },
+        {
+          "text": "Join the conversation",
+          "kind": "control"
+        },
+        {
+          "text": "Listen to this article",
+          "kind": "control"
+        },
+        {
+          "text": "Profile of Emelia Affi Agbenyo",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "First sentence appears twice on the page (standfirst and body).",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-02": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Agbodza descopes road project awarded two Chinese construction",
+          "critical": true
+        },
+        {
+          "text": "Minister for Roads and Highways, Governs Kwame Agbodza, has ordered an immediate reduction in the scope of work",
+          "critical": true
+        },
+        {
+          "text": "descope China International Waters’ project to 25km",
+          "critical": false
+        },
+        {
+          "text": "I want to commend you for being the only contractor that takes the work serious on this corridor",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Watch live",
+          "kind": "navigation"
+        },
+        {
+          "text": "Join the conversation",
+          "kind": "control"
+        },
+        {
+          "text": "Listen to this article",
+          "kind": "control"
+        },
+        {
+          "text": "ECG announces maintenance-related power",
+          "kind": "related_item"
+        },
+        {
+          "text": "Choose an option to vote.",
+          "kind": "control"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-03": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "President Mahama dissolves National Sports Authority Board with i",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has dissolved the Governing Board of the National Sports Authority (NSA) with immediate effect",
+          "critical": true
+        },
+        {
+          "text": "The dissolution was announced by the Presidency on Wednesday, September 2, 2026",
+          "critical": false
+        },
+        {
+          "text": "The other institutions affected by the decision are Prestea Sankofa Gold Limited",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Watch live",
+          "kind": "navigation"
+        },
+        {
+          "text": "Join the conversation",
+          "kind": "control"
+        },
+        {
+          "text": "Listen to this article",
+          "kind": "control"
+        },
+        {
+          "text": "Accra Sports Stadium cleared as Niger",
+          "kind": "related_item"
+        },
+        {
+          "text": "Choose an option to vote.",
+          "kind": "control"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-04": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "National Cathedral: Mahama, NDC want consensus on location, fundi",
+          "critical": true
+        },
+        {
+          "text": "Mahama Ayariga, has disclosed that President John Dramani Mahama and the National Democratic Congress (NDC) have no objection",
+          "critical": true
+        },
+        {
+          "text": "He proposed bringing together leaders of the Catholic Church, Protestant denominations",
+          "critical": false
+        },
+        {
+          "text": "He therefore urged Christian leaders to set aside differences and build a common position on the National Cathedral",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Greater Accra Region",
+          "kind": "navigation"
+        },
+        {
+          "text": "Listen Live",
+          "kind": "navigation"
+        },
+        {
+          "text": "CitiNewsroom.com is Ghana's leading news website",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "AWA restores Accra-Abidjan flight",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-05": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Ahmed Ibrahim: God’s hand is in my ministerial reshuffle",
+          "critical": true
+        },
+        {
+          "text": "Ahmed Ibrahim, has described his reassignment from the Ministry of Local Government, Chieftaincy and Religious Affairs as an act of divine intervention",
+          "critical": true
+        },
+        {
+          "text": "Ahmed Ibrahim said the presence of the Christian Council at the ceremony further reinforced his belief",
+          "critical": false
+        },
+        {
+          "text": "Ahmed Ibrahim has since assumed responsibility for the Works, Housing and Water Resources Ministry following the reshuffle",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Greater Accra Region",
+          "kind": "navigation"
+        },
+        {
+          "text": "Listen Live",
+          "kind": "navigation"
+        },
+        {
+          "text": "CitiNewsroom.com is Ghana's leading news website",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Provocative preaching threatens religious harmony",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-06": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Ato Forson begins consultations on $10bn New Economy programme",
+          "critical": true
+        },
+        {
+          "text": "Dr Cassiel Ato Forson, has begun consultations with key ministries as the government prepares to roll out its New Economy",
+          "critical": true
+        },
+        {
+          "text": "met with the Minister for Trade, Agribusiness and Industry, Elizabeth Ofosu-Adjare",
+          "critical": false
+        },
+        {
+          "text": "President John Dramani Mahama has since announced that the programme will involve a US$10 billion investment",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Greater Accra Region",
+          "kind": "navigation"
+        },
+        {
+          "text": "Listen Live",
+          "kind": "navigation"
+        },
+        {
+          "text": "CitiNewsroom.com is Ghana's leading news website",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Gospel Musician Bernice Offei reportedly missing",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-07": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "65th commemorative Summit of the NAM: NAM must resist pressure fr",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has called on the Non-Aligned Movement (NAM) and its member states to be the voice of conscience",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Switch skin",
+          "kind": "control"
+        },
+        {
+          "text": "Back to top button",
+          "kind": "control"
+        },
+        {
+          "text": "Follow our WhatsApp Channel now!",
+          "kind": "other"
+        },
+        {
+          "text": "Read Next",
+          "kind": "related_item"
+        },
+        {
+          "text": "NPP directs prospective parliamentary aspirants",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "The publisher shows only the lead paragraph, then a promotion for its paid digital edition: the page itself is a teaser of the article.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-08": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Prez Mahama calls for renewed, action-oriented Non-Aligned Moveme",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has called for a renewed and action-oriented Non-Aligned Movement (NAM)",
+          "critical": true
+        },
+        {
+          "text": "President Mahama pointed to Ghana’s recent role in securing international support for a resolution on the transatlantic slave trade",
+          "critical": false
+        },
+        {
+          "text": "He ended his address with a call for the movement to renew its founding spirit",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Switch skin",
+          "kind": "control"
+        },
+        {
+          "text": "Back to top button",
+          "kind": "control"
+        },
+        {
+          "text": "Read Next",
+          "kind": "related_item"
+        },
+        {
+          "text": "NPP directs prospective parliamentary aspirants",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-09": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "GHATSEA alleges intimidation, victimisation at GCAA",
+          "critical": true
+        },
+        {
+          "text": "The Ghana Air Traffic Safety Electronics Association (GHATSEA) has appealed to President John Dramani Mahama to intervene",
+          "critical": true
+        },
+        {
+          "text": "It described the interdiction as unjust and disproportionate",
+          "critical": false
+        },
+        {
+          "text": "GHATSEA has, therefore, appealed to President Mahama to intervene, investigate the concerns raised",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Switch skin",
+          "kind": "control"
+        },
+        {
+          "text": "Back to top button",
+          "kind": "control"
+        },
+        {
+          "text": "Follow our WhatsApp Channel now!",
+          "kind": "other"
+        },
+        {
+          "text": "Read Next",
+          "kind": "related_item"
+        },
+        {
+          "text": "Education ministry calls urgent meeting to resolve GAUA strike",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-10": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Ablakwa calls for new African leadership paradigm to tack",
+          "critical": true
+        },
+        {
+          "text": "Mr Samuel Okudzeto Ablakwa, the Minister of Foreign Affairs, has called for earnest introspection and a new leadership paradigm",
+          "critical": true
+        },
+        {
+          "text": "The Minister drew attention to the growing desperation among Africa’s youth",
+          "critical": false
+        },
+        {
+          "text": "The 26th Extraordinary Session of the AU Executive Council focused on strengthening Africa’s mechanisms for conflict prevention",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Responsive Menu",
+          "kind": "control"
+        },
+        {
+          "text": "About Ghana News Agency",
+          "kind": "navigation"
+        },
+        {
+          "text": "Post navigation",
+          "kind": "navigation"
+        },
+        {
+          "text": "slot gacor",
+          "kind": "other"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-11": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "President Mahama dissolves Boards of nine state instituti",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has dissolved the Boards of nine state-owned institutions with immediate effect.",
+          "critical": true
+        },
+        {
+          "text": "These are Prestea Sankofa Gold Limited, Bulk Oil Storage and Transportation Company Limited (BOST) and Volta Aluminium Company Limited (VALCO).",
+          "critical": false
+        },
+        {
+          "text": "A statement issued by Mr Felix Kwakye Ofosu",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Responsive Menu",
+          "kind": "control"
+        },
+        {
+          "text": "About Ghana News Agency",
+          "kind": "navigation"
+        },
+        {
+          "text": "Post navigation",
+          "kind": "navigation"
+        },
+        {
+          "text": "slot gacor",
+          "kind": "other"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-12": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Mahama lauds Dr Kwame Nkrumah’s pioneering role towards N",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has lauded the pioneering role of Ghana’s first President, Dr Kwame Nkrumah",
+          "critical": true
+        },
+        {
+          "text": "The President said Ghana, therefore, in 1961 came to Belgrade with a tradition of engagement already shaped by the Bandung Conference",
+          "critical": false
+        },
+        {
+          "text": "He noted that it could further strengthen South-South cooperation and advance common positions on development",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Responsive Menu",
+          "kind": "control"
+        },
+        {
+          "text": "About Ghana News Agency",
+          "kind": "navigation"
+        },
+        {
+          "text": "Post navigation",
+          "kind": "navigation"
+        },
+        {
+          "text": "slot gacor",
+          "kind": "other"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-13": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "President Mahama in Belgrade for 65th Non-Aligned Movemen",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has arrived in Belgrade to attend the meeting marking the 65th anniversary of the Non-Aligned Movement (NAM).",
+          "critical": true
+        },
+        {
+          "text": "Serbian President Aleksandar Vučić is hosting the summit",
+          "critical": false
+        },
+        {
+          "text": "Dr Kwame Nkrumah, spearheaded the Non-Aligned Movement’s vision alongside Yugoslavia’s President Josip Broz Tito",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "GRAPHIC ONLINE",
+          "kind": "navigation"
+        },
+        {
+          "text": "From The Same Category",
+          "kind": "related_item"
+        },
+        {
+          "text": "Native Daughter",
+          "kind": "navigation"
+        },
+        {
+          "text": "Lands for Sale",
+          "kind": "hidden"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-14": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "BoG, SEC warn public over fake video using President Maha",
+          "critical": true
+        },
+        {
+          "text": "The Bank of Ghana (BoG) and the Securities and Exchange Commission (SEC) have warned the public against a crypto investment scam",
+          "critical": true
+        },
+        {
+          "text": "The regulators also directed media houses, including radio, television and online platforms, not to carry advertisements",
+          "critical": false
+        },
+        {
+          "text": "They urged the public to take note of the warning and exercise caution when approached with investment offers",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "GRAPHIC ONLINE",
+          "kind": "navigation"
+        },
+        {
+          "text": "From The Same Category",
+          "kind": "related_item"
+        },
+        {
+          "text": "Native Daughter",
+          "kind": "navigation"
+        },
+        {
+          "text": "Lands for Sale",
+          "kind": "hidden"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-15": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "President Mahama dissolves boards of nine state instituti",
+          "critical": true
+        },
+        {
+          "text": "President John Dramani Mahama has dissolved the boards of nine state institutions, including the Ghana National Petroleum Corporation (GNPC)",
+          "critical": true
+        },
+        {
+          "text": "The affected institutions are expected to continue their operations under their respective management teams until new boards are appointed.",
+          "critical": false
+        },
+        {
+          "text": "Dr Mahama said the boards “will be reconstituted in due course”",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "GRAPHIC ONLINE",
+          "kind": "navigation"
+        },
+        {
+          "text": "From The Same Category",
+          "kind": "related_item"
+        },
+        {
+          "text": "Native Daughter",
+          "kind": "navigation"
+        },
+        {
+          "text": "Lands for Sale",
+          "kind": "hidden"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-16": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Mahama lauds Dr Kwame Nkrumah’s pioneering role towards N",
+          "critical": true
+        },
+        {
+          "text": "President John Mahama has lauded the pioneering role of Ghana’s first President, Dr Kwame Nkrumah, towards the formation of the Non-Aligned Movement (NAM)",
+          "critical": true
+        },
+        {
+          "text": "Sixty-five years after the historic Belgrade Conference that gave birth to the Non-Aligned Movement, Ghana is honoured to be present once again",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Receive news updates on the go.",
+          "kind": "control"
+        },
+        {
+          "text": "Dark Mode",
+          "kind": "control"
+        },
+        {
+          "text": "The Views, Comments, Opinions, Contributions and Statements made by Readers",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Habitat Fair",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "The page's first h1 is a subscription prompt, not the headline.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-17": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Ahmed Ibrahim describes ministerial reassignment as ‘divi",
+          "critical": true
+        },
+        {
+          "text": "Ahmed Ibrahim, has described his reassignment from the Ministry of Local Government, Chieftaincy and Religious Affairs",
+          "critical": true
+        },
+        {
+          "text": "Mr Ibrahim was moved to the Works, Housing and Water Resources Ministry as part of President John Mahama’s ministerial reshuffle",
+          "critical": false
+        },
+        {
+          "text": "Mr Ibrahim said the participation of the Christian Council in the ceremony further reinforced his belief",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Receive news updates on the go.",
+          "kind": "control"
+        },
+        {
+          "text": "Dark Mode",
+          "kind": "control"
+        },
+        {
+          "text": "The Views, Comments, Opinions, Contributions and Statements made by Readers",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Habitat Fair",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "The page's first h1 is a subscription prompt, not the headline.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-news-18": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Volta NPP Chair urges President Mahama to dismiss Sammy G",
+          "critical": true
+        },
+        {
+          "text": "Makafui Woanyah, has urged President Mahama to dismiss Sammy Gyamfi as the Ghana Gold Board Chief Executive",
+          "critical": true
+        },
+        {
+          "text": "A $1.7 billion loss does not belong to one party; it belongs to every Ghanaian across all regions",
+          "critical": false
+        },
+        {
+          "text": "a man appointed by President Mahama stood on a platform built and funded by the state",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Receive news updates on the go.",
+          "kind": "control"
+        },
+        {
+          "text": "Dark Mode",
+          "kind": "control"
+        },
+        {
+          "text": "The Views, Comments, Opinions, Contributions and Statements made by Readers",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Habitat Fair",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "The page's first h1 is a subscription prompt, not the headline.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-san-01": {
+      "page_type": "list_index",
+      "supported": true,
+      "acceptable_routes": [
+        "article",
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "The UK Sanctions List",
+          "critical": true
+        },
+        {
+          "text": "Find out which people, entities and ships are designated or specified under regulations",
+          "critical": true
+        },
+        {
+          "text": "Added 13 new designations under the Global Irregular",
+          "critical": true
+        },
+        {
+          "text": "Added 3 new designations under the Sudan sanctions regime.",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Cookies on GOV.UK",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "We use some essential",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "You have accepted additional cookies",
+          "kind": "hidden"
+        },
+        {
+          "text": "Rhestr o Wasanaethau Cymraeg",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Navigation menu",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "A publication page with a long log of updates; it declares itself an article.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-san-02": {
+      "page_type": "unsupported_other",
+      "supported": false,
+      "acceptable_routes": [
+        "refusal"
+      ],
+      "expected": [],
+      "forbidden": [],
+      "notes": "The page says it cannot run without JavaScript.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-san-03": {
+      "page_type": "unsupported_other",
+      "supported": false,
+      "acceptable_routes": [
+        "refusal"
+      ],
+      "expected": [],
+      "forbidden": [],
+      "notes": "The server returned an empty body.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "the fetch outcome only: there was no page to read"
+    },
+    "f-san-04": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "article",
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "What are sanctions (restrictive measures)",
+          "critical": true
+        },
+        {
+          "text": "Sanctions are an essential tool in the EU’s common foreign and security policy (CFSP)",
+          "critical": true
+        },
+        {
+          "text": "Decisions on the adoption, renewal, or lifting of sanctions regimes are taken by the Council of the European Union",
+          "critical": true
+        },
+        {
+          "text": "Role of national competent authorities",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Select your language",
+          "kind": "control"
+        },
+        {
+          "text": "Winding-up of credit institutions",
+          "kind": "navigation"
+        },
+        {
+          "text": "Macroprudential policy",
+          "kind": "navigation"
+        },
+        {
+          "text": "Report an IT vulnerability",
+          "kind": "footer_legal"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "f-san-05": {
+      "page_type": "unsupported_other",
+      "supported": false,
+      "acceptable_routes": [
+        "refusal"
+      ],
+      "expected": [],
+      "forbidden": [],
+      "notes": "A PDF, refused for size before its type was read.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "the fetch outcome only: there was no page to read"
+    },
+    "f-san-06": {
+      "page_type": "unsupported_other",
+      "supported": false,
+      "acceptable_routes": [
+        "refusal"
+      ],
+      "expected": [],
+      "forbidden": [],
+      "notes": "A JavaScript application: the markup holds only 'Please wait'.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "i-eu-1": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "article",
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "What are sanctions (restrictive measures)",
+          "critical": true
+        },
+        {
+          "text": "Sanctions are an essential tool in the EU’s common foreign and security policy (CFSP)",
+          "critical": true
+        },
+        {
+          "text": "Decisions on the adoption, renewal, or lifting of sanctions regimes are taken by the Council of the European Union",
+          "critical": true
+        },
+        {
+          "text": "Role of national competent authorities",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Select your language",
+          "kind": "control"
+        },
+        {
+          "text": "Winding-up of credit institutions",
+          "kind": "navigation"
+        },
+        {
+          "text": "Macroprudential policy",
+          "kind": "navigation"
+        },
+        {
+          "text": "Report an IT vulnerability",
+          "kind": "footer_legal"
+        }
+      ],
+      "notes": "Drawn as the Polish-language URL; the server returned the English page, so this is the same content as f-san-04.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "i-govuk-1": {
+      "page_type": "landing",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Current UK sanctions regimes",
+          "critical": true
+        },
+        {
+          "text": "Guidance and regulation",
+          "critical": true
+        },
+        {
+          "text": "OFSI Annual Review 2022 to 2023",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Cookies on GOV.UK",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "We use some essential",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "You have accepted additional cookies",
+          "kind": "hidden"
+        },
+        {
+          "text": "Rhestr o Wasanaethau Cymraeg",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Navigation menu",
+          "kind": "navigation"
+        },
+        {
+          "text": "this page is useful",
+          "kind": "control"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "n-3news-1": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "The Structural Adjustment Programme concept of university",
+          "critical": true
+        },
+        {
+          "text": "Education remains one of the most important pathways through which individuals can escape poverty",
+          "critical": true
+        },
+        {
+          "text": "It envisaged transferring a substantial proportion of feeding and boarding costs from the state to parents who could afford to pay.",
+          "critical": false
+        },
+        {
+          "text": "Ghana must decide whether higher education will remain a pathway to social mobility or become increasingly constrained by the ability to pay.",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Watch live",
+          "kind": "navigation"
+        },
+        {
+          "text": "GES to consult stakeholders on adjustments",
+          "kind": "related_item"
+        },
+        {
+          "text": "Community guidelines",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "The 3Voices newsletter",
+          "kind": "control"
+        }
+      ],
+      "notes": "Opinion piece.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "n-citi-1": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Asogli State hails GMTF as laudable healthcare initiative",
+          "critical": true
+        },
+        {
+          "text": "The Asogli State has described the Ghana Medical Trust Fund (GMTF), popularly known as Mahama Cares, as a laudable initiative",
+          "critical": true
+        },
+        {
+          "text": "The Fund should not be created for people to go and loot and share",
+          "critical": false
+        },
+        {
+          "text": "Through its regional engagements, the Fund aims to deepen public understanding of its mandate",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Greater Accra Region",
+          "kind": "navigation"
+        },
+        {
+          "text": "Listen Live",
+          "kind": "navigation"
+        },
+        {
+          "text": "CitiNewsroom.com is Ghana's leading news website",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "FDA-approved sanitary pads are safe",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "n-ghtimes-1": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "UG, KNUST postpone reopening over GAUA strike",
+          "critical": true
+        },
+        {
+          "text": "The University of Ghana (UG), Legon, and the Kwame Nkrumah University of Science and Technology (KNUST) have postponed their reopening dates",
+          "critical": true
+        },
+        {
+          "text": "The University of Ghana was scheduled to reopen today, while KNUST was expected to resume academic activities tomorrow.",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Switch skin",
+          "kind": "control"
+        },
+        {
+          "text": "Back to top button",
+          "kind": "control"
+        },
+        {
+          "text": "Follow our WhatsApp Channel now!",
+          "kind": "other"
+        },
+        {
+          "text": "Read Next",
+          "kind": "related_item"
+        },
+        {
+          "text": "SKIP THE QUEUE, TAP THE NEWS",
+          "kind": "other"
+        },
+        {
+          "text": "NPP directs prospective parliamentary aspirants",
+          "kind": "related_item"
+        }
+      ],
+      "notes": "The publisher shows only the first paragraphs, then a promotion for its paid digital edition.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "n-gna-1": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "At least 12 killed and hundreds injured in attack on Riya",
+          "critical": true
+        },
+        {
+          "text": "At least 12 people were killed in an attack on the main airport in Saudi Arabia’s capital Riyadh",
+          "critical": true
+        },
+        {
+          "text": "UN Secretary General António Guterres, said he was deeply shocked by the attack.",
+          "critical": false
+        },
+        {
+          "text": "Saudi Arabia, one of the world’s largest oil producers, has previously blamed the Houthis for attacks on civilian facilities",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Responsive Menu",
+          "kind": "control"
+        },
+        {
+          "text": "About Ghana News Agency",
+          "kind": "navigation"
+        },
+        {
+          "text": "Post navigation",
+          "kind": "navigation"
+        },
+        {
+          "text": "slot gacor",
+          "kind": "other"
+        }
+      ],
+      "notes": "Wire story, not about Ghana.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "n-graphic-1": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Interior Minister appeals to citizens to share informatio",
+          "critical": true
+        },
+        {
+          "text": "Mr Mubarak Mohammed Muntaka, has appealed to Ghanaians to assist law enforcement agencies with credible intelligence",
+          "critical": true
+        },
+        {
+          "text": "Progress in drug fight",
+          "critical": false
+        },
+        {
+          "text": "He reiterated that credible information from the public, combined with international cooperation",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "GRAPHIC ONLINE",
+          "kind": "navigation"
+        },
+        {
+          "text": "From The Same Category",
+          "kind": "related_item"
+        },
+        {
+          "text": "Native Daughter",
+          "kind": "navigation"
+        },
+        {
+          "text": "Lands for Sale",
+          "kind": "hidden"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "n-joy-1": {
+      "page_type": "article",
+      "supported": true,
+      "acceptable_routes": [
+        "article"
+      ],
+      "expected": [
+        {
+          "text": "Sankofa Gold targets 70kg output after 9-month shutdown",
+          "critical": true
+        },
+        {
+          "text": "Prestea Sankofa Gold Limited is targeting 70 kilogrammes of gold production by the end of October 2026",
+          "critical": true
+        },
+        {
+          "text": "We are looking at production of 850 tons per day",
+          "critical": false
+        },
+        {
+          "text": "The completion of the facility is expected to support continued operations",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Receive news updates on the go.",
+          "kind": "control"
+        },
+        {
+          "text": "Dark Mode",
+          "kind": "control"
+        },
+        {
+          "text": "The Views, Comments, Opinions, Contributions and Statements made by Readers",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Habitat Fair",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "The page's first h1 is a subscription prompt, not the headline.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-bog-1": {
+      "page_type": "landing",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "The MPC is responsible for formulating and implementing policy in the areas of money, banking and credit",
+          "critical": true
+        },
+        {
+          "text": "Banking Sector Reports",
+          "critical": false
+        },
+        {
+          "text": "Summary of Economic and Financial Data",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Necessary cookies are absolutely",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "SAVE & ACCEPT",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "BOG Staff Email",
+          "kind": "navigation"
+        },
+        {
+          "text": "Official Holidays",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-bog-2": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "article",
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Disclaimer",
+          "critical": true
+        },
+        {
+          "text": "The information on this site is provided for general reference purposes only",
+          "critical": true
+        },
+        {
+          "text": "Links to other sites are provided for your convenience but the Bank of Ghana accepts no responsibility",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Necessary cookies are absolutely",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "SAVE & ACCEPT",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "BOG Staff Email",
+          "kind": "navigation"
+        },
+        {
+          "text": "Official Holidays",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "A legal notice page; low value as evidence but a real page shape.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-judicial-1": {
+      "page_type": "unsupported_other",
+      "supported": false,
+      "acceptable_routes": [
+        "refusal"
+      ],
+      "expected": [],
+      "forbidden": [],
+      "notes": "A 'Public Notice' page whose only content of its own is one line of text (the notice appears to be an image). Everything else is site chrome.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-judicial-2": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "article",
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "History of the Supreme Court Building",
+          "critical": true
+        },
+        {
+          "text": "The foundation stone of the Supreme Court was laid on the 16th day of August, 1929",
+          "critical": true
+        },
+        {
+          "text": "The court building was surrounded on the North by the then Gold Coast Hospital",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Remember Me",
+          "kind": "control"
+        },
+        {
+          "text": "Judicial Newsflash",
+          "kind": "related_item"
+        },
+        {
+          "text": "We use cookies to improve our website",
+          "kind": "cookie_banner"
+        },
+        {
+          "text": "E-Justice Portal",
+          "kind": "navigation"
+        },
+        {
+          "text": "Select Language",
+          "kind": "control"
+        },
+        {
+          "text": "Leave Application Form",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "Narrative institutional page; it declares nothing, so structured text is the expected route.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-mofep-1": {
+      "page_type": "list_index",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Investor Relations",
+          "critical": true
+        },
+        {
+          "text": "Medium Term Debt Management Strategy",
+          "critical": true
+        },
+        {
+          "text": "2025 - 2028 MTDS",
+          "critical": false
+        },
+        {
+          "text": "The public debt in Ghana is defined to include all borrowings by the Central Government",
+          "critical": true
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to main content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Call Center Line",
+          "kind": "navigation"
+        },
+        {
+          "text": "Chief Economic Officers",
+          "kind": "navigation"
+        },
+        {
+          "text": "Useful Links",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "Breadcrumb",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-mofep-2": {
+      "page_type": "list_index",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Divisions / Offices",
+          "critical": true
+        },
+        {
+          "text": "External Resource Mobilisation",
+          "critical": true
+        },
+        {
+          "text": "Revenue Policy",
+          "critical": true
+        },
+        {
+          "text": "ADVISORY FUNCTIONS",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Skip to main content",
+          "kind": "navigation"
+        },
+        {
+          "text": "Call Center Line",
+          "kind": "navigation"
+        },
+        {
+          "text": "Chief Economic Officers",
+          "kind": "navigation"
+        },
+        {
+          "text": "Useful Links",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "About Sidebar",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "The page's own content is a short list of links; the same names also appear in the site menu.",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-parliament-1": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Hon. Abdul Kabiru Tiah Mahama",
+          "critical": true
+        },
+        {
+          "text": "Member of Parliament for Walewale",
+          "critical": true
+        },
+        {
+          "text": "Mountcrest University College",
+          "critical": true
+        },
+        {
+          "text": "Government of Ghana",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Votes & Proceedings",
+          "kind": "navigation"
+        },
+        {
+          "text": "AskParly, your AI assistant",
+          "kind": "control"
+        },
+        {
+          "text": "Get In Touch",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "2025 OGP Global Summit",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    },
+    "o-parliament-2": {
+      "page_type": "profile",
+      "supported": true,
+      "acceptable_routes": [
+        "structured"
+      ],
+      "expected": [
+        {
+          "text": "Hon. Abdul Aziz Fatahiya",
+          "critical": true
+        },
+        {
+          "text": "Member of Parliament for Savelugu",
+          "critical": true
+        },
+        {
+          "text": "New Patriotic Party (NPP)",
+          "critical": true
+        },
+        {
+          "text": "PRESIDENTIAL AIDE",
+          "critical": false
+        }
+      ],
+      "forbidden": [
+        {
+          "text": "Votes & Proceedings",
+          "kind": "navigation"
+        },
+        {
+          "text": "AskParly, your AI assistant",
+          "kind": "control"
+        },
+        {
+          "text": "Get In Touch",
+          "kind": "footer_legal"
+        },
+        {
+          "text": "2025 OGP Global Summit",
+          "kind": "navigation"
+        }
+      ],
+      "notes": "",
+      "annotation_status": "ai_preannotation",
+      "annotated_from": "a condensed digest of the plain rendering of the snapshot (headings, the first and last lines, a few long lines and a spread of others), then each segment checked against the full plain rendering; not rendered in a browser; not from extractor output"
+    }
+  },
+  "amended": "2026-10-13, after independent review: `annotated_from` corrected on every label to say what the label was really made from. Nothing else changed; the content of the labels is as frozen under SHA-256 ab968bb69d1380fb6dc663c744603748e790d1d71fd003d0e3746ee91bbb8b2a."
+}

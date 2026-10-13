@@ -1,0 +1,813 @@
+{
+  "dataset": "external_research_realpage_dev",
+  "version": "e11-realpage-dev-v1",
+  "protocol_sha256": "2ee1003c9132547b40295773b771860875f3745bd068a04cc572e3967b0db749",
+  "cases": [
+    {
+      "id": "f-news-01",
+      "stratum": "carried_over",
+      "url": "https://3news.com/news/dissolution-of-boards",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://3news.com/news/dissolution-of-boards",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:33:00+00:00",
+        "content_sha256": "5be2dd6021857929b8d123cbd476c4e028bf4c674e19e88aac0f4fd7a37023bb",
+        "bytes": 329483
+      }
+    },
+    {
+      "id": "f-news-02",
+      "stratum": "carried_over",
+      "url": "https://3news.com/news/agbodza-orders-reduction-in-scope-of-road-project-awarded-two-contractors-over-disappointing-progress",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://3news.com/news/agbodza-orders-reduction-in-scope-of-road-project-awarded-two-contractors-over-disappointing-progress",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:33:04+00:00",
+        "content_sha256": "1acf1cfec5b20134ddb05fb279c632407a863bc5cd3d3a17091e3b94331e836a",
+        "bytes": 341077
+      }
+    },
+    {
+      "id": "f-news-03",
+      "stratum": "carried_over",
+      "url": "https://3news.com/sports/mahama-dissolves-national-sports-authority-board-with-immediate-effect",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://3news.com/sports/mahama-dissolves-national-sports-authority-board-with-immediate-effect",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:33:08+00:00",
+        "content_sha256": "aed87c5b101bc7f37b2b8b82b624baf464c9e157fb8304a40ffb4af3e9ff3460",
+        "bytes": 350757
+      }
+    },
+    {
+      "id": "f-news-04",
+      "stratum": "carried_over",
+      "url": "https://www.citinewsroom.com/2026/09/national-cathedral-mahama-ndc-want-consensus-on-location-funding-ayariga/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.citinewsroom.com/2026/09/national-cathedral-mahama-ndc-want-consensus-on-location-funding-ayariga/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:11+00:00",
+        "content_sha256": "319e6638cce64cb424f7b5be082beb27e1ec5e0e20b0408d087f5b641cf8afa2",
+        "bytes": 133706
+      }
+    },
+    {
+      "id": "f-news-05",
+      "stratum": "carried_over",
+      "url": "https://www.citinewsroom.com/2026/09/ahmed-ibrahim-gods-hand-is-in-my-ministerial-reshuffle/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.citinewsroom.com/2026/09/ahmed-ibrahim-gods-hand-is-in-my-ministerial-reshuffle/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:16+00:00",
+        "content_sha256": "f2d6826fa6abc7bca5ce6217e6ccbc8cee7807136924ab715e0e391924401cf7",
+        "bytes": 131069
+      }
+    },
+    {
+      "id": "f-news-06",
+      "stratum": "carried_over",
+      "url": "https://www.citinewsroom.com/2026/09/ato-forson-begins-consultations-on-us10bn-new-economy-programme/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.citinewsroom.com/2026/09/ato-forson-begins-consultations-on-us10bn-new-economy-programme/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:21+00:00",
+        "content_sha256": "8640df1701d41c0be2a742f096f146eb21e8a3bdba579d04fd5065e11d13f8c1",
+        "bytes": 128985
+      }
+    },
+    {
+      "id": "f-news-07",
+      "stratum": "carried_over",
+      "url": "https://ghanaiantimes.com.gh/65th-commemorative-summit-of-the-nam-nam-must-resist-pressure-from-power-blocs-pres-mahama/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://ghanaiantimes.com.gh/65th-commemorative-summit-of-the-nam-nam-must-resist-pressure-from-power-blocs-pres-mahama/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:23+00:00",
+        "content_sha256": "b769b81d24899214141252a2a6130a42d1b7f0205bb13e951270f93e9560bca9",
+        "bytes": 120849
+      }
+    },
+    {
+      "id": "f-news-08",
+      "stratum": "carried_over",
+      "url": "https://ghanaiantimes.com.gh/prez-mahama-calls-for-renewed-action-oriented-non-aligned-movement/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://ghanaiantimes.com.gh/prez-mahama-calls-for-renewed-action-oriented-non-aligned-movement/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:26+00:00",
+        "content_sha256": "63fb37dda4208fd199cda60645472128cf40190a6db9791e5bc3957378289172",
+        "bytes": 113167
+      }
+    },
+    {
+      "id": "f-news-09",
+      "stratum": "carried_over",
+      "url": "https://ghanaiantimes.com.gh/ghatsea-alleges-intimidation-victimisation-at-gcaa-petitions-mahama-for-intervention/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://ghanaiantimes.com.gh/ghatsea-alleges-intimidation-victimisation-at-gcaa-petitions-mahama-for-intervention/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:30+00:00",
+        "content_sha256": "d3bd6ccf691701bedf76d1a6b0b08b19ec2682f02ad37ba71b0770ae245c42b3",
+        "bytes": 125563
+      }
+    },
+    {
+      "id": "f-news-10",
+      "stratum": "carried_over",
+      "url": "https://gna.org.gh/2026/09/ablakwa-calls-for-new-african-leadership-paradigm-to-tackle-conflicts/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://gna.org.gh/2026/09/ablakwa-calls-for-new-african-leadership-paradigm-to-tackle-conflicts/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:34+00:00",
+        "content_sha256": "b9ec32166f7c7241f34897a8eafc2b1127f80c1a133a58fcc27483c8bf076e0d",
+        "bytes": 122225
+      }
+    },
+    {
+      "id": "f-news-11",
+      "stratum": "carried_over",
+      "url": "https://gna.org.gh/2026/09/president-mahama-dissolves-boards-of-nine-state-institutions/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://gna.org.gh/2026/09/president-mahama-dissolves-boards-of-nine-state-institutions/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:40+00:00",
+        "content_sha256": "2c75eb1e72cecf58dacbec66e6f0d522477dc65917824afd4dac900972c9fb1a",
+        "bytes": 118285
+      }
+    },
+    {
+      "id": "f-news-12",
+      "stratum": "carried_over",
+      "url": "https://gna.org.gh/2026/09/mahama-lauds-dr-kwame-nkrumahs-pioneering-role-towards-nam-formation/",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://gna.org.gh/2026/09/mahama-lauds-dr-kwame-nkrumahs-pioneering-role-towards-nam-formation/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:46+00:00",
+        "content_sha256": "40c318b184b737f753fd171cf640eeacbc978749e8315333c8b3bccfbba60d47",
+        "bytes": 128110
+      }
+    },
+    {
+      "id": "f-news-13",
+      "stratum": "carried_over",
+      "url": "https://www.graphic.com.gh/news/general-news/president-mahama-in-belgrade-for-65th-non-aligned-movement-summit.html",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.graphic.com.gh/news/general-news/president-mahama-in-belgrade-for-65th-non-aligned-movement-summit.html",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:33:47+00:00",
+        "content_sha256": "3952de3265ad31557a901990f0b64d222a01a16a34c6a7aae6c45b870fa7f681",
+        "bytes": 173253
+      }
+    },
+    {
+      "id": "f-news-14",
+      "stratum": "carried_over",
+      "url": "https://www.graphic.com.gh/news/general-news/bog-sec-warn-against-fake-mahama-video-promoting-crypto-scam.html",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.graphic.com.gh/news/general-news/bog-sec-warn-against-fake-mahama-video-promoting-crypto-scam.html",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:33:50+00:00",
+        "content_sha256": "91283e2dbec7f080752075be1ca0ce860134fe049e2cbe806386fe58bf2a3f19",
+        "bytes": 177620
+      }
+    },
+    {
+      "id": "f-news-15",
+      "stratum": "carried_over",
+      "url": "https://www.graphic.com.gh/news/general-news/mahama-dissolves-boards-of-nine-state-institutions-including-gnpc-valco-and-ghana-post.html",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.graphic.com.gh/news/general-news/mahama-dissolves-boards-of-nine-state-institutions-including-gnpc-valco-and-ghana-post.html",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:33:53+00:00",
+        "content_sha256": "88d6945c34d0069ddebf72e813db5b5ac2d24ee25a74ea205c2797572b5587e3",
+        "bytes": 178578
+      }
+    },
+    {
+      "id": "f-news-16",
+      "stratum": "carried_over",
+      "url": "https://www.myjoyonline.com/mahama-lauds-dr-kwame-nkrumahs-pioneering-role-towards-nam-formation",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.myjoyonline.com/mahama-lauds-dr-kwame-nkrumahs-pioneering-role-towards-nam-formation/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:33:56+00:00",
+        "content_sha256": "142b47ff89f45bec18ba0139ea4c4ab205c9c31b52f701c8d1886162a235340a",
+        "bytes": 207635
+      }
+    },
+    {
+      "id": "f-news-17",
+      "stratum": "carried_over",
+      "url": "https://www.myjoyonline.com/ahmed-ibrahim-describes-ministerial-reassignment-as-divine-intervention",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.myjoyonline.com/ahmed-ibrahim-describes-ministerial-reassignment-as-divine-intervention/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:02+00:00",
+        "content_sha256": "2ccb15fd847f564625a86c5ada315aeeba3e69e9df8f0b41e623ae1e093bf3e9",
+        "bytes": 196163
+      }
+    },
+    {
+      "id": "f-news-18",
+      "stratum": "carried_over",
+      "url": "https://www.myjoyonline.com/volta-npp-chair-urges-president-mahama-to-dismiss-sammy-gyamfi-over-misconduct",
+      "category": "ghanaian_publisher",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.myjoyonline.com/volta-npp-chair-urges-president-mahama-to-dismiss-sammy-gyamfi-over-misconduct/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:07+00:00",
+        "content_sha256": "e571745b22b09726751b67a76dc3ebc8e1bc4dc75898bd9db261617e3ec78122",
+        "bytes": 202550
+      }
+    },
+    {
+      "id": "f-gov-01",
+      "stratum": "carried_over",
+      "url": "https://www.parliament.gh/members?mp=94040",
+      "category": "parliament",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.parliament.gh/members?mp=94040",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:09+00:00",
+        "content_sha256": "9b9651aaa3476bb641a16e4376c4ed6ff41f7f801d8146ba7076fd2367c62f22",
+        "bytes": 35954
+      }
+    },
+    {
+      "id": "f-gov-02",
+      "stratum": "carried_over",
+      "url": "https://www.parliament.gh/members?mp=94103",
+      "category": "parliament",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.parliament.gh/members?mp=94103",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:13+00:00",
+        "content_sha256": "001fb5cd45b0752aa03e77af986dc9688538b63dd9d597a4a6a20384135589a2",
+        "bytes": 34559
+      }
+    },
+    {
+      "id": "f-gov-03",
+      "stratum": "carried_over",
+      "url": "https://www.parliament.gh/members",
+      "category": "parliament",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.parliament.gh/members",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:17+00:00",
+        "content_sha256": "b32dc8048fd71fa9c06bfaa05888ba5af97535ecb2a8c87ed8e7f6197cac42b4",
+        "bytes": 104498
+      }
+    },
+    {
+      "id": "f-gov-04",
+      "stratum": "carried_over",
+      "url": "https://judicial.gov.gh/index.php/about-the-judiciary/judges-and-magistrates/supremecourt-judges",
+      "category": "government",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://judicial.gov.gh/index.php/about-the-judiciary/judges-and-magistrates/supremecourt-judges",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:34:19+00:00",
+        "content_sha256": "76738d828a8a8ad7f256cbd531996188a0bf3127e027d11243f5d326310ddcc1",
+        "bytes": 73933
+      }
+    },
+    {
+      "id": "f-gov-05",
+      "stratum": "carried_over",
+      "url": "https://judicial.gov.gh/index.php/about-the-judiciary/history/list-of-chief-justices",
+      "category": "government",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://judicial.gov.gh/index.php/about-the-judiciary/history/list-of-chief-justices",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:34:24+00:00",
+        "content_sha256": "cb6758d336f751ad084551c59aa936043971098dbd4d44d74f5d7617fc472e8a",
+        "bytes": 80978
+      }
+    },
+    {
+      "id": "f-gov-06",
+      "stratum": "carried_over",
+      "url": "https://www.bog.gov.gh/about-the-bank/",
+      "category": "government",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.bog.gov.gh/about-the-bank/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:28+00:00",
+        "content_sha256": "79a9d348e65efc685fcccb789d9114ea1be6e9ce63a63307673b21abceaf4d01",
+        "bytes": 202387
+      }
+    },
+    {
+      "id": "f-gov-07",
+      "stratum": "carried_over",
+      "url": "https://mofep.gov.gh/",
+      "category": "government",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://mofep.gov.gh/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:30+00:00",
+        "content_sha256": "8341524e5a9b332e46da8fa3ac212393e783b67ba76807742d8b40754fd0d112",
+        "bytes": 81251
+      }
+    },
+    {
+      "id": "f-gov-08",
+      "stratum": "carried_over",
+      "url": "https://presidency.gov.gh/",
+      "category": "government",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "http_error",
+        "retrieved_at": "2026-10-13T04:34:32+00:00"
+      }
+    },
+    {
+      "id": "f-san-01",
+      "stratum": "carried_over",
+      "url": "https://www.gov.uk/government/publications/the-uk-sanctions-list",
+      "category": "sanctions_authority",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.gov.uk/government/publications/the-uk-sanctions-list",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:34:33+00:00",
+        "content_sha256": "366d2e7122568582b7ca016e9ee9c1345b9eda89fb9676a6580ed14f8341cac6",
+        "bytes": 274806
+      }
+    },
+    {
+      "id": "f-san-02",
+      "stratum": "carried_over",
+      "url": "https://ofac.treasury.gov/specially-designated-nationals-and-blocked-persons-list-sdn-human-readable-lists",
+      "category": "sanctions_authority",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://sanctionslist.ofac.treas.gov/Home/SdnList",
+        "status": 200,
+        "declared_content_type": "text/html",
+        "retrieved_at": "2026-10-13T04:34:40+00:00",
+        "content_sha256": "106e250271db3616dbdbb1232f7012a58b1d43e2f3b496cdf14153e410eccbca",
+        "bytes": 2629
+      }
+    },
+    {
+      "id": "f-san-03",
+      "stratum": "carried_over",
+      "url": "https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list",
+      "category": "sanctions_authority",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://main.un.org/securitycouncil/en/content/un-sc-consolidated-list",
+        "status": 202,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:41+00:00",
+        "content_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    },
+    {
+      "id": "f-san-04",
+      "stratum": "carried_over",
+      "url": "https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_en",
+      "category": "sanctions_authority",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": true,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_en",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:34:49+00:00",
+        "content_sha256": "9b32353557c9a008aba6ad7c223ea8ca92fe6e42f093af5be8a607df976d1ef9",
+        "bytes": 196193
+      }
+    },
+    {
+      "id": "f-san-05",
+      "stratum": "carried_over",
+      "url": "https://www.treasury.gov/ofac/downloads/sdnlist.pdf",
+      "category": "sanctions_authority",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "too_large",
+        "retrieved_at": "2026-10-13T04:34:54+00:00"
+      }
+    },
+    {
+      "id": "f-san-06",
+      "stratum": "carried_over",
+      "url": "https://www.sanctionsmap.eu/",
+      "category": "sanctions_authority",
+      "selected_by": "fetch-dev-v1, frozen 2026-10-11",
+      "read_during_e1": false,
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.sanctionsmap.eu/",
+        "status": 200,
+        "declared_content_type": "text/html",
+        "retrieved_at": "2026-10-13T04:34:56+00:00",
+        "content_sha256": "8314c8a21a55a6b3141e6208308d3481fe8e7f7278ecec5011814bc6b72a0f51",
+        "bytes": 3389
+      }
+    },
+    {
+      "id": "n-3news-1",
+      "stratum": "fresh_news",
+      "url": "https://3news.com/opinion/the-structural-adjustment-programme-concept-of-university-education-funding-are-we-living-with-its-consequences",
+      "category": "ghanaian_publisher",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 50 candidate links from https://3news.com/feed.xml",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://3news.com/opinion/the-structural-adjustment-programme-concept-of-university-education-funding-are-we-living-with-its-consequences",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:34:57+00:00",
+        "content_sha256": "f4c510e59d82d7511d88054fafec733621b5c2be50fd1a67859300ddfb8e68f8",
+        "bytes": 243861
+      }
+    },
+    {
+      "id": "n-citi-1",
+      "stratum": "fresh_news",
+      "url": "https://www.citinewsroom.com/2026/10/asogli-state-hails-gmtf-as-laudable-healthcare-initiative/",
+      "category": "ghanaian_publisher",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 10 candidate links from https://citinewsroom.com/wp-json/wp/v2/posts?per_page=10",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.citinewsroom.com/2026/10/asogli-state-hails-gmtf-as-laudable-healthcare-initiative/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:57+00:00",
+        "content_sha256": "cd1c90ed3c98ac5b83269e78056b5ebb4a167af9b8f674e6eb21fa476d89daf2",
+        "bytes": 135587
+      }
+    },
+    {
+      "id": "n-gna-1",
+      "stratum": "fresh_news",
+      "url": "https://gna.org.gh/2026/10/at-least-12-killed-and-hundreds-injured-in-attack-on-riyadh-airport/",
+      "category": "ghanaian_publisher",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 98 candidate links from https://gna.org.gh/",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://gna.org.gh/2026/10/at-least-12-killed-and-hundreds-injured-in-attack-on-riyadh-airport/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:58+00:00",
+        "content_sha256": "3e364716ab804fefb2219fe6a751bc5a0e0a2cba5d5b34cab59edcc5c2a4718c",
+        "bytes": 118701
+      }
+    },
+    {
+      "id": "n-graphic-1",
+      "stratum": "fresh_news",
+      "url": "https://www.graphic.com.gh/news/general-news/interior-minister-appeals-to-citizens-to-share-information-without-excessive-financial-demands.html",
+      "category": "ghanaian_publisher",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 25 candidate links from https://www.graphic.com.gh/news?format=feed&type=rss",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.graphic.com.gh/news/general-news/interior-minister-appeals-to-citizens-to-share-information-without-excessive-financial-demands.html",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:34:58+00:00",
+        "content_sha256": "dc48bb7b3e64f292a36dfaf6b975d051b1da1a41c07e8d6ce4eb66cc2b2fc42d",
+        "bytes": 177580
+      }
+    },
+    {
+      "id": "n-ghtimes-1",
+      "stratum": "fresh_news",
+      "url": "https://ghanaiantimes.com.gh/ug-knust-postpone-reopening-over-gaua-strike/",
+      "category": "ghanaian_publisher",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 10 candidate links from https://ghanaiantimes.com.gh/wp-json/wp/v2/posts?per_page=10",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://ghanaiantimes.com.gh/ug-knust-postpone-reopening-over-gaua-strike/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:34:59+00:00",
+        "content_sha256": "72a472c0880a0cb9eaf13e210d380d0fadf4055eeb8ba52b89f01ab8817af4e8",
+        "bytes": 119089
+      }
+    },
+    {
+      "id": "n-joy-1",
+      "stratum": "fresh_news",
+      "url": "https://www.myjoyonline.com/sankofa-gold-targets-70kg-output-after-9-month-shutdown/",
+      "category": "ghanaian_publisher",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 50 candidate links from https://www.myjoyonline.com/feed/",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.myjoyonline.com/sankofa-gold-targets-70kg-output-after-9-month-shutdown/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:01+00:00",
+        "content_sha256": "58f0dee502d3e8b81a61bf0b4aeb5e90c526bf89674c0367b4e87f69fd8d6a50",
+        "bytes": 204255
+      }
+    },
+    {
+      "id": "o-parliament-1",
+      "stratum": "fresh_official",
+      "url": "https://www.parliament.gh/members?mp=94317",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 78 candidate links from https://www.parliament.gh/members",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.parliament.gh/members?mp=94317",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:02+00:00",
+        "content_sha256": "74149e17e0ec65ecec63cbdd383f1dfcccd83b8211836a9bac4599632d9b7eee",
+        "bytes": 34324
+      }
+    },
+    {
+      "id": "o-parliament-2",
+      "stratum": "fresh_official",
+      "url": "https://www.parliament.gh/members?mp=94248",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 78 candidate links from https://www.parliament.gh/members",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.parliament.gh/members?mp=94248",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:06+00:00",
+        "content_sha256": "990dc894611dc261f9f1f643c2a053bacb48d481c2f4895a4cf500ae94c25294",
+        "bytes": 32190
+      }
+    },
+    {
+      "id": "o-judicial-1",
+      "stratum": "fresh_official",
+      "url": "https://judicial.gov.gh/index.php/explore/notice",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 75 candidate links from https://judicial.gov.gh/index.php/about-the-judiciary/judges-and-magistrates/supremecourt-judges",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://judicial.gov.gh/index.php/explore/notice",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:35:08+00:00",
+        "content_sha256": "ca153b74d593f806f3adcd5e4b68c0c47911b9bffa7a09646d82c16c36f354b6",
+        "bytes": 63555
+      }
+    },
+    {
+      "id": "o-judicial-2",
+      "stratum": "fresh_official",
+      "url": "https://judicial.gov.gh/index.php/about-the-judiciary/history/history-of-the-supremecourt-building",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 75 candidate links from https://judicial.gov.gh/index.php/about-the-judiciary/judges-and-magistrates/supremecourt-judges",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://judicial.gov.gh/index.php/about-the-judiciary/history/history-of-the-supremecourt-building",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:35:13+00:00",
+        "content_sha256": "56f739b8eead5505126bd09cc166faa94b102b8a2afdfe2a0dad98284b2b9221",
+        "bytes": 73104
+      }
+    },
+    {
+      "id": "o-mofep-1",
+      "stratum": "fresh_official",
+      "url": "https://mofep.gov.gh/index.php/investor-relations/bond-investors",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 67 candidate links from https://mofep.gov.gh/",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://mofep.gov.gh/index.php/investor-relations/bond-investors",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:14+00:00",
+        "content_sha256": "ebb57f8d8d68a496e89c2b3b013af9a47a8ec6e3450e78359292a0527d74a377",
+        "bytes": 34719
+      }
+    },
+    {
+      "id": "o-mofep-2",
+      "stratum": "fresh_official",
+      "url": "https://mofep.gov.gh/index.php/about-mof/divisions",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 67 candidate links from https://mofep.gov.gh/",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://mofep.gov.gh/index.php/about-mof/divisions",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:18+00:00",
+        "content_sha256": "978f920a3393e3363a6cac343c0718c6344ccfb74df3f8ec054f90e21f765307",
+        "bytes": 24911
+      }
+    },
+    {
+      "id": "o-bog-1",
+      "stratum": "fresh_official",
+      "url": "https://www.bog.gov.gh/monetary-policy/",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 36 candidate links from https://www.bog.gov.gh/about-the-bank/",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.bog.gov.gh/monetary-policy/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:21+00:00",
+        "content_sha256": "feeb631fc54e58c98a1d4117f9971c04c444b7d83338a24ff71bf4c083809b7b",
+        "bytes": 200816
+      }
+    },
+    {
+      "id": "o-bog-2",
+      "stratum": "fresh_official",
+      "url": "https://www.bog.gov.gh/disclaimer/",
+      "category": "ghana_official",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 36 candidate links from https://www.bog.gov.gh/about-the-bank/",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.bog.gov.gh/disclaimer/",
+        "status": 200,
+        "declared_content_type": "text/html; charset=UTF-8",
+        "retrieved_at": "2026-10-13T04:35:26+00:00",
+        "content_sha256": "e0d09d11227238939f734736b23ea247578f9689d9b8aff640a8be76d9cc6402",
+        "bytes": 183265
+      }
+    },
+    {
+      "id": "i-govuk-1",
+      "stratum": "fresh_international",
+      "url": "https://www.gov.uk/international/current-uk-sanctions-regimes",
+      "category": "sanctions_authority",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 12 candidate links from https://www.gov.uk/government/publications/the-uk-sanctions-list",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://www.gov.uk/international/current-uk-sanctions-regimes",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:35:27+00:00",
+        "content_sha256": "90780c2659c4db1b545867d6e587f42038ab5481f41c65e4d6191804a30b62c4",
+        "bytes": 97574
+      }
+    },
+    {
+      "id": "i-eu-1",
+      "stratum": "fresh_international",
+      "url": "https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_pl",
+      "category": "sanctions_authority",
+      "read_during_e1": false,
+      "selected_by": "seeded sample of 37 candidate links from https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_en",
+      "fetch": {
+        "outcome": "ok",
+        "final_url": "https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_en?prefLang=pl",
+        "status": 200,
+        "declared_content_type": "text/html; charset=utf-8",
+        "retrieved_at": "2026-10-13T04:35:29+00:00",
+        "content_sha256": "a2293919df30b5839806a54659a220348063c8f34f21e96a163420b8a8bdf471",
+        "bytes": 197666
+      }
+    }
+  ]
+}

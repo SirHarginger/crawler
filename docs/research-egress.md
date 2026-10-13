@@ -378,6 +378,119 @@ that declares `og:type` `website` moved from article text to structured text and
 date. The frozen fetch list was not run a third time, so its recorded rates describe the
 extractor as it was on the second run.
 
+**Real pages (E1.1, 2026-10-13; provisional, not yet labelled by a person).**
+`realpage_eval.py` scores the extractor as committed (`9f22a06`) on 48 real pages against
+labels of short segments that must be present and segments that must be absent, the method of
+Trafilatura's benchmark, with boilerplate defined as in the CleanEval annotation guidelines.
+The protocol (`realpage_protocol.json`, SHA-256
+`2ee1003c9132547b40295773b771860875f3745bd068a04cc572e3967b0db749`) was written before any
+page was chosen: sampling rules and seed, annotation instructions, scoring, gates and the
+extractor's file hashes. Nothing is committed yet, so that order rests on file times and on
+the hashes each later file records.
+
+*The sample.* 32 pages are the frozen fetch list, which the implementer chose by hand on
+2026-10-11 from the platform's records and official sites; its 18 news pages are political
+stories of early September, several of them the same story at different publishers. 16
+more were drawn by a seeded rule from the registered publishers' listings (one each) and from
+the official pages' own links; those 16 nobody picked. 14 of the 48 had been read while the
+extractor was being changed in E1, and one drawn page (`i-eu-1`) turned out to hold the same
+content as one of those. Counted honestly the sample is 47 distinct pages on about eleven
+site templates: six publishers; Parliament (four member profiles of one template and the
+member list); the judiciary (4); the Ministry of Finance (3); the Bank of Ghana (3); and
+eight international pages of which two distinct ones, a GOV.UK publication page and an EU
+overview, returned text. There is no ministry but Finance, no agency but the central bank, one table
+page, three landing pages, and no usable UN or OFAC page. Results are close to all-or-nothing
+per site, so they describe these templates, not page types or publishers in general.
+
+*The labels.* **The protocol requires a person to label every page from the page as
+displayed. No person has.** The labels (`realpage_labels.json`) were drafted by the
+implementing AI from a condensed digest of a plain dump of each page's markup (headings, the
+first and last lines, a few long lines), each segment then checked against the full dump. It
+did not see a rendered page, and it did not see most of the middle of a page, so boilerplate
+there is under-labelled: on 9 of the 23 pages it later judged contaminated, no forbidden
+segment was found. The labels were frozen before the extractor was run. The judgements
+(`realpage_judgements.json`) were drafted afterwards from the first and last lines of each
+returned text, by a rule written while judging. Every number below is provisional until the
+steps in `realpage_annotation_guide.md` have been done, and the noise figures are upper
+bounds.
+
+| Gate (project criteria, set before selection) | All 48 pages | Pages not read during E1 (33) | |
+|---|---|---|---|
+| Catastrophic failure = 0 | 1 of 42 supported pages | 1 of 28 | **not met** |
+| Hidden or template text = 0 | 0 of 5 labelled checks | 0 of 3 | met, on almost no evidence |
+| Critical segments recovered ≥ 95% | 123/127 (96.9%) | 78/82 (95.1%) | met |
+| Page success ≥ 90% | 40/42 (95.2%) | 26/28 (92.9%) | met |
+| Forbidden segments absent ≥ 90% | at most 152/184 (82.6%) | at most 101/121 (83.5%) | **not met** |
+| Material contamination ≤ 10% of pages | 12/41 (29.3%) | 8/27 (29.6%) | **not met** |
+| Articles demoted ≤ 10% | 2/24 (8.3%) | 2/19 (10.5%) | **not established** |
+
+The catastrophic failure is `i-govuk-1`: a GOV.UK landing page with its content in the markup
+was refused as needing JavaScript, because the words "requires JavaScript" appear in a
+`<noscript>` block of the site's survey link. The same block is on the other GOV.UK page in
+the sample, which escaped only because it took the article path. No returned text was judged
+to be the wrong item or to carry hidden text; that judgement is the AI's, from the first and
+last lines. With 42 pages, one failure is consistent with a
+true rate anywhere from under 1% to about 12%; none of the rates here is tight.
+
+Outside every rate: 6 of 48 pages are unsupported (two need JavaScript, one PDF, one empty
+response, one HTTP error, one page with no content of its own). **One of those returned text
+all the same**: a judiciary "Public Notice" page whose notice appears to be an image came
+back as 95
+lines of site menu and footer under that headline. Evidence that is entirely chrome is the
+worst output in the sample, and the protocol's categories had no name for it.
+
+What the pages showed, by cause:
+
+- **Site menus kept by structured text.** All six supported judiciary and Ministry of Finance
+  pages (and the chrome-only page above) open with thirty to sixty lines of menu. In the
+  markup these are nested link lists (`ul.nav`, a `superfish` menu, a navigation block
+  `div`), not marked as `<nav>`.
+- **A list of other stories inside the article container.** All four MyJoyOnline articles
+  carry thirty or more lines of other headlines and timestamps after the body; the publisher
+  puts its "latest" list inside the element that holds the article. Already recorded in E1.
+- **Short articles demoted by the running-text condition.** Both demotions are Ghanaian
+  Times pages on which the article extractor had returned the right text (about 500 and 700
+  characters) before the condition "article at least half of the running text" rejected it;
+  the structured text that came back instead is mostly other headlines. A third short
+  article extracted normally.
+- **The JavaScript check refusing a page that does not need it** (above).
+- Otherwise: 17 of 22 article texts have no menu or related items (13 are the body alone;
+  four Ghana News Agency texts also carry byline and editor lines). Parliament, Bank of
+  Ghana and EU pages are complete with a few footer or breadcrumb lines. All 14 supported
+  Ghanaian official pages returned every critical segment.
+- Parliament member profiles come back under the section heading "Members of Parliament",
+  not the member's name (4 of 4 member profiles), and carry what Parliament publishes about
+  the member, including date of birth, religion, hometown, e-mail address and telephone
+  extension. Religion is special-category personal data; nothing here filters it.
+- **The two known gaps were not observed, and this says almost nothing about them.** Both
+  need a page that declares an article and whose own text is short beside a card. One
+  non-news page in the sample declares an article, and the short news pages were demoted
+  before the question arose.
+- One headline segment was missed only because the page's heading uses a typographic
+  apostrophe and the returned headline a plain one. The frozen matching was left as it is;
+  with quote folding, critical recovery would be 124/127 and page success 41/42.
+
+Changed after the first scoring, and after an independent review of the method: the tool now
+judges catastrophic failure for every supported page, lists an unsupported page that returned
+text, and reports unseen pages apart; one field of label metadata was corrected to say what
+the labels were really made from (the frozen label content is unchanged, and a test rebuilds
+the frozen file to prove it); one judgement was added, one was marked as a duplicate, and the
+wording of the Parliament notes and of the file's description of how it was made was
+corrected, with no judged value changed. The first results are kept
+(`results/e11-realpage-dev-v1.automated.json`, `…provisional.json`, `…provisional-2.json`);
+the figures above are from `…provisional-3.json`, scored with the tool as it now stands. No gate, no label content and nothing in the extractor was
+changed.
+
+*Status (closed 2026-10-13 as provisional evidence).* The evaluation was performed and its
+inputs, tool and results are kept. Human review is limited: no person has labelled or judged
+a page, so every metric above is provisional and the noise figures are upper bounds. Three
+gates are not met (catastrophic failure, forbidden segments absent, material contamination)
+and one is not established (article demotion); E1.1 does not show that the extractor meets
+its quality gates. The known limits stand: menu and related-story contamination, demoted
+short articles, the false JavaScript refusal, a chrome-only page returned as evidence, and
+six unsupported pages. Turning these numbers into findings needs the human steps in
+`realpage_annotation_guide.md`; no extraction change follows from E1.1 until then.
+
 ## Not covered
 
 PDFs, JavaScript-rendered pages, cookie or consent walls; a fetch cache; rate limiting across

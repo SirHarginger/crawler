@@ -1,0 +1,312 @@
+{
+  "dataset": "external_research_realpage_dev",
+  "version": "e11-realpage-dev-v1",
+  "made": "After the labels were frozen and the extractor had been run. Made by reading only the head and the tail of each returned text (three and five lines of an article; sixteen and nine shortened lines of structured text), not the whole of it.",
+  "status": "ai_provisional: judged by the implementing AI, not by a person. A human reviewer must confirm or change each one.",
+  "rule_used": "MATERIAL when the text opens with twenty or more lines of site chrome, or when chrome and other items are about a quarter or more of its lines; LOW for a few lines a reader would skip; NONE otherwise. This rule was written at judging time and is not part of the frozen protocol. It sits close to some cases: one Parliament profile has a footer of about a quarter of its lines and is rated LOW.",
+  "judgements": {
+    "f-gov-01": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Profile first and complete, then about nine lines of contact details and footer links. The headline is the section title 'Members of Parliament', not the member's name. The text carries what Parliament publishes about the member, including date of birth, religion, hometown, e-mail address and telephone extension. Religion is special-category personal data.",
+      "judged_by": "ai_provisional"
+    },
+    "f-gov-02": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Profile first and complete, then about nine lines of contact details and footer links. The headline is the section title 'Members of Parliament', not the member's name. The text carries what Parliament publishes about the member, including date of birth, religion, hometown, e-mail address and telephone extension. Religion is special-category personal data.",
+      "judged_by": "ai_provisional"
+    },
+    "f-gov-03": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Member list complete, then footer links.",
+      "judged_by": "ai_provisional"
+    },
+    "f-gov-04": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Opens with about sixty lines of site menu; the page's own content follows; ends with addresses and the cookie notice.",
+      "judged_by": "ai_provisional"
+    },
+    "f-gov-05": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Opens with about sixty lines of site menu; the page's own content follows; ends with addresses and the cookie notice.",
+      "judged_by": "ai_provisional"
+    },
+    "f-gov-06": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Content complete; a breadcrumb near the top and one line of cookie notice at the end.",
+      "judged_by": "ai_provisional"
+    },
+    "f-gov-07": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Opens with about thirty lines of site menu and ends with footer link lists; on the shortest page the menu is most of the text.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-01": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-02": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-03": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-04": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-05": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-06": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-07": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "The page shows only the lead of the article and a promotion for the paid edition; it came back as structured text in which most lines are headlines and dates of other stories.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-08": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-09": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body, then two lines promoting the publisher's paid edition and its WhatsApp channel.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-10": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body with the agency's byline and editor lines.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-11": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body with the agency's byline and editor lines.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-12": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body with the agency's byline and editor lines.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-13": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-14": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-15": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body followed by the statement's own list of institutions and board members.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-16": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body, then a long run of headlines and timestamps for other stories (a 'latest' list inside the publisher's article container): on the shortest of these pages about half the lines are other stories. Opens with a player caption line.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-17": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body, then a long run of headlines and timestamps for other stories (a 'latest' list inside the publisher's article container): on the shortest of these pages about half the lines are other stories. Opens with a player caption line.",
+      "judged_by": "ai_provisional"
+    },
+    "f-news-18": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body, then a long run of headlines and timestamps for other stories (a 'latest' list inside the publisher's article container): on the shortest of these pages about half the lines are other stories. Opens with a player caption line.",
+      "judged_by": "ai_provisional"
+    },
+    "f-san-01": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "The page's summary and its update log; cut at the 20,000-character limit and flagged as truncated.",
+      "judged_by": "ai_provisional"
+    },
+    "f-san-04": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Content complete with three 'latest update' lines at the top and a short list of related links at the end.",
+      "judged_by": "ai_provisional"
+    },
+    "i-eu-1": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Content complete with three 'latest update' lines at the top and a short list of related links at the end. The server answered the Polish-language URL with the English page: the same content as f-san-04, which was read during E1.",
+      "judged_by": "ai_provisional",
+      "duplicate_of": "f-san-04"
+    },
+    "n-3news-1": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "n-citi-1": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "n-ghtimes-1": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "The page shows only the lead of the article and a promotion for the paid edition; it came back as structured text in which most lines are headlines and dates of other stories.",
+      "judged_by": "ai_provisional"
+    },
+    "n-gna-1": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body with the agency's byline and editor lines.",
+      "judged_by": "ai_provisional"
+    },
+    "n-graphic-1": {
+      "contamination": "NONE",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body only, in order, from the lead to the last paragraph.",
+      "judged_by": "ai_provisional"
+    },
+    "n-joy-1": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Body, then a long run of headlines and timestamps for other stories (a 'latest' list inside the publisher's article container): on the shortest of these pages about half the lines are other stories. Opens with a player caption line.",
+      "judged_by": "ai_provisional"
+    },
+    "o-bog-1": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Content complete; a breadcrumb near the top and one line of cookie notice at the end.",
+      "judged_by": "ai_provisional"
+    },
+    "o-bog-2": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Content complete; a breadcrumb near the top and one line of cookie notice at the end.",
+      "judged_by": "ai_provisional"
+    },
+    "o-judicial-1": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "The page has no content of its own beyond one line. What came back is the site menu and footer under the headline 'Public Notice': evidence that is entirely chrome.",
+      "judged_by": "ai_provisional"
+    },
+    "o-judicial-2": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Opens with about sixty lines of site menu; the page's own content follows; ends with addresses and the cookie notice.",
+      "judged_by": "ai_provisional"
+    },
+    "o-mofep-1": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Opens with about thirty lines of site menu and ends with footer link lists; on the shortest page the menu is most of the text.",
+      "judged_by": "ai_provisional"
+    },
+    "o-mofep-2": {
+      "contamination": "MATERIAL",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Opens with about thirty lines of site menu and ends with footer link lists; on the shortest page the menu is most of the text.",
+      "judged_by": "ai_provisional"
+    },
+    "o-parliament-1": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Profile first and complete, then about nine lines of contact details and footer links. The headline is the section title 'Members of Parliament', not the member's name. The text carries what Parliament publishes about the member, including date of birth, religion, hometown, e-mail address and telephone extension. Religion is special-category personal data.",
+      "judged_by": "ai_provisional"
+    },
+    "o-parliament-2": {
+      "contamination": "LOW",
+      "catastrophic": null,
+      "known_gap": null,
+      "note": "Profile first and complete, then about nine lines of contact details and footer links. The headline is the section title 'Members of Parliament', not the member's name. The text carries what Parliament publishes about the member, including date of birth, religion, hometown, e-mail address and telephone extension. Religion is special-category personal data.",
+      "judged_by": "ai_provisional"
+    },
+    "i-govuk-1": {
+      "contamination": null,
+      "catastrophic": "empty_despite_content",
+      "known_gap": null,
+      "judged_by": "ai_provisional",
+      "note": "A supported page with its content in the markup was refused as needing JavaScript. The words that trigger the refusal sit in a noscript block of the site's survey link, which other pages of the same site carry too."
+    }
+  },
+  "amended": "Amended after independent review (2026-10-13): a judgement was added for the one supported page that was refused (i-govuk-1), and i-eu-1 was marked as a duplicate of a page read during E1. No other judgement changed. The notes on the four Parliament profiles and the `made` and `rule_used` descriptions above were also reworded; no judged value changed."
+}

@@ -1,0 +1,3255 @@
+{
+  "dataset": "external_research_realpage_dev",
+  "version": "e11-realpage-dev-v1",
+  "protocol_sha256": "2ee1003c9132547b40295773b771860875f3745bd068a04cc572e3967b0db749",
+  "manifest_sha256": "c7690712950211c06d6c533790a214ff544922eb106824b533932b339be6dfd9",
+  "labels_sha256": "36395fd20591d11b719e730ecf8fc9bb358a42f8acd9f9b00663fe3cd5a84ccf",
+  "judgements_sha256": "dce3b0dd3d0c30392edd7030dcaace2b02627215307d75c752e40c87dfadea4c",
+  "fingerprint": {
+    "src/screening_crawler/research/extract.py": "e8804bea174e08194100228a61fc75df6b6ac5818628e445fbb7baa8a2f6f09e",
+    "src/screening_crawler/research/structured_text.py": "cb0dac3c9bbf8f13164c25498d5a054544d21e155daff885af01379c4863bd17",
+    "src/screening_crawler/research/page_text.py": "9667ea1a0231551c38f56b613fe1cd170277c3066a7a922b32c648312fbbcdc1",
+    "src/screening_crawler/research/egress.py": "8bf0bfeeabbb838f208efc0322660a3c4e09f911e741b8fe5d1bc5a4837c49bb",
+    "tools/research_eval/realpage_eval.py": "cafa5918a28e0231a433a24d80a774899fdd8d758f93492e3024d33a7ff6766f",
+    "article_extractor_version": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+    "structured_extractor_version": "lxml-structured-html|v2"
+  },
+  "extractor_matches_protocol": true,
+  "summary": {
+    "automated": {
+      "pages": 48,
+      "supported_pages": 42,
+      "unsupported_pages": {
+        "k": 6,
+        "n": 48,
+        "rate": 0.125
+      },
+      "supported_pages_refused": {
+        "k": 1,
+        "n": 42,
+        "rate": 0.024
+      },
+      "expected_segments_recovered": {
+        "k": 158,
+        "n": 162,
+        "rate": 0.975
+      },
+      "critical_segments_recovered": {
+        "k": 123,
+        "n": 127,
+        "rate": 0.969
+      },
+      "page_success": {
+        "k": 40,
+        "n": 42,
+        "rate": 0.952
+      },
+      "forbidden_segments_absent": {
+        "k": 152,
+        "n": 184,
+        "rate": 0.826
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 5,
+      "route_acceptable": {
+        "k": 44,
+        "n": 48,
+        "rate": 0.917
+      },
+      "routes": {
+        "article": 23,
+        "structured": 19,
+        "refusal": 6
+      },
+      "articles_demoted": {
+        "k": 2,
+        "n": 24,
+        "rate": 0.083
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "truncated": 1,
+      "unsupported_pages_that_returned_text": [
+        "o-judicial-1"
+      ]
+    },
+    "judged_from_output": {
+      "pages_judged": {
+        "k": 42,
+        "n": 42,
+        "rate": 1.0
+      },
+      "catastrophic": {
+        "k": 1,
+        "n": 42,
+        "rate": 0.024
+      },
+      "catastrophic_kinds": [
+        "empty_despite_content"
+      ],
+      "contamination": {
+        "NONE": 18,
+        "LOW": 11,
+        "MATERIAL": 12
+      },
+      "material_contamination": {
+        "k": 12,
+        "n": 41,
+        "rate": 0.293
+      },
+      "structured_material_contamination": {
+        "k": 8,
+        "n": 18,
+        "rate": 0.444
+      },
+      "unsupported_pages_that_returned_text": {
+        "o-judicial-1": "MATERIAL"
+      },
+      "known_gap_1_pages": [],
+      "known_gap_2_pages": []
+    }
+  },
+  "gate": {
+    "catastrophic_rate_max": false,
+    "hidden_segments_found_max": true,
+    "critical_segments_recovered_min": true,
+    "page_success_min": true,
+    "forbidden_segments_absent_min": false,
+    "material_contamination_rate_max": false,
+    "articles_demoted_rate_max": true
+  },
+  "unseen_pages": {
+    "summary": {
+      "automated": {
+        "pages": 33,
+        "supported_pages": 28,
+        "unsupported_pages": {
+          "k": 5,
+          "n": 33,
+          "rate": 0.152
+        },
+        "supported_pages_refused": {
+          "k": 1,
+          "n": 28,
+          "rate": 0.036
+        },
+        "expected_segments_recovered": {
+          "k": 101,
+          "n": 105,
+          "rate": 0.962
+        },
+        "critical_segments_recovered": {
+          "k": 78,
+          "n": 82,
+          "rate": 0.951
+        },
+        "page_success": {
+          "k": 26,
+          "n": 28,
+          "rate": 0.929
+        },
+        "forbidden_segments_absent": {
+          "k": 101,
+          "n": 121,
+          "rate": 0.835
+        },
+        "hidden_segments_found": 0,
+        "hidden_segments_checked": 3,
+        "route_acceptable": {
+          "k": 29,
+          "n": 33,
+          "rate": 0.879
+        },
+        "routes": {
+          "article": 17,
+          "structured": 11,
+          "refusal": 5
+        },
+        "articles_demoted": {
+          "k": 2,
+          "n": 19,
+          "rate": 0.105
+        },
+        "articles_refused": {
+          "k": 0,
+          "n": 19,
+          "rate": 0.0
+        },
+        "truncated": 0,
+        "unsupported_pages_that_returned_text": [
+          "o-judicial-1"
+        ]
+      },
+      "judged_from_output": {
+        "pages_judged": {
+          "k": 28,
+          "n": 28,
+          "rate": 1.0
+        },
+        "catastrophic": {
+          "k": 1,
+          "n": 28,
+          "rate": 0.036
+        },
+        "catastrophic_kinds": [
+          "empty_despite_content"
+        ],
+        "contamination": {
+          "NONE": 13,
+          "LOW": 6,
+          "MATERIAL": 8
+        },
+        "material_contamination": {
+          "k": 8,
+          "n": 27,
+          "rate": 0.296
+        },
+        "structured_material_contamination": {
+          "k": 5,
+          "n": 10,
+          "rate": 0.5
+        },
+        "unsupported_pages_that_returned_text": {
+          "o-judicial-1": "MATERIAL"
+        },
+        "known_gap_1_pages": [],
+        "known_gap_2_pages": []
+      }
+    },
+    "gate": {
+      "catastrophic_rate_max": false,
+      "hidden_segments_found_max": true,
+      "critical_segments_recovered_min": true,
+      "page_success_min": true,
+      "forbidden_segments_absent_min": false,
+      "material_contamination_rate_max": false,
+      "articles_demoted_rate_max": false
+    },
+    "excluded_as_duplicates": [
+      "i-eu-1"
+    ]
+  },
+  "labels_are": [
+    "ai_preannotation"
+  ],
+  "human_annotation_complete": false,
+  "by_category": {
+    "ghana_official": {
+      "pages": 8,
+      "supported_pages": 7,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 8,
+        "rate": 0.125
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 7,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 25,
+        "n": 25,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 20,
+        "n": 20,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 7,
+        "n": 7,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 21,
+        "n": 32,
+        "rate": 0.656
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "routes": {
+        "article": 0,
+        "structured": 8,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": [
+        "o-judicial-1"
+      ]
+    },
+    "ghanaian_publisher": {
+      "pages": 24,
+      "supported_pages": 24,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 91,
+        "n": 92,
+        "rate": 0.989
+      },
+      "critical_segments_recovered": {
+        "k": 70,
+        "n": 71,
+        "rate": 0.986
+      },
+      "page_success": {
+        "k": 23,
+        "n": 24,
+        "rate": 0.958
+      },
+      "forbidden_segments_absent": {
+        "k": 98,
+        "n": 106,
+        "rate": 0.925
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 4,
+      "route_acceptable": {
+        "k": 22,
+        "n": 24,
+        "rate": 0.917
+      },
+      "routes": {
+        "article": 22,
+        "structured": 2,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 2,
+        "n": 24,
+        "rate": 0.083
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "government": {
+      "pages": 5,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 5,
+        "rate": 0.2
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 13,
+        "n": 13,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 11,
+        "n": 21,
+        "rate": 0.524
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 4,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "parliament": {
+      "pages": 3,
+      "supported_pages": 3,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 14,
+        "n": 14,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 11,
+        "n": 11,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 9,
+        "n": 12,
+        "rate": 0.75
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 3,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "sanctions_authority": {
+      "pages": 8,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 4,
+        "n": 8,
+        "rate": 0.5
+      },
+      "supported_pages_refused": {
+        "k": 1,
+        "n": 4,
+        "rate": 0.25
+      },
+      "expected_segments_recovered": {
+        "k": 12,
+        "n": 15,
+        "rate": 0.8
+      },
+      "critical_segments_recovered": {
+        "k": 9,
+        "n": 12,
+        "rate": 0.75
+      },
+      "page_success": {
+        "k": 3,
+        "n": 4,
+        "rate": 0.75
+      },
+      "forbidden_segments_absent": {
+        "k": 13,
+        "n": 13,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 1,
+      "route_acceptable": {
+        "k": 7,
+        "n": 8,
+        "rate": 0.875
+      },
+      "routes": {
+        "article": 1,
+        "structured": 2,
+        "refusal": 5
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 1,
+      "unsupported_pages_that_returned_text": []
+    }
+  },
+  "by_page_type": {
+    "article": {
+      "pages": 24,
+      "supported_pages": 24,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 91,
+        "n": 92,
+        "rate": 0.989
+      },
+      "critical_segments_recovered": {
+        "k": 70,
+        "n": 71,
+        "rate": 0.986
+      },
+      "page_success": {
+        "k": 23,
+        "n": 24,
+        "rate": 0.958
+      },
+      "forbidden_segments_absent": {
+        "k": 98,
+        "n": 106,
+        "rate": 0.925
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 4,
+      "route_acceptable": {
+        "k": 22,
+        "n": 24,
+        "rate": 0.917
+      },
+      "routes": {
+        "article": 22,
+        "structured": 2,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 2,
+        "n": 24,
+        "rate": 0.083
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 24,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "landing": {
+      "pages": 3,
+      "supported_pages": 3,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 1,
+        "n": 3,
+        "rate": 0.333
+      },
+      "expected_segments_recovered": {
+        "k": 6,
+        "n": 9,
+        "rate": 0.667
+      },
+      "critical_segments_recovered": {
+        "k": 5,
+        "n": 8,
+        "rate": 0.625
+      },
+      "page_success": {
+        "k": 2,
+        "n": 3,
+        "rate": 0.667
+      },
+      "forbidden_segments_absent": {
+        "k": 5,
+        "n": 9,
+        "rate": 0.556
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 2,
+        "n": 3,
+        "rate": 0.667
+      },
+      "routes": {
+        "article": 0,
+        "structured": 2,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "list_index": {
+      "pages": 5,
+      "supported_pages": 5,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 21,
+        "n": 21,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 17,
+        "n": 17,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 15,
+        "n": 25,
+        "rate": 0.6
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 1,
+      "route_acceptable": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 1,
+        "structured": 4,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 1,
+      "unsupported_pages_that_returned_text": []
+    },
+    "profile": {
+      "pages": 9,
+      "supported_pages": 9,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 9,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 35,
+        "n": 35,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 28,
+        "n": 28,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 9,
+        "n": 9,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 31,
+        "n": 38,
+        "rate": 0.816
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 9,
+        "n": 9,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 9,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "table": {
+      "pages": 1,
+      "supported_pages": 1,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 1,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 3,
+        "n": 6,
+        "rate": 0.5
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 1,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "unsupported_other": {
+      "pages": 6,
+      "supported_pages": 0,
+      "unsupported_pages": {
+        "k": 6,
+        "n": 6,
+        "rate": 1.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "expected_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "critical_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "page_success": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "forbidden_segments_absent": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 5,
+        "n": 6,
+        "rate": 0.833
+      },
+      "routes": {
+        "article": 0,
+        "structured": 1,
+        "refusal": 5
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": [
+        "o-judicial-1"
+      ]
+    }
+  },
+  "by_host": {
+    "3news.com": {
+      "pages": 4,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 22,
+        "n": 22,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 4,
+        "structured": 0,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "finance.ec.europa.eu": {
+      "pages": 2,
+      "supported_pages": 2,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 6,
+        "n": 6,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 2,
+        "n": 2,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 2,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "ghanaiantimes.com.gh": {
+      "pages": 4,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 13,
+        "n": 13,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 11,
+        "n": 11,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 12,
+        "n": 20,
+        "rate": 0.6
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 2,
+        "n": 4,
+        "rate": 0.5
+      },
+      "routes": {
+        "article": 2,
+        "structured": 2,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 2,
+        "n": 4,
+        "rate": 0.5
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "gna.org.gh": {
+      "pages": 4,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 15,
+        "n": 16,
+        "rate": 0.938
+      },
+      "critical_segments_recovered": {
+        "k": 11,
+        "n": 12,
+        "rate": 0.917
+      },
+      "page_success": {
+        "k": 3,
+        "n": 4,
+        "rate": 0.75
+      },
+      "forbidden_segments_absent": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 4,
+        "structured": 0,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "judicial.gov.gh": {
+      "pages": 4,
+      "supported_pages": 3,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 4,
+        "rate": 0.25
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 10,
+        "n": 10,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 9,
+        "n": 18,
+        "rate": 0.5
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 3,
+        "n": 4,
+        "rate": 0.75
+      },
+      "routes": {
+        "article": 0,
+        "structured": 4,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": [
+        "o-judicial-1"
+      ]
+    },
+    "main.un.org": {
+      "pages": 1,
+      "supported_pages": 0,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "expected_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "critical_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "page_success": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "forbidden_segments_absent": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 0,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "mofep.gov.gh": {
+      "pages": 3,
+      "supported_pages": 3,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 11,
+        "n": 11,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 9,
+        "n": 9,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 5,
+        "n": 15,
+        "rate": 0.333
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 3,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "ofac.treasury.gov": {
+      "pages": 1,
+      "supported_pages": 0,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "expected_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "critical_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "page_success": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "forbidden_segments_absent": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 0,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "presidency.gov.gh": {
+      "pages": 1,
+      "supported_pages": 0,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "expected_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "critical_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "page_success": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "forbidden_segments_absent": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 0,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.bog.gov.gh": {
+      "pages": 3,
+      "supported_pages": 3,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 10,
+        "n": 10,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 8,
+        "n": 8,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 3,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.citinewsroom.com": {
+      "pages": 4,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 4,
+        "structured": 0,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.gov.uk": {
+      "pages": 2,
+      "supported_pages": 2,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 2,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 1,
+        "n": 2,
+        "rate": 0.5
+      },
+      "expected_segments_recovered": {
+        "k": 4,
+        "n": 7,
+        "rate": 0.571
+      },
+      "critical_segments_recovered": {
+        "k": 3,
+        "n": 6,
+        "rate": 0.5
+      },
+      "page_success": {
+        "k": 1,
+        "n": 2,
+        "rate": 0.5
+      },
+      "forbidden_segments_absent": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 1,
+      "route_acceptable": {
+        "k": 1,
+        "n": 2,
+        "rate": 0.5
+      },
+      "routes": {
+        "article": 1,
+        "structured": 0,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 1,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.graphic.com.gh": {
+      "pages": 4,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 4,
+      "route_acceptable": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 4,
+        "structured": 0,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.myjoyonline.com": {
+      "pages": 4,
+      "supported_pages": 4,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 15,
+        "n": 15,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 12,
+        "n": 12,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 16,
+        "n": 16,
+        "rate": 1.0
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 4,
+        "n": 4,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 4,
+        "structured": 0,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 4,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.parliament.gh": {
+      "pages": 5,
+      "supported_pages": 5,
+      "unsupported_pages": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 22,
+        "n": 22,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 17,
+        "n": 17,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 15,
+        "n": 20,
+        "rate": 0.75
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 5,
+        "n": 5,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 5,
+        "refusal": 0
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.sanctionsmap.eu": {
+      "pages": 1,
+      "supported_pages": 0,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "expected_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "critical_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "page_success": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "forbidden_segments_absent": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 0,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    },
+    "www.treasury.gov": {
+      "pages": 1,
+      "supported_pages": 0,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "expected_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "critical_segments_recovered": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "page_success": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "forbidden_segments_absent": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 0,
+      "route_acceptable": {
+        "k": 1,
+        "n": 1,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 0,
+        "structured": 0,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 0,
+        "rate": null
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": []
+    }
+  },
+  "by_read_during_e1": {
+    "False": {
+      "pages": 34,
+      "supported_pages": 29,
+      "unsupported_pages": {
+        "k": 5,
+        "n": 34,
+        "rate": 0.147
+      },
+      "supported_pages_refused": {
+        "k": 1,
+        "n": 29,
+        "rate": 0.034
+      },
+      "expected_segments_recovered": {
+        "k": 105,
+        "n": 109,
+        "rate": 0.963
+      },
+      "critical_segments_recovered": {
+        "k": 81,
+        "n": 85,
+        "rate": 0.953
+      },
+      "page_success": {
+        "k": 27,
+        "n": 29,
+        "rate": 0.931
+      },
+      "forbidden_segments_absent": {
+        "k": 105,
+        "n": 125,
+        "rate": 0.84
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 3,
+      "route_acceptable": {
+        "k": 30,
+        "n": 34,
+        "rate": 0.882
+      },
+      "routes": {
+        "article": 17,
+        "structured": 12,
+        "refusal": 5
+      },
+      "articles_demoted": {
+        "k": 2,
+        "n": 19,
+        "rate": 0.105
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 19,
+        "rate": 0.0
+      },
+      "truncated": 0,
+      "unsupported_pages_that_returned_text": [
+        "o-judicial-1"
+      ]
+    },
+    "True": {
+      "pages": 14,
+      "supported_pages": 13,
+      "unsupported_pages": {
+        "k": 1,
+        "n": 14,
+        "rate": 0.071
+      },
+      "supported_pages_refused": {
+        "k": 0,
+        "n": 13,
+        "rate": 0.0
+      },
+      "expected_segments_recovered": {
+        "k": 53,
+        "n": 53,
+        "rate": 1.0
+      },
+      "critical_segments_recovered": {
+        "k": 42,
+        "n": 42,
+        "rate": 1.0
+      },
+      "page_success": {
+        "k": 13,
+        "n": 13,
+        "rate": 1.0
+      },
+      "forbidden_segments_absent": {
+        "k": 47,
+        "n": 59,
+        "rate": 0.797
+      },
+      "hidden_segments_found": 0,
+      "hidden_segments_checked": 2,
+      "route_acceptable": {
+        "k": 14,
+        "n": 14,
+        "rate": 1.0
+      },
+      "routes": {
+        "article": 6,
+        "structured": 7,
+        "refusal": 1
+      },
+      "articles_demoted": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      },
+      "articles_refused": {
+        "k": 0,
+        "n": 5,
+        "rate": 0.0
+      },
+      "truncated": 1,
+      "unsupported_pages_that_returned_text": []
+    }
+  },
+  "rows": [
+    {
+      "id": "f-news-01",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "3news.com",
+      "read_during_e1": true,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 1357,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-02",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "3news.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3116,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 6,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-03",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "3news.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3091,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 6,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-04",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.citinewsroom.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 2229,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-05",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.citinewsroom.com",
+      "read_during_e1": true,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 1750,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-06",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.citinewsroom.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 1294,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-07",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "ghanaiantimes.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": false,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 2576,
+      "truncated": false,
+      "expected": 2,
+      "expected_missing": [],
+      "critical": 2,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [
+        2,
+        3,
+        4
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-news-08",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "ghanaiantimes.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 2722,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-09",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "ghanaiantimes.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 2963,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [
+        2
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-10",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "gna.org.gh",
+      "read_during_e1": true,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3682,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-11",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "gna.org.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 894,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-12",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "gna.org.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 7262,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [
+        0
+      ],
+      "critical": 3,
+      "critical_missing": [
+        0
+      ],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-13",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.graphic.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 1291,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 1,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-14",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.graphic.com.gh",
+      "read_during_e1": true,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3463,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 1,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-15",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.graphic.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3688,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 1,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-16",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.myjoyonline.com",
+      "read_during_e1": true,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 8528,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-17",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.myjoyonline.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3076,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-news-18",
+      "stratum": "carried_over",
+      "category": "ghanaian_publisher",
+      "host": "www.myjoyonline.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 4853,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "f-gov-01",
+      "stratum": "carried_over",
+      "category": "parliament",
+      "host": "www.parliament.gh",
+      "read_during_e1": true,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 1764,
+      "truncated": false,
+      "expected": 5,
+      "expected_missing": [],
+      "critical": 4,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [
+        2
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-02",
+      "stratum": "carried_over",
+      "category": "parliament",
+      "host": "www.parliament.gh",
+      "read_during_e1": false,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 1514,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [
+        2
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-03",
+      "stratum": "carried_over",
+      "category": "parliament",
+      "host": "www.parliament.gh",
+      "read_during_e1": true,
+      "page_type": "list_index",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 2713,
+      "truncated": false,
+      "expected": 5,
+      "expected_missing": [],
+      "critical": 4,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [
+        2
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-04",
+      "stratum": "carried_over",
+      "category": "government",
+      "host": "judicial.gov.gh",
+      "read_during_e1": true,
+      "page_type": "list_index",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 3121,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 4,
+      "critical_missing": [],
+      "forbidden": 6,
+      "forbidden_found": [
+        2,
+        3,
+        5
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-05",
+      "stratum": "carried_over",
+      "category": "government",
+      "host": "judicial.gov.gh",
+      "read_during_e1": true,
+      "page_type": "table",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 3159,
+      "truncated": false,
+      "expected": 5,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 6,
+      "forbidden_found": [
+        2,
+        3,
+        5
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-06",
+      "stratum": "carried_over",
+      "category": "government",
+      "host": "www.bog.gov.gh",
+      "read_during_e1": true,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 9029,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-07",
+      "stratum": "carried_over",
+      "category": "government",
+      "host": "mofep.gov.gh",
+      "read_during_e1": true,
+      "page_type": "landing",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 10182,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-gov-08",
+      "stratum": "carried_over",
+      "category": "government",
+      "host": "presidency.gov.gh",
+      "read_during_e1": false,
+      "page_type": "unsupported_other",
+      "supported": false,
+      "route": "refusal",
+      "outcome": "http_error",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": null,
+      "text_chars": 0,
+      "truncated": false,
+      "expected": 0,
+      "expected_missing": [],
+      "critical": 0,
+      "critical_missing": [],
+      "forbidden": 0,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-san-01",
+      "stratum": "carried_over",
+      "category": "sanctions_authority",
+      "host": "www.gov.uk",
+      "read_during_e1": true,
+      "page_type": "list_index",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 20000,
+      "truncated": true,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 1,
+      "has_published_date": true
+    },
+    {
+      "id": "f-san-02",
+      "stratum": "carried_over",
+      "category": "sanctions_authority",
+      "host": "ofac.treasury.gov",
+      "read_during_e1": false,
+      "page_type": "unsupported_other",
+      "supported": false,
+      "route": "refusal",
+      "outcome": "js_required",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": null,
+      "text_chars": 0,
+      "truncated": false,
+      "expected": 0,
+      "expected_missing": [],
+      "critical": 0,
+      "critical_missing": [],
+      "forbidden": 0,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-san-03",
+      "stratum": "carried_over",
+      "category": "sanctions_authority",
+      "host": "main.un.org",
+      "read_during_e1": true,
+      "page_type": "unsupported_other",
+      "supported": false,
+      "route": "refusal",
+      "outcome": "no_article_text",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": null,
+      "text_chars": 0,
+      "truncated": false,
+      "expected": 0,
+      "expected_missing": [],
+      "critical": 0,
+      "critical_missing": [],
+      "forbidden": 0,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-san-04",
+      "stratum": "carried_over",
+      "category": "sanctions_authority",
+      "host": "finance.ec.europa.eu",
+      "read_during_e1": true,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 13155,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-san-05",
+      "stratum": "carried_over",
+      "category": "sanctions_authority",
+      "host": "www.treasury.gov",
+      "read_during_e1": false,
+      "page_type": "unsupported_other",
+      "supported": false,
+      "route": "refusal",
+      "outcome": "too_large",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": null,
+      "text_chars": 0,
+      "truncated": false,
+      "expected": 0,
+      "expected_missing": [],
+      "critical": 0,
+      "critical_missing": [],
+      "forbidden": 0,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "f-san-06",
+      "stratum": "carried_over",
+      "category": "sanctions_authority",
+      "host": "www.sanctionsmap.eu",
+      "read_during_e1": false,
+      "page_type": "unsupported_other",
+      "supported": false,
+      "route": "refusal",
+      "outcome": "js_required",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": null,
+      "text_chars": 0,
+      "truncated": false,
+      "expected": 0,
+      "expected_missing": [],
+      "critical": 0,
+      "critical_missing": [],
+      "forbidden": 0,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "n-3news-1",
+      "stratum": "fresh_news",
+      "category": "ghanaian_publisher",
+      "host": "3news.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 5911,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "n-citi-1",
+      "stratum": "fresh_news",
+      "category": "ghanaian_publisher",
+      "host": "www.citinewsroom.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 2909,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "n-gna-1",
+      "stratum": "fresh_news",
+      "category": "ghanaian_publisher",
+      "host": "gna.org.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3016,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "n-graphic-1",
+      "stratum": "fresh_news",
+      "category": "ghanaian_publisher",
+      "host": "www.graphic.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 3962,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 1,
+      "has_published_date": true
+    },
+    {
+      "id": "n-ghtimes-1",
+      "stratum": "fresh_news",
+      "category": "ghanaian_publisher",
+      "host": "ghanaiantimes.com.gh",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": false,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 2780,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 6,
+      "forbidden_found": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "n-joy-1",
+      "stratum": "fresh_news",
+      "category": "ghanaian_publisher",
+      "host": "www.myjoyonline.com",
+      "read_during_e1": false,
+      "page_type": "article",
+      "supported": true,
+      "route": "article",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+      "text_chars": 5346,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": true
+    },
+    {
+      "id": "o-parliament-1",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "www.parliament.gh",
+      "read_during_e1": false,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 1483,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [
+        2
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-parliament-2",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "www.parliament.gh",
+      "read_during_e1": false,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 1110,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [
+        2
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-judicial-1",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "judicial.gov.gh",
+      "read_during_e1": false,
+      "page_type": "unsupported_other",
+      "supported": false,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": false,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 2127,
+      "truncated": false,
+      "expected": 0,
+      "expected_missing": [],
+      "critical": 0,
+      "critical_missing": [],
+      "forbidden": 0,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-judicial-2",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "judicial.gov.gh",
+      "read_during_e1": false,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 7253,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 6,
+      "forbidden_found": [
+        2,
+        3,
+        5
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-mofep-1",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "mofep.gov.gh",
+      "read_during_e1": false,
+      "page_type": "list_index",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 2974,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [
+        1,
+        2,
+        3
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-mofep-2",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "mofep.gov.gh",
+      "read_during_e1": false,
+      "page_type": "list_index",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 1263,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 5,
+      "forbidden_found": [
+        1,
+        2,
+        3
+      ],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-bog-1",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "www.bog.gov.gh",
+      "read_during_e1": false,
+      "page_type": "landing",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 1108,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [],
+      "critical": 2,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "o-bog-2",
+      "stratum": "fresh_official",
+      "category": "ghana_official",
+      "host": "www.bog.gov.gh",
+      "read_during_e1": false,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 775,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "i-govuk-1",
+      "stratum": "fresh_international",
+      "category": "sanctions_authority",
+      "host": "www.gov.uk",
+      "read_during_e1": false,
+      "page_type": "landing",
+      "supported": true,
+      "route": "refusal",
+      "outcome": "js_required",
+      "route_acceptable": false,
+      "annotation_status": "ai_preannotation",
+      "extractor": null,
+      "text_chars": 0,
+      "truncated": false,
+      "expected": 3,
+      "expected_missing": [
+        0,
+        1,
+        2
+      ],
+      "critical": 3,
+      "critical_missing": [
+        0,
+        1,
+        2
+      ],
+      "forbidden": 6,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    },
+    {
+      "id": "i-eu-1",
+      "stratum": "fresh_international",
+      "category": "sanctions_authority",
+      "host": "finance.ec.europa.eu",
+      "read_during_e1": false,
+      "page_type": "profile",
+      "supported": true,
+      "route": "structured",
+      "outcome": "ok",
+      "route_acceptable": true,
+      "annotation_status": "ai_preannotation",
+      "extractor": "lxml-structured-html|v2",
+      "text_chars": 13155,
+      "truncated": false,
+      "expected": 4,
+      "expected_missing": [],
+      "critical": 3,
+      "critical_missing": [],
+      "forbidden": 4,
+      "forbidden_found": [],
+      "hidden_found": 0,
+      "hidden_labelled": 0,
+      "has_published_date": false
+    }
+  ]
+}

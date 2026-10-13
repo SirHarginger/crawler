@@ -1,0 +1,200 @@
+{
+  "dataset": "external_research_realpage_dev",
+  "version": "e11-realpage-dev-v1",
+  "frozen_on": "2026-10-13, before any page was selected, fetched, labelled or scored",
+  "what_this_is": "DEV evidence about the extractor as committed. Not a promotion holdout: the pages, once read, may inform later work. Nothing in the extractor is changed during this evaluation.",
+  "extractor_commit": "9f22a06 (crawler)",
+  "fingerprint": {
+    "src/screening_crawler/research/extract.py": "e8804bea174e08194100228a61fc75df6b6ac5818628e445fbb7baa8a2f6f09e",
+    "src/screening_crawler/research/structured_text.py": "cb0dac3c9bbf8f13164c25498d5a054544d21e155daff885af01379c4863bd17",
+    "src/screening_crawler/research/page_text.py": "9667ea1a0231551c38f56b613fe1cd170277c3066a7a922b32c648312fbbcdc1",
+    "src/screening_crawler/research/egress.py": "8bf0bfeeabbb838f208efc0322660a3c4e09f911e741b8fe5d1bc5a4837c49bb",
+    "article_extractor_version": "trafilatura-2.0.0|precision|v1+declared-visible|v1",
+    "structured_extractor_version": "lxml-structured-html|v2"
+  },
+  "method": {
+    "adopted_from": [
+      "Trafilatura's benchmark: a page is scored by short text segments that must be present (content) and segments that must be absent (boilerplate); precision, recall, accuracy and F-score follow from those. https://trafilatura.readthedocs.io/en/latest/evaluation.html (retrieved 2026-10-12)",
+      "CleanEval annotation guidelines: boilerplate is 'textual materials that, intuitively, are extraneous to the proper, coherent contents of the page' (navigation, repeated template material, link lists that are not full sentences, copyright and legal notices, advertisements, forms); annotators decide from the page as a browser displays it. https://sigwac.org.uk/cleaneval/annotation_guidelines.html (retrieved 2026-10-13)",
+      "No universal acceptance threshold was found in either. The gates below are Trustora engineering criteria."
+    ],
+    "not_adopted": "Full gold-standard cleaned text with edit-distance scoring (CleanEval): it needs complete hand-cleaned copies of third-party pages, which this project does not store."
+  },
+  "sampling": {
+    "seed": "e1.1-2026-10-13",
+    "target_size": "30 to 50 pages",
+    "carried_over": "Every URL of fetch-dev-v1 (tools/research_eval/fetch_urls.json, SHA-256 69fc1309fb9c8aeac0e8ddf1d60717b0551429d5b7f61497802989d027722ab4): 32 pages chosen on 2026-10-11 from the platform's own records and official sites, before any extraction-quality work. Kept whole, including the pages known to be unsupported.",
+    "read_during_e1": [
+      "gov-01",
+      "gov-03",
+      "gov-04",
+      "gov-05",
+      "gov-06",
+      "gov-07",
+      "news-01",
+      "news-05",
+      "news-10",
+      "news-14",
+      "news-16",
+      "san-01",
+      "san-03",
+      "san-04"
+    ],
+    "read_during_e1_note": "These 14 were read by the implementer while the extractor was being changed in E1 and are reported separately: results on them cannot count as unseen.",
+    "fresh_rule": "For each listing below: fetch it once through the gateway; take every link on the same site that passes the kind's filter (news: a slug of at least four hyphenated words, no query, not a category, tag, author, feed or media path; page: any non-file path other than the root); sort; draw `count` with random.Random(seed|rule id).sample; skip URLs already chosen. A listing that cannot be fetched yields no page and is recorded. Nobody picks a page by hand.",
+    "listing_note": "News listings are the registered source endpoints in datasets/*/metadata.yml; the two WordPress JSON endpoints are requested with per_page=10 and without _embed so that they fit the gateway's size limit.",
+    "fresh": [
+      {
+        "id": "n-3news",
+        "stratum": "fresh_news",
+        "kind": "news",
+        "category": "ghanaian_publisher",
+        "host": "3news.com",
+        "listing_url": "https://3news.com/feed.xml",
+        "count": 1
+      },
+      {
+        "id": "n-citi",
+        "stratum": "fresh_news",
+        "kind": "news",
+        "category": "ghanaian_publisher",
+        "host": "citinewsroom.com",
+        "listing_url": "https://citinewsroom.com/wp-json/wp/v2/posts?per_page=10",
+        "count": 1
+      },
+      {
+        "id": "n-gna",
+        "stratum": "fresh_news",
+        "kind": "news",
+        "category": "ghanaian_publisher",
+        "host": "gna.org.gh",
+        "listing_url": "https://gna.org.gh/",
+        "count": 1
+      },
+      {
+        "id": "n-graphic",
+        "stratum": "fresh_news",
+        "kind": "news",
+        "category": "ghanaian_publisher",
+        "host": "graphic.com.gh",
+        "listing_url": "https://www.graphic.com.gh/news?format=feed&type=rss",
+        "count": 1
+      },
+      {
+        "id": "n-ghtimes",
+        "stratum": "fresh_news",
+        "kind": "news",
+        "category": "ghanaian_publisher",
+        "host": "ghanaiantimes.com.gh",
+        "listing_url": "https://ghanaiantimes.com.gh/wp-json/wp/v2/posts?per_page=10",
+        "count": 1
+      },
+      {
+        "id": "n-joy",
+        "stratum": "fresh_news",
+        "kind": "news",
+        "category": "ghanaian_publisher",
+        "host": "myjoyonline.com",
+        "listing_url": "https://www.myjoyonline.com/feed/",
+        "count": 1
+      },
+      {
+        "id": "o-parliament",
+        "stratum": "fresh_official",
+        "kind": "page",
+        "category": "ghana_official",
+        "host": "parliament.gh",
+        "listing_url": "https://www.parliament.gh/members",
+        "count": 2
+      },
+      {
+        "id": "o-judicial",
+        "stratum": "fresh_official",
+        "kind": "page",
+        "category": "ghana_official",
+        "host": "judicial.gov.gh",
+        "listing_url": "https://judicial.gov.gh/index.php/about-the-judiciary/judges-and-magistrates/supremecourt-judges",
+        "count": 2
+      },
+      {
+        "id": "o-mofep",
+        "stratum": "fresh_official",
+        "kind": "page",
+        "category": "ghana_official",
+        "host": "mofep.gov.gh",
+        "listing_url": "https://mofep.gov.gh/",
+        "count": 2
+      },
+      {
+        "id": "o-bog",
+        "stratum": "fresh_official",
+        "kind": "page",
+        "category": "ghana_official",
+        "host": "bog.gov.gh",
+        "listing_url": "https://www.bog.gov.gh/about-the-bank/",
+        "count": 2
+      },
+      {
+        "id": "i-govuk",
+        "stratum": "fresh_international",
+        "kind": "page",
+        "category": "sanctions_authority",
+        "host": "gov.uk",
+        "listing_url": "https://www.gov.uk/government/publications/the-uk-sanctions-list",
+        "count": 1,
+        "path_contains": [
+          "sanction"
+        ]
+      },
+      {
+        "id": "i-eu",
+        "stratum": "fresh_international",
+        "kind": "page",
+        "category": "sanctions_authority",
+        "host": "finance.ec.europa.eu",
+        "listing_url": "https://finance.ec.europa.eu/eu-and-world/sanctions-restrictive-measures/overview-sanctions-and-related-resources_en",
+        "count": 1,
+        "path_contains": [
+          "sanction"
+        ]
+      }
+    ]
+  },
+  "retention": {
+    "snapshots": "Page bytes are fetched once and kept outside the repository; the manifest keeps URL, final URL, time, status, declared type, byte count and SHA-256.",
+    "committed": "The protocol, the manifest, the labels (short decisive segments, at most 160 characters each, quoted for evaluation), the judgements and the results (counts and segment indexes, no page text).",
+    "personal_data": "Public figures and public-interest bodies only. A segment names a person only in their public role. No address, date of birth, phone number or e-mail address is used as a segment."
+  },
+  "annotation": {
+    "segment_chars_max": 160,
+    "order": "1. Labels are written from the page as displayed, or from the plain rendering made by `dump`, never from extractor output. 2. Labels are frozen (their file hash recorded). 3. Only then is the extractor run. 4. Judgements that need the output (contamination, catastrophic failure, known gaps) are made afterwards and kept in a separate file.",
+    "page_type": "one of article, profile, list_index, table, landing, unsupported_other",
+    "supported": "false when the page cannot be read without JavaScript, is not HTML, is blocked, or has no substantial visible content of its own; such a page is reported and not scored for content.",
+    "acceptable_routes": "which of article, structured, refusal are honest readings of this page",
+    "expected": "3 to 6 short segments a reader of the page sees and the evidence must carry: the subject's name, a role or title, a sentence from the body (beginning, middle and end for an article), a list or table entry. `critical` marks those without which the evidence is useless.",
+    "forbidden": "2 to 6 short segments that must not appear, each with a kind: navigation, cookie_banner, footer_legal, related_item (a teaser, card or headline for another item), hidden (text the markup marks as not shown), control (form or login text), other.",
+    "status": "each label records who made it: ai_preannotation (made by the implementing AI from the plain rendering) or human_verified (a person has checked or corrected it against the page). Results state which.",
+    "judgement": "contamination NONE, LOW (a few lines of chrome a reader would skip) or MATERIAL (chrome or other items that could be mistaken for the page's content, or that bury it); catastrophic: null, or wrong_item, hidden_as_evidence, empty_despite_content; known_gap: null, 1 (headless card taken as article) or 2 (card whose opening also stands under the page's headline)."
+  },
+  "scoring": {
+    "match": "a segment is present when it occurs, case and spacing aside, in the headline plus the returned text",
+    "content_recall": "expected segments recovered / expected segments, on supported pages; a refused page recovers none",
+    "noise_control": "forbidden segments absent / forbidden segments, on supported pages that returned text",
+    "page_success": "supported pages that returned text with every critical segment / supported pages",
+    "routing": "route taken (article, structured, refusal) is one of the page's acceptable routes",
+    "demotion": "pages labelled article that came back as structured text / pages labelled article",
+    "unsupported": "reported with the reason; never counted as a success or as an extraction failure",
+    "kept_apart": "Counts from segments are automated. Contamination severity, catastrophic failure and known-gap occurrence are judgements made from the output and are reported separately."
+  },
+  "gates": {
+    "set_by": "Trustora engineering, 2026-10-13, before selection; local product criteria, not literature-derived",
+    "catastrophic_rate_max": 0.0,
+    "hidden_segments_found_max": 0,
+    "critical_segments_recovered_min": 0.95,
+    "page_success_min": 0.9,
+    "forbidden_segments_absent_min": 0.9,
+    "material_contamination_rate_max": 0.1,
+    "articles_demoted_rate_max": 0.1,
+    "note": "With about 45 pages, observing no catastrophic failure bounds the true rate only below roughly 3/n, about 7%. Gates that need a judgement are undecided until every extracted page has been judged."
+  }
+}
