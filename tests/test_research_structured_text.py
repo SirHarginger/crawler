@@ -5,8 +5,12 @@ anything nor run away with time, memory or output. No network: every page is a l
 
 from __future__ import annotations
 
+import multiprocessing
+import signal
 import socket
+import threading
 import time
+from multiprocessing.connection import Connection
 from pathlib import Path
 from typing import Any
 
@@ -217,14 +221,54 @@ def test_the_element_budget_stops_the_walk(monkeypatch: pytest.MonkeyPatch) -> N
     assert through is not None and not through.is_article and through.truncated
 
 
-def test_markup_the_parser_cannot_finish_is_killed_and_yields_nothing() -> None:
-    """libxml2 is quadratic in the number of different attribute names on one element. Such
-    a page is slow in any parser here; what is proven is that the child is killed for it."""
+def _never_answers(html: str, out: Connection) -> None:
+    """In place of a parse that does not finish: holds its end of the pipe and sends nothing."""
+    threading.Event().wait()
+
+
+def test_a_child_still_running_at_the_limit_is_killed_and_yields_nothing(
+    monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """The limit is the parent's and does not depend on how slow any page is: whatever the
+    child is doing when the wait ends, it is killed and reaped, and the page yields nothing."""
+    process = multiprocessing.get_context("spawn").Process
+    start = process.start
+    children: list[Any] = []
+
+    def recorded(child: Any) -> None:
+        children.append(child)
+        start(child)
+
+    monkeypatch.setattr(process, "start", recorded)
+    monkeypatch.setattr(extraction, "_child", _never_answers)
+    limit = 0.5
+    started = time.monotonic()
+    assert extraction.extract_isolated(HEAD + FILLER, timeout_seconds=limit) is None
+    # The whole limit was waited: no answer and no closed pipe ended it early, so the child
+    # was running when it ran out. This is a floor the wait guarantees, not a guess at speed.
+    assert time.monotonic() - started >= limit
+    (child,) = children
+    assert not child.is_alive()
+    # `kill`, not `terminate`: a parser stuck in C is not asked to stop.
+    assert child.exitcode == -signal.SIGKILL
+    assert child not in multiprocessing.active_children()
+
+
+def test_a_page_that_is_quadratic_in_the_parser_is_bounded_whether_or_not_it_finishes() -> None:
+    """libxml2 is quadratic in the number of different attribute names on one element. How
+    slow that is depends on the libxml2 and the machine, so either outcome is right: the page
+    was read inside the limit, or the child was killed at it. Neither may take longer."""
     names = " ".join(f'a{n}="1"' for n in range(60_000))
     slow = HEAD + f"<p {names}>x</p>" + FILLER
+    limit = 3.0
     started = time.monotonic()
-    assert extraction.extract_isolated(slow, timeout_seconds=3) is None
-    assert 3 <= time.monotonic() - started < 9  # it ran into the limit and was not waited for
+    result = extraction.extract_isolated(slow, timeout_seconds=limit)  # raises on a socket
+    assert time.monotonic() - started < limit + 5 + 5  # the wait, the reaping, and slack
+    if result is not None:  # parsed in time: only what the page shows, and no more of it
+        assert result.headline == "Hostile" and not result.is_article
+        assert set(result.text.split("\n")) == {
+            "Hostile", "x", "Synthetic Registrar Omega keeps the public register of the court."}
+        assert len(result.text) <= structured_text._MAX_TEXT_CHARS and not result.truncated
 
 
 def test_hostile_pages_finish_inside_the_real_child_well_within_its_limit() -> None:
