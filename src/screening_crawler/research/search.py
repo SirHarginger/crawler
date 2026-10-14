@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass
-from typing import Any, Protocol
+from typing import Any, ClassVar, Protocol
 from urllib.parse import urlsplit
 
 import httpx
@@ -43,7 +43,8 @@ class SearchLead:
 
 
 class SearchProvider(Protocol):
-    name: str
+    @property
+    def name(self) -> str: ...
 
     def search(self, query: ResearchQuery, *, limit: int) -> list[SearchLead]: ...
 
@@ -60,6 +61,22 @@ def _lead_url(value: Any) -> str | None:
     return value
 
 
+# The network-capable search providers that may be asked anything at all. EMPTY: no live
+# provider is approved (engine docs/decisions/research-access.md). Adding a name is an owner
+# decision recorded there; nothing else, no setting and no caller, can approve one.
+APPROVED_LIVE_PROVIDERS: frozenset[str] = frozenset()
+
+
+def require_approval(name: str, transport: httpx.BaseTransport | None) -> None:
+    """Called before a provider sends anything. A provider that can reach a network must be
+    approved. An in-memory `httpx.MockTransport` cannot reach one, which is a property of the
+    type, not of the caller: tests and offline replays may use it unapproved."""
+    if isinstance(transport, httpx.MockTransport):
+        return
+    if name not in APPROVED_LIVE_PROVIDERS:
+        raise SearchFailure("provider_not_approved")
+
+
 @dataclass
 class ExaSearchProvider:
     """Exa's `POST /search` (https://exa.ai/docs/reference/search). Results only: no page
@@ -74,13 +91,16 @@ class ExaSearchProvider:
     named_person_terms_approved: bool = False
     timeout_seconds: float = 20.0
     transport: httpx.BaseTransport | None = None
-    name: str = "exa"
-    endpoint: str = "https://api.exa.ai/search"
+    # Fixed for the class: approval is by name, so no instance may take another's name or
+    # send to another endpoint.
+    name: ClassVar[str] = "exa"
+    endpoint: ClassVar[str] = "https://api.exa.ai/search"
 
     def __repr__(self) -> str:  # the key never reaches a log line or a traceback
         return "ExaSearchProvider(api_key=<redacted>)"
 
     def search(self, query: ResearchQuery, *, limit: int) -> list[SearchLead]:
+        require_approval(self.name, self.transport)
         if query.subject_kind == "PUBLIC_FIGURE" and not self.named_person_terms_approved:
             raise SearchFailure("provider_terms_not_approved")
         wanted = max(1, min(limit, MAX_LEADS))

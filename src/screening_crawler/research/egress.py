@@ -28,10 +28,14 @@ from datetime import datetime
 from typing import Any
 from urllib.parse import urlsplit
 
+import httpx
+
+from . import search as _search
 from .extract import Extracted, ParserTriedNetwork, extract_isolated
 from .gateway import GatewayRejected, ResearchGateway
 from .query import ResearchQuery
 from .search import SearchFailure, SearchProvider
+from .source_policy import RestrictedResolver
 
 logger = logging.getLogger(__name__)
 
@@ -203,6 +207,19 @@ class ResearchEgress:
     def __post_init__(self) -> None:
         if len(self.lead_secret) < 32:
             raise ValueError("the lead secret must be at least 32 bytes")
+        if not self.offline and not isinstance(self.gateway.resolver, RestrictedResolver):
+            # Every caller, the service and any tool alike: a gateway that can reach a network
+            # reaches only approved source domains (source_policy.policy_gateway).
+            raise ValueError("a gateway that can reach a network needs approved source domains")
+
+    @property
+    def offline(self) -> bool:
+        """True only where nothing this egress fetches can leave the process: a stand-in that
+        is not the real gateway (a replay of stored bytes), or the real gateway over an
+        in-memory transport (the staging fixtures, tests). A test seam, not a defence against
+        code running in this process, which could do anything."""
+        return (not isinstance(self.gateway, ResearchGateway)
+                or isinstance(self.gateway.transport, httpx.MockTransport))
 
     # -- lead tokens -----------------------------------------------------------------------------
 
@@ -231,16 +248,24 @@ class ResearchEgress:
 
     # -- operations ------------------------------------------------------------------------------
 
-    def search(self, query: ResearchQuery, *, limit: int = 5,
-               provider: str | None = None) -> list[IssuedLead]:
-        """`provider`, when given, is the only provider this caller may use. Checked before
-        the budget and before the provider is asked, so a refused search sends nothing."""
+    def search(self, query: ResearchQuery, *, provider: str,
+               limit: int = 5) -> list[IssuedLead]:
+        """`provider` is the only provider this caller may use, required of every caller, in
+        process or over HTTP. Checked before the budget and before the provider is asked, so a
+        refused search sends nothing. A provider whose leads this egress fetches from the
+        network must also be approved (search.APPROVED_LIVE_PROVIDERS), checked here for every
+        provider, not left to the provider."""
         digest = query.sha256()
-        if provider is not None and provider != self.provider.name:
+        if not provider or provider != self.provider.name:
             logger.warning("research_search", extra={
                 "query_sha256": digest, "outcome": "provider_not_permitted",
                 "provider": self.provider.name})
             raise EgressRefused("provider_not_permitted")
+        if not self.offline and self.provider.name not in _search.APPROVED_LIVE_PROVIDERS:
+            logger.warning("research_search", extra={
+                "query_sha256": digest, "outcome": "provider_not_approved",
+                "provider": self.provider.name})
+            raise EgressRefused("search_provider_not_approved")
         with self._lock:
             day = int(self.clock() // 86400)
             used = self._searches[1] if self._searches[0] == day else 0
@@ -264,6 +289,13 @@ class ResearchEgress:
 
     def fetch(self, lead_token: str) -> FetchedDocument:
         claims = self._redeem(lead_token)
+        if not self.offline:
+            # Checked again here, not only when the egress was built or the lead issued: the
+            # gateway must still be the policy's, and the lead's provider still approved.
+            if not isinstance(self.gateway.resolver, RestrictedResolver):
+                raise EgressRefused("source_policy_missing")
+            if str(claims["p"]) not in _search.APPROVED_LIVE_PROVIDERS:
+                raise EgressRefused("search_provider_not_approved")
         url = str(claims["u"])
         host = (urlsplit(url).hostname or "").lower()
         if not self._fetching.acquire(blocking=False):

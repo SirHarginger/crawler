@@ -292,18 +292,18 @@ retrieval.
 
 ### Provider restriction
 
-Every search request over HTTP names the only provider its caller permits (`"provider":
+Every search request names the only provider its caller permits (`"provider":
 "staging-fixtures"`); since A2.1 the field is required, and a request without it, or with
-`null`, is refused as `invalid_request` before the provider is asked (closes N1-a). The
-in-process method still accepts no restriction for the evaluation tools in
-`tools/research_eval/`; making it required is open (engine ADR research-access, R2). The egress compares it with the provider it is configured with and, if
-they differ, answers `403 provider_not_permitted` **before** the daily budget is touched and
-before the provider is asked (`ResearchEgress.search`). A refused search sends nothing to any
-provider. A successful answer names the provider that answered (`"provider"`), which the
-engine checks as a second line. The engine's staging investigation always sends the
-restriction, from a constant, so an engine pointed at a live-mode egress gets a refusal, never
-a live search. An egress older than this field refuses any request carrying it as
-`invalid_request` (the request model forbids unknown fields), again before searching.
+`null`, is refused as `invalid_request` before the provider is asked (closes N1-a). In
+process, `ResearchEgress.search` requires it too, and refuses an empty or different one before
+the provider is asked (closes R2). The egress compares it with the provider it is configured
+with and, if they differ, answers `403 provider_not_permitted` **before** the daily budget is
+touched and before the provider is asked. A refused search sends nothing to any provider. A
+successful answer names the provider that answered (`"provider"`), which the engine checks as
+a second line. The engine's staging investigation always sends the restriction, from a
+constant, so an engine pointed at a live-mode egress gets a refusal, never a live search. An
+egress older than this field refuses any request carrying it as `invalid_request` (the
+request model forbids unknown fields), again before searching.
 
 This is deny-by-default authorisation enforced at the server, the egress, not in the caller
 (OWASP Authorization Cheat Sheet, "Deny by Default", "Verify that Authorization Checks are
@@ -313,17 +313,71 @@ staging egress token, because the token authenticates the engine, not what it ma
 would add a credential without stopping a misconfiguration; an attestation endpoint the engine
 asks first, because the mode could change between the two requests.
 
-### Source policy (live mode)
+### Provider approval
 
-A live egress needs `RESEARCH_SOURCE_DOMAINS`, the approved source domains, and refuses to
-start without it or with a value that is not a list of domains of at least two labels ("gh"
-or "com" alone would approve a whole top-level domain). The list is enforced in the gateway's
-resolver (`research/source_policy.py`), which the gateway calls for every hop, the first
-request and each redirect, before DNS and before any connection: a lead or a redirect to any
-other host is refused as `source_not_permitted` (HTTP 403), and nothing is sent to it. A
-domain approves itself and its subdomains; `gov.gh` approves `mofep.gov.gh` and not
-`evilgov.gh`. The gateway itself is unchanged. Which domains are approved is an owner decision
-(engine `docs/decisions/research-access.md`); no list is shipped.
+Naming a provider is not permission to use it. `search.APPROVED_LIVE_PROVIDERS` lists the
+providers that may be used against the network, **and it is empty**: as committed no live
+search or live fetch is possible from any path -- the HTTP service in any mode, an in-process
+caller, or an evaluation tool. It is enforced in three places:
+
+- `ResearchEgress.search` refuses any provider not on the list, centrally, before the daily
+  budget and before the provider is asked (`search_provider_not_approved`), whatever the
+  provider is;
+- `ResearchEgress.fetch` refuses a lead whose provider is no longer on the list, before any
+  request;
+- each network-capable provider (Exa, curated) checks the list itself before sending anything;
+  Exa's name and endpoint are fixed for the class, so no instance can borrow an approved name.
+
+The one exemption is an egress whose gateway is **offline**: the fixture gateway or a test
+gateway over an in-memory `httpx.MockTransport`, or a stand-in that replays stored bytes. That
+is a test seam, decided by the gateway the egress was given, not a defence against code in
+this process, which could do anything; no gateway in `src/` or `tools/` is offline except the
+staging fixtures. Approving a provider is a code change citing the owner decision in the
+engine's `docs/decisions/research-access.md`, which also needs the engine's own list changed.
+
+### Source policy (live and curated modes)
+
+A live or curated egress needs `RESEARCH_SOURCE_DOMAINS`, the approved source domains, and
+refuses to start without it. Each entry must be a registrable domain under the Public Suffix
+List, or a host beneath one, checked with the pinned `publicsuffixlist` package (its list is
+bundled; nothing is downloaded at run time). A public suffix -- `gov.gh`, `com.gh`, `co.uk`,
+`github.io` -- would approve every site registered under it and is refused, as is a domain
+under a top-level domain the list does not know, an IP address, a wildcard, a URL, and
+anything with a port or credentials (closes R3). Entries are ASCII: an internationalised name
+is given in its `xn--` form, the form the gateway resolves, because two IDNA standards map
+some Unicode names to different hosts. A domain approves itself and its subdomains, never a
+sibling: `bog.gov.gh` approves `www.bog.gov.gh` and not `mofep.gov.gh` or `evilbog.gov.gh`;
+`www.bog.gov.gh` approves only that host and below. Which domains are approved is an owner
+decision (engine `docs/decisions/research-access.md`); no list is shipped.
+
+The list is enforced in the gateway's resolver (`research/source_policy.py`), which the
+gateway calls for every hop -- the first request, each redirect and robots.txt -- before DNS
+and before any connection: a lead or a redirect to any other host is refused as
+`source_not_permitted` (HTTP 403), and nothing is sent to it. The gateway itself
+(`gateway.py`, shared with the engine and hash-pinned) is unchanged. `policy_gateway` is the
+only constructor of a gateway that can reach a network; the resolver re-validates its domains
+however it is built; the egress refuses to be built on any other network gateway and checks
+again before each fetch. A test keeps `ResearchGateway(` out of `src/` and `tools/` except in
+`policy_gateway` and the fixture gateway; it matches text, so an aliased import would evade
+it -- the egress checks, not the test, are the boundary for every egress path.
+
+The evaluation tools (`tools/research_eval/`) fetch live only with `--live`, an approved
+provider (`frozen-list`, `frozen-page-list`, `exa`: none is approved) and `--source-domains`;
+`realpage_eval`'s `select` and `snapshot`, which use the gateway without an egress, check the
+approval and build it through `policy_gateway` first. Without them each refuses and fetches
+nothing.
+
+### Curated mode
+
+`RESEARCH_EGRESS_MODE=curated` answers a search from a reviewed list of official pages per
+subject (`RESEARCH_CURATED_SOURCES`, JSON: `{"subjects": [{"name": ..., "pages": [...]}]}`)
+instead of a search provider, so no third party sees a subject's name (`research/curated.py`).
+Every page must be a plain https URL on an approved source domain, at most five per subject,
+checked at start-up; the mode refuses to start with a provider key. A subject the list does
+not name gets no leads. Everything after the lead is the live path: signed leads, the real
+gateway behind the source policy, the parsing child, the extractors. Its provider,
+`curated-official`, is network-capable and therefore subject to the approval list: as
+committed it answers every search `provider_not_approved`.
 
 ## Provider
 

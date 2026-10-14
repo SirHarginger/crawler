@@ -33,6 +33,9 @@ research = [
   "htmldate==1.11.0",
   "httpx>=0.28,<1",
   "lxml>=5,<7",
+  # The Public Suffix List, bundled: approved source domains are checked against it
+  # (research/source_policy.py). Pinned so a policy decision does not change unseen.
+  "publicsuffixlist==1.1.0.20261010",
   "pydantic>=2.7,<3",
   "trafilatura==2.0.0",
   "uvicorn>=0.34,<1",

@@ -29,9 +29,13 @@ from typing import Any
 
 from screening_crawler.research import gateway as gateway_module
 from screening_crawler.research.egress import EgressRefused, ResearchEgress
-from screening_crawler.research.gateway import ResearchGateway
 from screening_crawler.research.query import ResearchQuery
 from screening_crawler.research.search import SearchLead
+from screening_crawler.research.source_policy import (
+    SourcePolicyInvalid,
+    parse_domains,
+    policy_gateway,
+)
 
 HERE = pathlib.Path(__file__).resolve().parent
 DATASET = HERE / "fetch_urls.json"
@@ -111,7 +115,7 @@ def classify(entry: dict[str, Any], outcome: str) -> str:
 
 def evaluate(egress: ResearchEgress, urls: list[dict[str, Any]]) -> list[dict[str, Any]]:
     egress.provider = FrozenList([u["url"] for u in urls])
-    leads = egress.search(_PLACEHOLDER, limit=len(urls))
+    leads = egress.search(_PLACEHOLDER, provider=egress.provider.name, limit=len(urls))
     rows = []
     for entry, lead in zip(urls, leads, strict=True):
         started = time.monotonic()
@@ -198,6 +202,8 @@ def summarise(rows: list[dict[str, Any]], network: dict[str, Any],
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--live", action="store_true", help="really fetch the frozen URLs")
+    parser.add_argument("--source-domains", default="",
+                        help="the approved source domains, comma-separated (source_policy.py)")
     parser.add_argument("--write", type=pathlib.Path)
     parser.add_argument("--rerun-reason", default="",
                         help="why the frozen list is being run again; kept in the result")
@@ -209,6 +215,11 @@ def main() -> int:
         print("a provider credential is set; this experiment must run without one",
               file=sys.stderr)
         return 2
+    try:
+        domains = parse_domains(args.source_domains)
+    except SourcePolicyInvalid as exc:
+        print(f"refused: {exc}; nothing was fetched", file=sys.stderr)
+        return 2
     if args.write and args.write.exists():
         print("a result already exists for this frozen list; a rerun needs a recorded reason "
               "and a new file", file=sys.stderr)
@@ -217,7 +228,7 @@ def main() -> int:
     dataset = json.loads(raw)
     ledger = NetworkLedger()
     egress = ResearchEgress(provider=FrozenList([]), lead_secret=os.urandom(32),
-                            gateway=ResearchGateway(resolver=ledger.resolver))
+                            gateway=policy_gateway(domains, resolver=ledger.resolver))
     for address in ipaddress.ip_network("127.0.0.0/30"):  # never legitimately contacted
         assert str(address) not in ledger.validated
     started = time.strftime("%Y-%m-%dT%H:%M:%S%z")

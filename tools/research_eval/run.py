@@ -25,9 +25,13 @@ import time
 from typing import Any
 
 from screening_crawler.research.egress import EgressRefused, ResearchEgress
-from screening_crawler.research.gateway import ResearchGateway
 from screening_crawler.research.query import ResearchQuery
 from screening_crawler.research.search import ExaSearchProvider
+from screening_crawler.research.source_policy import (
+    SourcePolicyInvalid,
+    parse_domains,
+    policy_gateway,
+)
 
 HERE = pathlib.Path(__file__).resolve().parent
 QUERY_FIELDS = ("subject_kind", "name", "role", "organisation", "country", "birth_year")
@@ -43,7 +47,7 @@ def evaluate_subject(egress: ResearchEgress, subject: dict[str, Any],
     row: dict[str, Any] = {"id": subject["id"], "query_sha256": query.sha256(),
                            "search": "ok", "leads": []}
     try:
-        leads = egress.search(query, limit=5)
+        leads = egress.search(query, provider=egress.provider.name, limit=5)
     except EgressRefused as exc:
         row["search"] = exc.reason
         return row
@@ -109,6 +113,8 @@ def main() -> int:
     parser.add_argument("--live", action="store_true",
                         help="really call the search provider and fetch pages")
     parser.add_argument("--write", type=pathlib.Path)
+    parser.add_argument("--source-domains", default="",
+                        help="the approved source domains, comma-separated (source_policy.py)")
     args = parser.parse_args()
     key = os.environ.get("RESEARCH_EXA_API_KEY", "")
     approved = os.environ.get("RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED") == "true"
@@ -117,10 +123,15 @@ def main() -> int:
               "RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED=true (named-person search is not "
               "approved under Exa's standard terms); nothing was sent", file=sys.stderr)
         return 2
+    try:
+        domains = parse_domains(args.source_domains)
+    except SourcePolicyInvalid as exc:
+        print(f"refused: {exc}; nothing was sent", file=sys.stderr)
+        return 2
     dataset = json.loads((HERE / "subjects.json").read_text())
     egress = ResearchEgress(
         provider=ExaSearchProvider(api_key=key, named_person_terms_approved=True),
-        gateway=ResearchGateway(), lead_secret=os.urandom(32))
+        gateway=policy_gateway(domains), lead_secret=os.urandom(32))
     rows = [evaluate_subject(egress, s, dataset["credible_hosts"]) for s in dataset["subjects"]]
     summary = summarise(rows, dataset["subjects"])
     result = {"dataset": dataset["dataset"], "version": dataset["version"],

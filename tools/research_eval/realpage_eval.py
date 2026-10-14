@@ -39,7 +39,12 @@ from screening_crawler.research import extract as extract_module
 from screening_crawler.research.egress import EgressRefused, ResearchEgress
 from screening_crawler.research.gateway import FetchResult, GatewayRejected, ResearchGateway
 from screening_crawler.research.query import ResearchQuery
-from screening_crawler.research.search import SearchLead
+from screening_crawler.research.search import SearchFailure, SearchLead, require_approval
+from screening_crawler.research.source_policy import (
+    SourcePolicyInvalid,
+    parse_domains,
+    policy_gateway,
+)
 from screening_crawler.research.structured_text import STRUCTURED_EXTRACTOR_VERSION
 
 HERE = pathlib.Path(__file__).resolve().parent
@@ -273,7 +278,8 @@ def extract_all(cases: list[dict[str, Any]], directory: pathlib.Path) -> dict[st
                             lead_secret=os.urandom(32), min_seconds_between_host_requests=0.0,
                             max_searches_per_day=10)
     documents: dict[str, Any] = {}
-    leads = egress.search(_PLACEHOLDER, limit=len(fetched)) if fetched else []
+    leads = egress.search(_PLACEHOLDER, provider=egress.provider.name,
+                           limit=len(fetched)) if fetched else []
     for case, lead in zip(fetched, leads, strict=True):
         try:
             documents[case["id"]] = egress.fetch(lead.lead_token)
@@ -509,6 +515,8 @@ def main() -> int:  # noqa: PLR0911 -- one return per refusal, each with its rea
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=("select", "snapshot", "dump", "score", "fingerprint"))
     parser.add_argument("--live", action="store_true", help="really fetch through the gateway")
+    parser.add_argument("--source-domains", default="",
+                        help="the approved source domains, comma-separated (source_policy.py)")
     parser.add_argument("--snapshots", type=pathlib.Path)
     parser.add_argument("--write", type=pathlib.Path)
     args = parser.parse_args()
@@ -523,11 +531,17 @@ def main() -> int:  # noqa: PLR0911 -- one return per refusal, each with its rea
         if any(name.startswith("RESEARCH_") for name in os.environ):
             print("a service credential is set; this runs without one", file=sys.stderr)
             return 2
+        try:  # live fetching needs an approved source of pages and approved domains
+            require_approval(_Leads.name, None)
+            gateway = policy_gateway(parse_domains(args.source_domains))
+        except (SearchFailure, SourcePolicyInvalid) as exc:
+            print(f"refused: {exc}; nothing was fetched", file=sys.stderr)
+            return 2
     if args.command == "select":
         if MANIFEST.exists():
             print("the page list exists; it is selected once", file=sys.stderr)
             return 2
-        cases = select(protocol, ResearchGateway())
+        cases = select(protocol, gateway)
         _write(MANIFEST, {"dataset": protocol["dataset"], "version": protocol["version"],
                           "protocol_sha256": sha256_file(PROTOCOL), "cases": cases})
         print(f"{len(cases)} cases selected")
@@ -541,7 +555,7 @@ def main() -> int:  # noqa: PLR0911 -- one return per refusal, each with its rea
         print("--snapshots must name a directory outside the repository", file=sys.stderr)
         return 2
     if args.command == "snapshot":
-        snapshot(manifest["cases"], ResearchGateway(), args.snapshots)
+        snapshot(manifest["cases"], gateway, args.snapshots)
         _write(MANIFEST, manifest)
         return 0
     if args.command == "dump":

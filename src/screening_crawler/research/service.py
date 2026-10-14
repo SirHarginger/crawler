@@ -10,8 +10,12 @@ configured: off is the default.
   RESEARCH_EGRESS_TOKEN=...             shared with the engine; at least 32 characters
   RESEARCH_LEAD_SECRET=...              signs lead tokens; at least 32 characters
   RESEARCH_EXA_API_KEY=...              the search provider credential
-  RESEARCH_SOURCE_DOMAINS=gov.gh,...    live mode: the approved source domains; a fetch to
-                                        any other host is refused before it is made
+  RESEARCH_SOURCE_DOMAINS=bog.gov.gh,...
+                                        live and curated modes: the approved source domains
+                                        (registrable, never a public suffix); a fetch to any
+                                        other host is refused before it is made
+  RESEARCH_EGRESS_MODE=live|curated|staging-fixtures
+  RESEARCH_CURATED_SOURCES=...json      curated mode: the reviewed official pages per subject
   RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED=true
                                         only when terms that permit named-person queries
                                         (a DPA and zero data retention) are in place.
@@ -37,15 +41,16 @@ from pydantic import BaseModel, ConfigDict, Field
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.responses import Response
 
+from .curated import CuratedSourceProvider, CuratedSources, CuratedSourcesInvalid
 from .egress import EgressRefused, ResearchEgress
-from .gateway import ResearchGateway
 from .query import ResearchQuery
 from .search import ExaSearchProvider, SearchProvider
-from .source_policy import SourcePolicyInvalid, parse_domains, restricted_resolver
+from .source_policy import SourcePolicyInvalid, parse_domains, policy_gateway
 from .staging import Fixtures, FixtureSearchProvider, FixturesInvalid, fixture_gateway
 
 _MIN_SECRET_LENGTH = 32
 STAGING_MODE = "staging-fixtures"
+CURATED_MODE = "curated"
 _MAX_BODY_BYTES = 16 * 1024  # a query or one lead token; nothing larger is legitimate
 
 
@@ -146,17 +151,19 @@ def app_from_environment(environ: dict[str, str] | None = None) -> tuple[FastAPI
     if env.get("RESEARCH_EGRESS_ENABLED") != "true":
         raise EgressNotConfigured("research egress is disabled (RESEARCH_EGRESS_ENABLED != true)")
     mode = env.get("RESEARCH_EGRESS_MODE", "live")
-    if mode not in ("live", STAGING_MODE):
-        raise EgressNotConfigured("RESEARCH_EGRESS_MODE must be live or staging-fixtures")
+    if mode not in ("live", CURATED_MODE, STAGING_MODE):
+        raise EgressNotConfigured("RESEARCH_EGRESS_MODE must be live, curated or staging-fixtures")
     sources = (("RESEARCH_FIXTURE_DIR",) if mode == STAGING_MODE
+               else ("RESEARCH_CURATED_SOURCES", "RESEARCH_SOURCE_DOMAINS")
+               if mode == CURATED_MODE
                else ("RESEARCH_EXA_API_KEY", "RESEARCH_SOURCE_DOMAINS"))
     missing = [name for name in ("RESEARCH_EGRESS_TOKEN", "RESEARCH_LEAD_SECRET", *sources)
                if not env.get(name)]
     if missing:
         raise EgressNotConfigured(f"missing configuration: {', '.join(missing)}")
-    if mode == STAGING_MODE and env.get("RESEARCH_EXA_API_KEY"):
-        # One or the other: a process that serves fixtures holds no provider credential.
-        raise EgressNotConfigured("staging-fixtures mode takes no provider key")
+    if mode != "live" and env.get("RESEARCH_EXA_API_KEY"):
+        # A process that serves fixtures or curated pages holds no search provider credential.
+        raise EgressNotConfigured(f"{mode} mode takes no provider key")
     if len(env["RESEARCH_LEAD_SECRET"]) < _MIN_SECRET_LENGTH:
         raise EgressNotConfigured("the lead secret must be at least 32 characters")
     host = env.get("RESEARCH_EGRESS_HOST", "127.0.0.1")
@@ -172,16 +179,18 @@ def app_from_environment(environ: dict[str, str] | None = None) -> tuple[FastAPI
         provider, gateway = FixtureSearchProvider(fixtures), fixture_gateway(fixtures)
         pace = 0.0  # pacing protects a publisher; there is none here
     else:
-        provider = ExaSearchProvider(
-            api_key=env["RESEARCH_EXA_API_KEY"],
-            named_person_terms_approved=(
-                env.get("RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED") == "true"))
         try:
             domains = parse_domains(env["RESEARCH_SOURCE_DOMAINS"])
-        except SourcePolicyInvalid as exc:
+            provider = (CuratedSourceProvider(CuratedSources.load(
+                            pathlib.Path(env["RESEARCH_CURATED_SOURCES"]), domains))
+                        if mode == CURATED_MODE else ExaSearchProvider(
+                            api_key=env["RESEARCH_EXA_API_KEY"],
+                            named_person_terms_approved=(
+                                env.get("RESEARCH_EXA_NAMED_PERSON_TERMS_APPROVED") == "true")))
+        except (SourcePolicyInvalid, CuratedSourcesInvalid) as exc:
             raise EgressNotConfigured(str(exc)) from None
         # Every hop, redirects included, is checked against the approved domains before DNS.
-        gateway, pace = ResearchGateway(resolver=restricted_resolver(domains)), 2.0
+        gateway, pace = policy_gateway(domains), 2.0
     egress = ResearchEgress(provider=provider, gateway=gateway,
                             lead_secret=env["RESEARCH_LEAD_SECRET"].encode(),
                             min_seconds_between_host_requests=pace)

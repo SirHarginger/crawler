@@ -19,6 +19,7 @@ pytest.importorskip("trafilatura")
 
 from fastapi.testclient import TestClient  # noqa: E402
 
+from screening_crawler.research import search as search_module  # noqa: E402
 from screening_crawler.research import service  # noqa: E402
 from screening_crawler.research.egress import EgressRefused, ResearchEgress  # noqa: E402
 from screening_crawler.research.extract import ARTICLE_EXTRACTOR_VERSION  # noqa: E402
@@ -133,7 +134,7 @@ def test_a_fixture_page_that_is_not_html_or_is_missing_is_refused_like_any_other
     query = ResearchQuery(subject_kind="PUBLIC_INTEREST_ORGANISATION",
                           name="Synthetic Unreachable Body")
     reasons = []
-    for lead in egress.search(query):
+    for lead in egress.search(query, provider=PROVIDER_NAME):
         with pytest.raises(EgressRefused) as refused:
             egress.fetch(lead.lead_token)
         reasons.append(refused.value.reason)
@@ -205,7 +206,7 @@ def _live_client(monkeypatch: pytest.MonkeyPatch) -> tuple[TestClient, list[Any]
     live = {k: v for k, v in ENV.items() if k not in ("RESEARCH_EGRESS_MODE",
                                                       "RESEARCH_FIXTURE_DIR")}
     app, _, _ = service.app_from_environment(live | {"RESEARCH_EXA_API_KEY": "placeholder",
-                                                     "RESEARCH_SOURCE_DOMAINS": "gov.gh"})
+                                                     "RESEARCH_SOURCE_DOMAINS": "bog.gov.gh"})
     return TestClient(app), calls
 
 
@@ -226,7 +227,13 @@ def test_a_live_egress_refuses_a_staging_restricted_search_before_asking_its_pro
         "query": MINISTRY, "limit": 4, "provider": PROVIDER_NAME})
     assert (response.status_code, response.json()) == (403, {"detail": "provider_not_permitted"})
     assert calls == []
-    # The instrument works: a search restricted to the live provider does reach its method.
+    # Naming the live provider is not enough: it is not approved, so it is never asked.
+    refused = client.post("/internal/research/search", headers=AUTH,
+                          json={"query": MINISTRY, "limit": 4, "provider": "exa"})
+    assert (refused.status_code, refused.json()) == (502, {"detail": "search_provider_not_approved"})
+    assert calls == []
+    # The instrument works: once approved, the provider's method is reached.
+    monkeypatch.setattr(search_module, "APPROVED_LIVE_PROVIDERS", frozenset({"exa"}))
     assert client.post("/internal/research/search", headers=AUTH,
                        json={"query": MINISTRY, "limit": 4, "provider": "exa"}).status_code == 200
     assert len(calls) == 1

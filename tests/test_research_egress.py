@@ -22,6 +22,7 @@ from fastapi.testclient import TestClient  # noqa: E402
 from pydantic import ValidationError  # noqa: E402
 
 from screening_crawler.research import extract as extraction  # noqa: E402
+from screening_crawler.research import search as search_module  # noqa: E402
 from screening_crawler.research import service  # noqa: E402
 from screening_crawler.research.egress import (  # noqa: E402
     LEAD_TTL_SECONDS,
@@ -141,7 +142,7 @@ def _egress(web: Web, urls: list[str], **kwargs: Any) -> tuple[ResearchEgress, P
 
 def _fetch_first(web: Web, url: str) -> Any:
     egress, _ = _egress(web, [url])
-    return egress.fetch(egress.search(QUERY)[0].lead_token)
+    return egress.fetch(egress.search(QUERY, provider="fake")[0].lead_token)
 
 
 def _reason(web: Web, url: str) -> str:
@@ -343,11 +344,19 @@ def test_a_named_person_is_never_sent_to_exa_under_its_standard_terms() -> None:
     assert len(default.search(organisation, limit=3)) == 1 and len(sent) == 1
 
 
-def test_the_service_refuses_named_person_search_unless_terms_are_declared() -> None:
+def test_the_service_refuses_named_person_search_unless_terms_are_declared(
+    monkeypatch: pytest.MonkeyPatch
+) -> None:
     app, _, _ = service.app_from_environment(dict(GOOD_ENV))
-    answer = TestClient(app).post("/internal/research/search", json=SEARCH | {"provider": "exa"},
-                                     headers=AUTH)
-    assert answer.status_code == 502
+    client = TestClient(app)
+    # As committed, no live provider is approved: refused before anything is sent.
+    answer = client.post("/internal/research/search", json=SEARCH | {"provider": "exa"},
+                         headers=AUTH)
+    assert (answer.status_code, answer.json()) == (502, {"detail": "search_provider_not_approved"})
+    # Even an approved provider refuses a named person without terms that permit it.
+    monkeypatch.setattr(search_module, "APPROVED_LIVE_PROVIDERS", frozenset({"exa"}))
+    answer = client.post("/internal/research/search", json=SEARCH | {"provider": "exa"},
+                         headers=AUTH)
     assert answer.json() == {"detail": "search_provider_terms_not_approved"}
 
 
@@ -562,7 +571,7 @@ def test_a_slow_publisher_times_out() -> None:
                                 resolver=lambda host, port: [PUBLIC_IP]),
         min_seconds_between_host_requests=0.0)
     with pytest.raises(EgressRefused) as error:
-        egress.fetch(egress.search(QUERY)[0].lead_token)
+        egress.fetch(egress.search(QUERY, provider="fake")[0].lead_token)
     assert error.value.reason == "timeout"
 
 
@@ -590,7 +599,7 @@ def test_requests_carry_no_cookie_credential_or_caller_data() -> None:
     web.add("https://news.example/story", _page(), headers={"set-cookie": "sid=abc; Path=/"})
     web.add("https://news.example/again", _page())
     egress, _ = _egress(web, ["https://news.example/story", "https://news.example/again"])
-    for lead in egress.search(QUERY):
+    for lead in egress.search(QUERY, provider="fake"):
         egress.fetch(lead.lead_token)
     for request in web.requests:
         assert request.method == "GET"
@@ -607,7 +616,7 @@ def test_one_host_is_paced_and_a_long_queue_is_refused_not_parked() -> None:
     egress, _ = _egress(web, urls, monotonic=lambda: now[0], sleep=slept.append)
     egress.min_seconds_between_host_requests = 2.0
     outcomes = []
-    for lead in egress.search(QUERY, limit=8):
+    for lead in egress.search(QUERY, provider="fake", limit=8):
         try:
             egress.fetch(lead.lead_token)
             outcomes.append("ok")
@@ -623,13 +632,13 @@ def test_searches_have_a_daily_ceiling() -> None:
     now = [86400.0 * 20_000]
     egress, provider = _egress(Web(), ["https://news.example/a"], clock=lambda: now[0],
                                max_searches_per_day=2)
-    egress.search(QUERY)
-    egress.search(QUERY)
+    egress.search(QUERY, provider="fake")
+    egress.search(QUERY, provider="fake")
     with pytest.raises(EgressRefused) as error:
-        egress.search(QUERY)
+        egress.search(QUERY, provider="fake")
     assert error.value.reason == "search_budget_exhausted" and provider.calls == 2
     now[0] += 86400.0  # a new day
-    egress.search(QUERY)
+    egress.search(QUERY, provider="fake")
     assert provider.calls == 3
 
 
@@ -637,7 +646,7 @@ def test_concurrent_fetches_are_capped() -> None:
     web = Web()
     web.add("https://news.example/a", _page())
     egress, _ = _egress(web, ["https://news.example/a"])
-    token = egress.search(QUERY)[0].lead_token
+    token = egress.search(QUERY, provider="fake")[0].lead_token
     held = [egress._fetching.acquire(blocking=False) for _ in range(4)]
     assert all(held)
     with pytest.raises(EgressRefused) as error:
@@ -655,11 +664,11 @@ def test_only_a_token_this_egress_issued_can_be_fetched() -> None:
     web = Web()
     web.add("https://news.example/story", _page())
     egress, _ = _egress(web, ["https://news.example/story"])
-    token = egress.search(QUERY)[0].lead_token
+    token = egress.search(QUERY, provider="fake")[0].lead_token
     payload, _, signature = token.partition(".")
     other, _ = _egress(web, ["http://169.254.169.254/"])
     other.lead_secret = b"o" * 40
-    forged = other.search(QUERY)[0].lead_token
+    forged = other.search(QUERY, provider="fake")[0].lead_token
     for bad in ("https://news.example/story", "", "x.y", payload + ".", "." + signature,
                 payload + "." + "0" * 64, forged, forged.partition(".")[0] + "." + signature,
                 token + "x", "!!!." + signature, payload + "." + "é" * 64,
@@ -677,7 +686,7 @@ def test_a_lead_expires() -> None:
     web.add("https://news.example/story", _page())
     now = [1000.0]
     egress, _ = _egress(web, ["https://news.example/story"], clock=lambda: now[0])
-    token = egress.search(QUERY)[0].lead_token
+    token = egress.search(QUERY, provider="fake")[0].lead_token
     now[0] += LEAD_TTL_SECONDS + 1
     with pytest.raises(EgressRefused) as error:
         egress.fetch(token)
@@ -696,7 +705,7 @@ def test_a_lead_token_is_signed_not_secret() -> None:
     import base64
 
     egress, _ = _egress(Web(), ["https://news.example/story"])
-    payload = egress.search(QUERY)[0].lead_token.partition(".")[0]
+    payload = egress.search(QUERY, provider="fake")[0].lead_token.partition(".")[0]
     assert json.loads(base64.urlsafe_b64decode(payload))["u"] == "https://news.example/story"
 
 
@@ -745,7 +754,7 @@ def test_a_page_that_starts_with_a_url_cannot_make_the_date_finder_download_it(
     web.add("https://news.example/hostile", hostile.encode())
     egress, _ = _egress(web, ["https://news.example/hostile"])
     try:
-        egress.fetch(egress.search(QUERY)[0].lead_token)
+        egress.fetch(egress.search(QUERY, provider="fake")[0].lead_token)
     except EgressRefused as error:
         assert error.reason == "no_article_text"
     assert web.page_requests() == ["news.example/hostile"]
@@ -824,7 +833,7 @@ def test_a_page_whose_parsing_tried_the_network_is_refused() -> None:
     web.add("https://news.example/story", _page())
     egress, _ = _egress(web, ["https://news.example/story"], extractor=tried)
     with pytest.raises(EgressRefused) as error:
-        egress.fetch(egress.search(QUERY)[0].lead_token)
+        egress.fetch(egress.search(QUERY, provider="fake")[0].lead_token)
     assert error.value.reason == "parser_network_attempt"
 
 
@@ -1067,7 +1076,7 @@ def test_instructions_links_scripts_and_redirect_tags_in_a_page_cause_no_request
     web.add("https://news.example/hostile", hostile)
     web.add("https://evil.example/collect", _page())
     egress, provider = _egress(web, ["https://news.example/hostile"])
-    document = egress.fetch(egress.search(QUERY)[0].lead_token)
+    document = egress.fetch(egress.search(QUERY, provider="fake")[0].lead_token)
     assert web.page_requests() == ["news.example/hostile"]  # one page, nothing it pointed at
     assert provider.calls == 1  # the page did not cause a search
     assert document.final_url == "https://news.example/hostile" and document.host == "news.example"
@@ -1078,7 +1087,7 @@ def test_instructions_links_scripts_and_redirect_tags_in_a_page_cause_no_request
 def test_a_page_cannot_mint_or_extend_a_lead() -> None:
     web = Web()
     egress, _ = _egress(web, ["https://news.example/hostile"])
-    real = egress.search(QUERY)[0].lead_token
+    real = egress.search(QUERY, provider="fake")[0].lead_token
     web.add("https://news.example/hostile", _page(BODY + f" lead_token={real} " + INJECTION))
     web.add("https://evil.example/collect", _page())
     document = egress.fetch(real)
@@ -1098,7 +1107,7 @@ def test_secrets_never_reach_a_publisher_a_document_or_a_log(
             headers={"set-cookie": "sid=abc", "x-internal": "header-value"})
     egress, _ = _egress(web, ["https://news.example/hostile"])
     with caplog.at_level(logging.DEBUG):
-        document = egress.fetch(egress.search(QUERY)[0].lead_token)
+        document = egress.fetch(egress.search(QUERY, provider="fake")[0].lead_token)
     logged = " ".join(r.getMessage() + repr(r.__dict__) for r in caplog.records)
     exposed = repr(document) + logged + " ".join(str(r.url) + repr(dict(r.headers))
                                                  for r in web.requests)
@@ -1210,7 +1219,7 @@ def test_a_refused_fetch_reports_a_reason_and_nothing_else() -> None:
 
 GOOD_ENV = {"RESEARCH_EGRESS_ENABLED": "true", "RESEARCH_EGRESS_TOKEN": TOKEN,
             "RESEARCH_LEAD_SECRET": SECRET.decode(), "RESEARCH_EXA_API_KEY": KEY,
-            "RESEARCH_SOURCE_DOMAINS": "gov.gh,news.example"}
+            "RESEARCH_SOURCE_DOMAINS": "bog.gov.gh,parliament.gh"}
 
 
 @pytest.mark.parametrize("change", [
@@ -1293,7 +1302,7 @@ def test_an_adversarial_page_changes_nothing_but_the_text_returned(
     for host in ("evil.example", "localhost"):
         web.add(f"https://{host}/collect", _page())
     egress, provider = _egress(web, ["https://news.example/story"])
-    lead = egress.search(QUERY)[0]
+    lead = egress.search(QUERY, provider="fake")[0]
     with caplog.at_level(logging.DEBUG):
         document = egress.fetch(lead.lead_token)
     # Exactly one page was requested: nothing the page linked, embedded, redirected to or
